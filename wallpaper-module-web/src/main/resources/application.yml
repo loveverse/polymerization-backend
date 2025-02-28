@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: wallpaper-module-web
+  datasource:
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:root}
+    url: jdbc:mysql://${DATABASE_IP:192.168.36.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: ${REDIS_HOST:192.168.36.10}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:10}
+    password: ${REDIS_PASSWORD:}
+  # 默认dev环境
+  profiles:
+    active: @profileActive@
+  cloud:
+    nacos:
+      config:
+        # 禁用配置中心
+        enabled: false
+server:
+  port: 30000
+mybatis-plus:
+  configuration:
+    #使用驼峰法映射属性
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: valid # 全局逻辑删除的实体字段名
+      logic-delete-value: 'NULL' # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
+  mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
+# 自动建表的工具配置
+actable:
+  table:
+    # none: 不做处理
+    # create: 会先将所有的表删除掉,重新构建表
+    # update: 自动判断哪些表是新建的，哪些字段要修改类型等，哪些字段要删除，哪些字段要新增，该操作不会破坏原有数据。
+    # add: 只做新增，比如新增表/新增字段/新增索引/新增唯一约束的功能，而不会去做修改和删除的操作
+    auto: add
+  model:
+    pack: com.loveverse.wallpaper.model.entity
+  database:
+    type: mysql
+  # 全局配置，不需要每个地方再重新写前缀
+  index:
+    prefix: idx_
+  unique:
+    prefix: uni_
+
+logging:
+  level:
+    com.loveverse.wallpaper: info
