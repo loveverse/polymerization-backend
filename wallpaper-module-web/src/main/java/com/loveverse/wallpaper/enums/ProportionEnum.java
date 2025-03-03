@@ -17,10 +17,4 @@ public enum ProportionEnum {
     EVEN_BIGGER(6, "更大");
     private final int value;
     private final String label;
-
-    public int r(int a, int b) {
-        return a + b;
-    }
-
-    ;
 }

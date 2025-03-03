@@ -2,8 +2,10 @@ package com.loveverse.fast.common.enums;
 
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor        // 给final类型的生成构造函数
 public enum ErrorCodeEnum {
     SUCCESS(200, "请求成功"),
     PARAMS_ERROR(400, "请求参数错误"),
@@ -22,10 +24,6 @@ public enum ErrorCodeEnum {
     /**
      * 信息
      */
-    private final String message;
+    private final String msg;
 
-    ErrorCodeEnum(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
 }

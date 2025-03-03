@@ -1,7 +1,15 @@
 package com.loveverse.wallpaper.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.loveverse.fast.common.util.BaseResponse;
+import com.loveverse.fast.common.util.ResultUtils;
+import com.loveverse.wallpaper.dto.PictureReqDto;
+import com.loveverse.wallpaper.vo.WallpaperPicture;
+import com.loveverse.wallpaper.service.IWallpaperPictureService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -12,7 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-02-28
  */
 @RestController
-@RequestMapping("/wallpaperPicture")
+@RequiredArgsConstructor
+@RequestMapping("/wallpaper/picture")
 public class WallpaperPictureController {
+    private final IWallpaperPictureService wallpaperPictureService;
 
+    @PostMapping("/list")
+    public BaseResponse<List<WallpaperPicture>> pictureList(@RequestBody PictureReqDto dto){
+        List<WallpaperPicture> list =  wallpaperPictureService.queryList(dto);
+        return ResultUtils.success(list);
+    }
 }

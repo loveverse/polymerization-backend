@@ -1,17 +1,20 @@
 package com.loveverse.wallpaper.enums;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @Getter
+@RequiredArgsConstructor
 public enum SortEnum {
-    HOTTEST(1, "最热"), ULTRAMODERN(2, "最新"), RANDOM(3, "随机");
+    HOTTEST("1", "最热"),
+    ULTRAMODERN("2", "最新"),
+    RANDOM("3", "随机");
 
-    private final int value;
+    private final String value;
 
     private final String label;
 
-    SortEnum(Integer value, String label) {
-        this.value = value;
-        this.label = label;
-    }
+
 }

@@ -1,6 +1,6 @@
 package com.loveverse.wallpaper.mapper;
 
-import com.loveverse.wallpaper.model.dto.WallpaperLike;
+import com.loveverse.wallpaper.vo.WallpaperLike;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 

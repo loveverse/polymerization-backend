@@ -1,4 +1,4 @@
-package com.loveverse.wallpaper.model.dto;
+package com.loveverse.wallpaper.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -8,18 +8,24 @@ import java.time.LocalDateTime;
 import lombok.Data;
 /**
  * <p>
- * 类别表
+ * 标签表
  * </p>
  *
  * @author loveverse
  * @since 2025-02-28
  */
 @Data
-@TableName("wallpaper_categories")
-@ApiModel(value = "WallpaperCategories对象", description = "类别表")
-public class WallpaperCategories implements Serializable {
+@TableName("wallpaper_tag")
+@ApiModel(value = "WallpaperTag对象", description = "标签表")
+public class WallpaperTag implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 标签名称
+     */
+    @ApiModelProperty("标签名称")
+    private String tagName;
 
     /**
      * id

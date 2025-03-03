@@ -1,6 +1,6 @@
 package com.loveverse.wallpaper.service.impl;
 
-import com.loveverse.wallpaper.model.dto.WallpaperUser;
+import com.loveverse.wallpaper.vo.WallpaperUser;
 import com.loveverse.wallpaper.mapper.WallpaperUserMapper;
 import com.loveverse.wallpaper.service.IWallpaperUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

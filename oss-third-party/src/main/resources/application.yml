@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        enabled: false
+  profiles:
+    active: @profileActive@
+server:
+  port: 30000
+  servlet:
+    # 设置应用的上下文路径， 所有请求会以/oss-third-party开头
+    context-path: /oss-third-party
+# 后续更换存储桶只需要根据不同oss填写
+minio:
+  endpoint: ${OSS_ENDPOINT}  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
+  accessKey: ${OSS_ACCESSKEY} #账户
+  secretKey: ${OSS_SECRETKEY} #密码
+  bucket: ${OSS_BUCKET}
+
+

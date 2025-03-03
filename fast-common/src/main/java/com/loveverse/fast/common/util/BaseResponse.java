@@ -16,12 +16,12 @@ public class BaseResponse<T> implements Serializable {
 
         private T data;
 
-        private String message;
+        private String msg;
 
-        public BaseResponse(int code, T data, String message) {
+        public BaseResponse(int code, T data, String msg) {
             this.code = code;
             this.data = data;
-            this.message = message;
+            this.msg = msg;
         }
 
         public BaseResponse(int code, T data) {
@@ -29,7 +29,7 @@ public class BaseResponse<T> implements Serializable {
         }
 
         public BaseResponse(ErrorCodeEnum errorCode) {
-            this(errorCode.getCode(), null, errorCode.getMessage());
+            this(errorCode.getCode(), null, errorCode.getMsg());
         }
 
 

@@ -1,8 +1,10 @@
 package com.loveverse.wallpaper.enums;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum ResolutionRatioEnum {
     P1(1, "1080P"),
     P2(2, "2K"),
@@ -11,9 +13,4 @@ public enum ResolutionRatioEnum {
     private final int value;
 
     private final String label;
-
-    ResolutionRatioEnum(int value, String label) {
-        this.value = value;
-        this.label = label;
-    }
 }

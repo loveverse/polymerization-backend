@@ -1,7 +1,10 @@
 package com.loveverse.wallpaper.service;
 
-import com.loveverse.wallpaper.model.dto.WallpaperPicture;
+import com.loveverse.wallpaper.dto.PictureReqDto;
+import com.loveverse.wallpaper.vo.WallpaperPicture;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWallpaperPictureService extends IService<WallpaperPicture> {
 
+    List<WallpaperPicture> queryList(PictureReqDto dto);
 }

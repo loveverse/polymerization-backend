@@ -19,8 +19,10 @@
         <spring-boot.version>2.6.13</spring-boot.version>
         <spring-cloud-ailbaba.version>2021.0.5.0</spring-cloud-ailbaba.version>
         <spring-cloud-loadbalancer.version>3.1.1</spring-cloud-loadbalancer.version>
-
+        <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
         <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
+        <redisson.version>3.17.0</redisson.version>
+
         <!--orm模型和工具相关-->
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
         <mybatis-plus-generator.version>3.5.10.1</mybatis-plus-generator.version>
@@ -28,7 +30,10 @@
         <freemarker.version>2.3.32</freemarker.version>
 
         <knife4j.version>2.0.9</knife4j.version>
+
+        <hutool.version>5.5.8</hutool.version>
     </properties>
+    <!--统一管理依赖，并没有在项目中导入-->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -73,6 +78,12 @@
                 <artifactId>spring-cloud-starter-loadbalancer</artifactId>
                 <version>${spring-cloud-loadbalancer.version}</version>
             </dependency>
+            <!--远程调用-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${spring-cloud-openfeign.version}</version>
+            </dependency>
             <!--mysql驱动-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -83,6 +94,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
             <!-- 数据库表代码自动生成 -->
             <dependency>
@@ -113,6 +130,14 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
+
+            <!--tool-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <!--项目依赖库的仓库地址-->

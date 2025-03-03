@@ -1,4 +1,4 @@
-package com.loveverse.wallpaper.model.dto;
+package com.loveverse.wallpaper.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;

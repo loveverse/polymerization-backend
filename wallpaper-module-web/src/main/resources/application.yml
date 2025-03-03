@@ -20,7 +20,7 @@ spring:
         # 禁用配置中心
         enabled: false
 server:
-  port: 30000
+  port: 31000
 mybatis-plus:
   configuration:
     #使用驼峰法映射属性
@@ -53,3 +53,9 @@ actable:
 logging:
   level:
     com.loveverse.wallpaper: info
+
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+
