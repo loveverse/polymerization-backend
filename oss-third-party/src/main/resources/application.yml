@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: oss-third-party
   cloud:
     nacos:
       discovery:
@@ -8,7 +10,7 @@ spring:
   profiles:
     active: @profileActive@
 server:
-  port: 30000
+  port: 30100
   servlet:
     # 设置应用的上下文路径， 所有请求会以/oss-third-party开头
     context-path: /oss-third-party
@@ -19,4 +21,6 @@ minio:
   secretKey: ${OSS_SECRETKEY} #密码
   bucket: ${OSS_BUCKET}
 
-
+logging:
+  level:
+    com.loveverse.oss.thirdparty: info

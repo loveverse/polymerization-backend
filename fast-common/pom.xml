@@ -6,6 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>fast-common</name>
     <description>fast-common</description>
+    <packaging>jar</packaging>
     <parent>
         <groupId>com.loveverse</groupId>
         <artifactId>polymerization-backend</artifactId>
@@ -151,23 +152,6 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>com.loveverse.fast.common.FastCommonApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

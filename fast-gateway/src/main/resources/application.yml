@@ -1,6 +1,6 @@
 spring:
   application:
-    name: fast-gateway
+    name: -gateway
   cloud:
     gateway:
       routes:
@@ -23,7 +23,7 @@ spring:
         enabled: false
 
 server:
-  port: 88
+  port: 30000
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 #sa-token:

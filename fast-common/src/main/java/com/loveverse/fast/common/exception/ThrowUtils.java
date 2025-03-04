@@ -36,7 +36,7 @@ public class ThrowUtils {
      *
      * @param condition
      * @param errorCode
-     * @param message
+     * @param msg
      */
     public static void throwIf(boolean condition, ErrorCodeEnum errorCode, String msg) {
         throwIf(condition, new BusinessException(errorCode, msg));

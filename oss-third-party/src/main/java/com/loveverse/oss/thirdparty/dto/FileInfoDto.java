@@ -1,6 +1,5 @@
 package com.loveverse.oss.thirdparty.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

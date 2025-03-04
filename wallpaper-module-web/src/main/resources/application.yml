@@ -19,8 +19,10 @@ spring:
       config:
         # 禁用配置中心
         enabled: false
+      discovery:
+        server-addr: 127.0.0.1:8848
 server:
-  port: 31000
+  port: 30200
 mybatis-plus:
   configuration:
     #使用驼峰法映射属性
@@ -41,7 +43,7 @@ actable:
     # add: 只做新增，比如新增表/新增字段/新增索引/新增唯一约束的功能，而不会去做修改和删除的操作
     auto: add
   model:
-    pack: com.loveverse.wallpaper.model.entity
+    pack: com.loveverse.wallpaper.entity
   database:
     type: mysql
   # 全局配置，不需要每个地方再重新写前缀
@@ -54,8 +56,8 @@ logging:
   level:
     com.loveverse.wallpaper: info
 
-knife4j:
-  enable: true
-  setting:
-    language: zh-CN
+#knife4j:
+#  enable: true
+#  setting:
+#    language: zh-CN
 

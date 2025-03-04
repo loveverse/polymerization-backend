@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.enums.SortEnum;
-import com.loveverse.wallpaper.model.entity.Picture;
+import com.loveverse.wallpaper.entity.Picture;
 import com.loveverse.wallpaper.vo.WallpaperPicture;
 import com.loveverse.wallpaper.mapper.WallpaperPictureMapper;
 import com.loveverse.wallpaper.service.IWallpaperPictureService;

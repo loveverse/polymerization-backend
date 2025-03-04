@@ -10,6 +10,7 @@
     <modules>
         <module>fast-common</module>
         <module>fast-gateway</module>
+        <module>oss-third-party</module>
         <module>wallpaper-module-web</module>
     </modules>
     <properties>
@@ -30,7 +31,6 @@
         <freemarker.version>2.3.32</freemarker.version>
 
         <knife4j.version>2.0.9</knife4j.version>
-
         <hutool.version>5.5.8</hutool.version>
     </properties>
     <!--统一管理依赖，并没有在项目中导入-->

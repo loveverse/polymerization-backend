@@ -1,20 +1,14 @@
-package com.loveverse.fast.common.generator;
+package com.loveverse.wallpaper.generator;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.model.ClassAnnotationAttributes;
-import com.baomidou.mybatisplus.generator.type.ITypeConvertHandler;
-import com.baomidou.mybatisplus.generator.type.TypeRegistry;
-import com.loveverse.fast.common.entity.BaseEntity;
 
 import java.io.File;
 import java.sql.Types;
 import java.util.Collections;
-import java.util.List;
 
 public class CodeGenerator {
 
@@ -52,7 +46,7 @@ public class CodeGenerator {
                 }))
                 .packageConfig(builder -> builder.parent("com.loveverse.wallpaper") // 设置父包名
                         .mapper("mapper") // 设置mapper接口包名
-                        .entity("model.dto")
+                        .entity("dto")
                         .xml("xml")  // 设置mapper xml包名
                         .service("service") // 设置service接口包名
                         .serviceImpl("service.impl") // 设置service实现类包名

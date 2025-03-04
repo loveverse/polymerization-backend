@@ -1,4 +1,4 @@
-package com.loveverse.wallpaper.model.entity;
+package com.loveverse.wallpaper.entity;
 
 import com.gitee.sunchenbin.mybatis.actable.annotation.*;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;

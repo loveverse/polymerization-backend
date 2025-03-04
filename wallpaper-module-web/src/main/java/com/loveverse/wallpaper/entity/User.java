@@ -1,4 +1,4 @@
-package com.loveverse.wallpaper.model.entity;
+package com.loveverse.wallpaper.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.*;
