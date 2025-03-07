@@ -1,7 +1,7 @@
 package com.loveverse.fast.common.exception;
 
 
-import com.loveverse.fast.common.enums.ErrorCodeEnum;
+import com.loveverse.fast.common.http.ResponseCode;
 
 /**
  * 抛异常工具类
@@ -27,7 +27,7 @@ public class ThrowUtils {
      * @param condition
      * @param errorCode
      */
-    public static void throwIf(boolean condition, ErrorCodeEnum errorCode) {
+    public static void throwIf(boolean condition, ResponseCode errorCode) {
         throwIf(condition, new BusinessException(errorCode));
     }
 
@@ -38,7 +38,7 @@ public class ThrowUtils {
      * @param errorCode
      * @param msg
      */
-    public static void throwIf(boolean condition, ErrorCodeEnum errorCode, String msg) {
+    public static void throwIf(boolean condition, ResponseCode errorCode, String msg) {
         throwIf(condition, new BusinessException(errorCode, msg));
     }
 }

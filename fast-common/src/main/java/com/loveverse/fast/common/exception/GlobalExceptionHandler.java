@@ -1,8 +1,7 @@
 package com.loveverse.fast.common.exception;
 
-import com.loveverse.fast.common.enums.ErrorCodeEnum;
-import com.loveverse.fast.common.util.BaseResponse;
-import com.loveverse.fast.common.util.ResultUtils;
+import com.loveverse.fast.common.http.ResponseCode;
+import com.loveverse.fast.common.http.ResponseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,15 +14,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public BaseResponse<?> businessExceptionHandler(BusinessException e) {
+    public ResponseData<?> businessExceptionHandler(BusinessException e) {
         log.error("BusinessException", e);
-        return ResultUtils.error(e.getCode(), e.getMessage());
+        return ResponseCode.fromCode(e.getCode()).getResponse(e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public BaseResponse<?> runtimeExceptionHandler(RuntimeException e) {
+    public ResponseData<?> runtimeExceptionHandler(RuntimeException e) {
         log.error("RuntimeException", e);
-        return ResultUtils.error(ErrorCodeEnum.SYSTEM_ERROR, "系统错误");
+        return ResponseCode.SYSTEM_ERROR.getResponse("系统错误");
     }
 
 

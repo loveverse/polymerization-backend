@@ -1,17 +1,17 @@
 spring:
   application:
-    name: -gateway
+    name: fast-gateway
   cloud:
     gateway:
       routes:
-        - id: third_party_route
-          uri:
-            lb://oss-third-party
-          predicates:
-            - Path=/oss-third-party/oss-third-party/**
-          filters:
-            # 去除路径的第一部分
-            - StripPrefix=1
+#        - id: third_party_route
+#          uri:
+#            lb://oss-third-party
+#          predicates:
+#            - Path=/oss-third-party/**
+#          filters:
+#            # 去除路径的第一部分
+#            - StripPrefix=1
       # 去重响应头中的Vary、Access-Control-Allow-Origin 和 Access-Control-Allow-Credentials 字段，保留第一个出现的值
       default-filters:
         - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST

@@ -20,9 +20,20 @@ public class FileInfoDto {
     /**
      * 文件大小
      */
-    private String size;
+    private Long size;
 
-    private String path;
+    /**
+     * 文件类型
+     */
+    private String type;
 
-    private String host;
+    /**
+     * 文件后缀
+     */
+    private String suffix;
+
+    /**
+     * 文件哈希
+     */
+    private String hash;
 }
