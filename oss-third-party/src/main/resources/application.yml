@@ -11,10 +11,7 @@ server:
 # 后续更换存储桶只需要根据不同oss填写
 minio:
   endpoint: ${OSS_ENDPOINT}  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
-  accessKey: ${OSS_ACCESSKEY} #账户
-  secretKey: ${OSS_SECRETKEY} #密码
+  access-key: ${OSS_ACCESSKEY}
+  secret-key: ${OSS_SECRETKEY}
   bucket: ${OSS_BUCKET}
 
-logging:
-  level:
-    com.loveverse.oss.thirdparty: info

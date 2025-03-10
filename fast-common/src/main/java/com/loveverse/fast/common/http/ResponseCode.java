@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor        // 给final类型的生成构造函数
 public enum ResponseCode {
-    SUCCESS(200, "请求成功"),
-    PARAMS_ERROR(400, "请求参数错误"),
+    SUCCESS(200, "操作成功"),
+    BAD_REQUEST_ERROR(400, "请求参数错误"),
     NOT_LOGIN_ERROR(401, "未登录"),
     //NO_AUTH_ERROR(403, "无权限"),
     FORBIDDEN_ERROR(403, "禁止访问"),
-    NOT_FOUND_ERROR(404, "请求数据不存在"),
+    NOT_FOUND_ERROR(404, "未找到该路径资源"),
     SYSTEM_ERROR(500, "系统内部异常"),
     OPERATION_ERROR(501, "操作失败");
 
@@ -27,6 +27,7 @@ public enum ResponseCode {
 
     /**
      * 通过code查询错误信息
+     *
      * @param code 200
      * @return 请求成功
      */

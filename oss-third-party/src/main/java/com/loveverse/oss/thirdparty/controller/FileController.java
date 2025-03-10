@@ -6,6 +6,7 @@ import com.loveverse.oss.thirdparty.dto.FileInfoDto;
 import com.loveverse.oss.thirdparty.service.impl.MinioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,9 @@ public class FileController {
             "bucket", required = false) String bucket) {
         FileInfoDto fileInfoDto = minioService.uploadFile(file, bucket);
         return ResponseCode.SUCCESS.getResponse(fileInfoDto);
+    }
+    @GetMapping("/hello")
+    public ResponseData<String> hello(){
+        return ResponseCode.SUCCESS.getResponse("hello");
     }
 }
