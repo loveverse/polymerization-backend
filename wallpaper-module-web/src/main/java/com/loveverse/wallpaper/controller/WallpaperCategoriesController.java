@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-02-28
  */
 @RestController
-@RequestMapping("/wallpaperCategories")
+@RequestMapping("/wallpaper/categories")
 public class WallpaperCategoriesController {
 
 }

@@ -1,7 +1,6 @@
 package com.loveverse.fast.common.http;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "响应信息")
+@Schema(description = "响应信息")
 public class ResponseData<T> {
-    @ApiModelProperty(value = "状态码", required = true)
+    @Schema(description = "状态码",requiredMode = Schema.RequiredMode.REQUIRED)
     private int code;
-    @ApiModelProperty(value = "数据", required = true)
+    @Schema(description = "数据",requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
-    @ApiModelProperty(value = "消息", required = true)
+    @Schema(description = "消息",requiredMode = Schema.RequiredMode.REQUIRED)
     private String msg;
 
     public ResponseData(String msg, int code, T data) {

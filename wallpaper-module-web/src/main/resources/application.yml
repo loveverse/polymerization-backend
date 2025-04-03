@@ -3,8 +3,8 @@ spring:
     name: wallpaper-module-web
   datasource:
     username: ${DATABASE_USERNAME:root}
-    password: ${DATABASE_PASSWORD:root}
-    url: jdbc:mysql://${DATABASE_IP:192.168.36.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true
+    password: ${DATABASE_PASSWORD:123456}
+    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: ${REDIS_HOST:192.168.36.10}
@@ -20,8 +20,13 @@ spring:
         # 禁用配置中心
         enabled: false
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 192.168.37.10:8848
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 server:
+  servlet:
+    context-path: /wallpaper-web-api
   port: 30200
 mybatis-plus:
   configuration:
@@ -34,6 +39,7 @@ mybatis-plus:
       logic-delete-value: 'NULL' # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
   mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
+
 # 自动建表的工具配置
 actable:
   table:
@@ -56,8 +62,22 @@ logging:
   level:
     com.loveverse.wallpaper: info
 
-#knife4j:
-#  enable: true
-#  setting:
-#    language: zh-CN
+knife4j:
+  # 开启knife4j，无需添加 @EnableKnife4j 注解
+  enable: true
+  setting:
+    language: zh-CN # 中文
+#    swagger-model-name: 壁纸模块
+# springdoc-openapi项目配置
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+#    tags-sorter: alpha
+#    operations-sorter: alpha
+#  api-docs:
+#    path: /v3/api-docs
+#  group-configs:
+#    - group: 'wallpaper'
+#      paths-to-match: '/**'
+#      packages-to-scan: com.loveverse.wallpaper.controller
 

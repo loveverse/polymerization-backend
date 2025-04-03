@@ -1,0 +1,385 @@
+name: loveverse
+services:
+  nginx:
+    image: nginx:1.26.3 # docker exec [nginx] nginx -s reload: 重启docker容器中的nginx
+    container_name: nginx # 容器名
+    restart: always
+    ports:
+      - '80:80' # 虚拟机端口不能重复:容器内端口可以重复
+    volumes:
+      - nginx-conf:/etc/nginx/conf.d # 使用 /etx/nginx/nginx.conf 会报错不存在，nginx.conf是一个文件，通常只需要暴露conf.d即可
+      - nginx-html:/usr/share/nginx/html
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - backend
+  redis:
+    image: redis:7.4.2
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-conf:/etc/redis/redis.conf
+      - redis-data:/data
+    environment:
+      - TZ=Asia/Shanghai
+      - REDIS_PASSWORD=123456
+    command: ["redis-server", "/etc/redis/redis.conf"] # 指定配置文件启动redis-server进程（直接覆盖默认命令（JSON 数组格式）
+    networks:
+      - backend
+  mysql:
+    image: mysql:8.0.29
+    container_name: mysql
+    restart: always
+    ports:
+      - '3306:3306'
+      - '33060:33060' # 33060 MySQL X Protocol 端口从MySQL5.7.12引入，支持文档存储（NoSQL）和异步操作
+    volumes:
+      - mysql-conf:/etc/mysql/conf.d
+      - mysql-data:/var/lib/mysql
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
+#      - MYSQL_DATABASE=loveverse
+    networks:
+      - backend
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped # 不会在手动停止后重启容器
+    ports:
+      - '9000:9000' # 文件上传的地址
+      - '9001:9001' # 可视化客户端地址
+    volumes:
+      - minio-conf:/etc/
+      - minio-data:/root/.minio
+    environment:
+      - TZ=Asia/Shanghai
+      - MINIO_ROOT_USER=minioadmin # 客户端登录默认账号，旧版本使用 MINIO_ACCESS_KEY
+      - MINIO_ROOT_PASSWORD=minioadmin # 客户端登录默认密码，旧版本使用 MINIO_SECRET_KEY
+#      - MINIO_SERVER_URL=http://192.168.37.10:9000
+    command: server /data --console-address ':9001' --address ':9000'  # 启动server并指定数据目录（作为参数传递给 ENTRYPOINT）
+    networks:
+      - backend
+  jenkins:
+    image: jenkins/jenkins:lts-jdk8
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - '8080:8080' # jenkins客户端访问地址
+      - '50000:50000'
+    volumes:
+      - jenkins-home:/var/jenkins_home
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - backend
+  nacos:
+    image: nacos/nacos-server:v2.2.0
+    container_name: nacos_server
+    restart: unless-stopped
+    ports:
+      - '8848:8848'
+    volumes:
+      - nacos-logs:/home/nacos/logs
+    environment:
+      - TZ=Asia/Shanghai
+      - MODE=standalone                           # 单机模式启动
+#      - NACOS_SERVER_IP=192.168.37.10
+#      - SPRING_DATASOURCE_PLATFORM=mysql          # 数据源平台 仅支持mysql或不保存empty
+      - MYSQL_SERVICE_HOST=mysql
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_DB_NAME=nacos_config
+      - MYSQL_SERVICE_USER=root
+      - MYSQL_SERVICE_PASSWORD=123456
+      # TODO 修改JVM调优参数
+#      - JVM_XMS=128m   #-Xms default :2g
+#      - JVM_XMX=128m   #-Xmx default :2g
+#      - JVM_XMN=64m    #-Xmn default :1g
+#      - JVM_MS=32m     #-XX:MetaspaceSize default :128m
+#      - JVM_MMS=32m    #-XX:MaxMetaspaceSize default :320m
+    mem_limit: 1024m # 最大使用内存
+    depends_on:
+      - mysql
+    networks:
+      - backend
+  kkfileview:
+    image: keking/kkfileview:v4.0.0
+    container_name: kkfileview
+    restart: unless-stopped
+    ports:
+      - '8012:8012'
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - frontend
+
+# 指定名字防止加上name前缀
+volumes:
+  nginx-conf:
+    name: nginx-conf  # 自定义卷名称
+  nginx-html:
+    name: nginx-html
+  redis-conf:
+    name: redis-conf
+  redis-data:
+    name: redis-data
+  mysql-conf:
+    name: mysql-conf
+  mysql-data:
+    name: mysql-data
+  minio-conf:
+    name: minio-conf
+  minio-data:
+    name: minio-data
+  jenkins-home:
+    name: jenkins-home
+  nacos-logs:
+    name: nacos-logs
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
+  frontend:
+    name: frontend
+    driver: bridge
+
+#networks:
+#  host_network:
+#    name: host_network
+#    driver: bridge
+#    name: host_network
+#    driver: host  # 只为 MinIO 使用 host 网络
+#  default:
+#    driver: bridge  # 其它容器使用 bridge 网络
+#  redis:
+##    集群镜像
+#    image: bitnami/redis:latest
+#    container_name: redis
+#    restart: always
+#    environment:
+#      - REDIS_PASSWORD=123456
+#    ports:
+#      - '6379:6379'
+#    volumes:
+#      - redis-data:/bitnami/redis/data
+#      - redis-conf:/opt/bitnami/redis/mounted-etc
+#      - /etc/localtime:/etc/localtime:ro
+
+      # 有的系统可能没有timezone，可能会导致报错
+#      - /etc/timezone:/etc/timezone:ro
+#  rabbit:
+#    image: rabbitmq:3-management
+#    restart: always
+#    container_name: rabbitmq
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=rabbit
+#      - RABBITMQ_DEFAULT_PASS=rabbit
+#      - RABBITMQ_DEFAULT_VHOST=dev
+#    volumes:
+#      - rabbit-data:/var/lib/rabbitmq
+#      - rabbit-app:/etc/rabbitmq
+#      - /etc/localtime:/etc/localtime:ro
+#  opensearch-node1:
+#    image: opensearchproject/opensearch:2.13.0
+#    container_name: opensearch-node1
+#    environment:
+#      - cluster.name=opensearch-cluster # Name the cluster
+#      - node.name=opensearch-node1 # Name the node that will run in this container
+#      - discovery.seed_hosts=opensearch-node1,opensearch-node2 # Nodes to look for when discovering the cluster
+#      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2 # Nodes eligibile to serve as cluster manager
+#      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+#      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+#      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
+#      - "DISABLE_SECURITY_PLUGIN=true" # Disables Security plugin
+#    ulimits:
+#      memlock:
+#        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+#        hard: -1
+#      nofile:
+#        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+#        hard: 65536
+#    volumes:
+#      - opensearch-data1:/usr/share/opensearch/data # Creates volume called opensearch-data1 and mounts it to the container
+#      - /etc/localtime:/etc/localtime:ro
+#    ports:
+#      - 9200:9200 # REST API
+#      - 9600:9600 # Performance Analyzer
+
+#  opensearch-node2:
+#    image: opensearchproject/opensearch:2.13.0
+#    container_name: opensearch-node2
+#    environment:
+#      - cluster.name=opensearch-cluster # Name the cluster
+#      - node.name=opensearch-node2 # Name the node that will run in this container
+#      - discovery.seed_hosts=opensearch-node1,opensearch-node2 # Nodes to look for when discovering the cluster
+#      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2 # Nodes eligibile to serve as cluster manager
+#      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+#      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+#      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
+#      - "DISABLE_SECURITY_PLUGIN=true" # Disables Security plugin
+#    ulimits:
+#      memlock:
+#        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+#        hard: -1
+#      nofile:
+#        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+#        hard: 65536
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - opensearch-data2:/usr/share/opensearch/data # Creates volume called opensearch-data2 and mounts it to the container
+
+#  opensearch-dashboards:
+#    image: opensearchproject/opensearch-dashboards:2.13.0
+#    container_name: opensearch-dashboards
+#    ports:
+#      - 5601:5601 # Map host port 5601 to container port 5601
+#    expose:
+#      - "5601" # Expose port 5601 for web access to OpenSearch Dashboards
+#    environment:
+#      - 'OPENSEARCH_HOSTS=["http://opensearch-node1:9200","http://opensearch-node2:9200"]'
+#      - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true" # disables security dashboards plugin in OpenSearch Dashboards
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#  zookeeper:
+#    image: bitnami/zookeeper:3.9
+#    container_name: zookeeper
+#    restart: always
+#    ports:
+#      - "2181:2181"
+#    volumes:
+#      - "zookeeper_data:/bitnami"
+#      - /etc/localtime:/etc/localtime:ro
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+
+#  kafka:
+#    image: 'bitnami/kafka:3.4'
+#    container_name: kafka
+#    restart: always
+#    hostname: kafka
+#    ports:
+#      - '9092:9092'
+#      - '9094:9094'
+#    environment:
+#      - KAFKA_CFG_NODE_ID=0
+#      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+#      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://0.0.0.0:9094
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://119.45.147.122:9094
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+#      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+#      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#      - "KAFKA_HEAP_OPTS=-Xmx512m -Xms512m"
+#    volumes:
+#      - kafka-conf:/bitnami/kafka/config
+#      - kafka-data:/bitnami/kafka/data
+#      - /etc/localtime:/etc/localtime:ro
+#  kafka-ui:
+#    container_name: kafka-ui
+#    image: provectuslabs/kafka-ui:latest
+#    restart: always
+#    ports:
+#      - 8080:8080
+#    environment:
+#      DYNAMIC_CONFIG_ENABLED: true
+#      KAFKA_CLUSTERS_0_NAME: kafka-dev
+#      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+#    volumes:
+#      - kafkaui-app:/etc/kafkaui
+#      - /etc/localtime:/etc/localtime:ro
+
+#  nacos:
+#    image: nacos/nacos-server:v2.3.1
+#    container_name: nacos
+#    ports:
+#      - 8848:8848
+#      - 9848:9848
+#    environment:
+#      - PREFER_HOST_MODE=hostname
+#      - MODE=standalone
+#      - JVM_XMX=512m
+#      - JVM_XMS=512m
+#      - SPRING_DATASOURCE_PLATFORM=mysql
+#      - MYSQL_SERVICE_HOST=nacos-mysql
+#      - MYSQL_SERVICE_DB_NAME=nacos_devtest
+#      - MYSQL_SERVICE_PORT=3306
+#      - MYSQL_SERVICE_USER=nacos
+#      - MYSQL_SERVICE_PASSWORD=nacos
+#      - MYSQL_SERVICE_DB_PARAM=characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#      - NACOS_AUTH_IDENTITY_KEY=2222
+#      - NACOS_AUTH_IDENTITY_VALUE=2xxx
+#      - NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789
+#      - NACOS_AUTH_ENABLE=true
+#    volumes:
+#      - /app/nacos/standalone-logs/:/home/nacos/logs
+#      - /etc/localtime:/etc/localtime:ro
+#    depends_on:
+#      nacos-mysql:
+#        condition: service_healthy
+#  nacos-mysql:
+#    container_name: nacos-mysql
+#    build:
+#      context: ../..
+#      dockerfile_inline: |
+#        FROM mysql:8.0.31
+#        ADD https://raw.githubusercontent.com/alibaba/nacos/2.3.2/distribution/conf/mysql-schema.sql /docker-entrypoint-initdb.d/nacos-mysql.sql
+#        RUN chown -R mysql:mysql /docker-entrypoint-initdb.d/nacos-mysql.sql
+#        EXPOSE 3306
+#        CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+#    image: nacos/mysql:8.0.30
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#      - MYSQL_DATABASE=nacos_devtest
+#      - MYSQL_USER=nacos
+#      - MYSQL_PASSWORD=nacos
+#      - LANG=C.UTF-8
+#    volumes:
+#      - nacos-mysqldata:/var/lib/mysql
+#      - /etc/localtime:/etc/localtime:ro
+#    ports:
+#      - "13306:3306"
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+#      interval: 5s
+#      timeout: 10s
+#      retries: 10
+#  prometheus:
+#    image: prom/prometheus:v2.52.0
+#    container_name: prometheus
+#    restart: always
+#    ports:
+#      - 9090:9090
+#    volumes:
+#      - prometheus-data:/prometheus
+#      - prometheus-conf:/etc/prometheus
+#      - /etc/localtime:/etc/localtime:ro
+
+#  grafana:
+#    image: grafana/grafana:10.4.2
+#    container_name: grafana
+#    restart: always
+#    ports:
+#      - 3000:3000
+#    volumes:
+#      - grafana-data:/var/lib/grafana
+#      - /etc/localtime:/etc/localtime:ro
+
+
+#  rabbit-data:
+#  rabbit-app:
+#  opensearch-data1:
+#  opensearch-data2:
+#  nacos-mysqldata:
+#  zookeeper_data:
+#  kafka-conf:
+#  kafka-data:
+#  kafkaui-app:
+#  prometheus-data:
+#  prometheus-conf:
+#  grafana-data:

@@ -1,5 +1,6 @@
 package com.loveverse.wallpaper.mapper;
 
+import com.loveverse.wallpaper.entity.Picture;
 import com.loveverse.wallpaper.vo.WallpaperPicture;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -12,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author loveverse
  * @since 2025-02-28
  */
-public interface WallpaperPictureMapper extends BaseMapper<WallpaperPicture> {
+public interface WallpaperPictureMapper extends BaseMapper<Picture> {
 
 }
 

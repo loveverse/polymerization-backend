@@ -12,4 +12,9 @@ public interface IValidGroup {
 
     interface Valid {
     }
+
+    interface Version {
+
+    }
+
 }

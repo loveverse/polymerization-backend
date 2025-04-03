@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 @Data
 public class BaseTime extends BaseId {
     @TableField(fill = FieldFill.INSERT)
-    @Column(comment = "创建时间", type = MySqlTypeConstant.DATETIME)
+    @Column(comment = "创建时间", type = MySqlTypeConstant.DATETIME,isNull = false)
     private LocalDateTime createTime;
 
     @TableField(fill = FieldFill.INSERT)
-    @Column(comment = "更新时间", type = MySqlTypeConstant.DATETIME)
+    @Column(comment = "更新时间", type = MySqlTypeConstant.DATETIME,isNull = false)
     private LocalDateTime updateTime;
 }

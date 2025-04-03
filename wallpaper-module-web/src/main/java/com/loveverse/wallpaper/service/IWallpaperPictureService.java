@@ -14,7 +14,7 @@ import java.util.List;
  * @author loveverse
  * @since 2025-02-28
  */
-public interface IWallpaperPictureService extends IService<WallpaperPicture> {
+public interface IWallpaperPictureService {
 
     List<WallpaperPicture> queryList(PictureReqDto dto);
 }

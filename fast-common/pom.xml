@@ -18,15 +18,24 @@
 
     </properties>
     <dependencies>
-        <!--knife4j:集Swagger2 和 OpenAPI3 为一体的增强解决方案-->
+
+        <!--knife4j:集Swagger3 和 OpenAPI3 为一体的增强解决方案-->
+<!--        <dependency>-->
+<!--            <groupId>io.springfox</groupId>-->
+<!--            <artifactId>springfox-boot-starter</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>4.4.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <!--        配置中心来做配置管理-->
 <!--        <dependency>-->
 <!--            <groupId>com.alibaba.cloud</groupId>-->

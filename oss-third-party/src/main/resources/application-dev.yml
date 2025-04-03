@@ -1,4 +1,4 @@
-OSS_ENDPOINT: http://192.168.36.10:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
-OSS_ACCESSKEY: 44h4ub0vvTDxF7cAuGBD #账户
-OSS_SECRETKEY: N1fKTtNsQobckVIJXGnM6OXtPOmkkRW5q3W7ZaxM #密码
+OSS_ENDPOINT: http://192.168.37.10:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
+OSS_ACCESSKEY: qDNIisJ6FU1QQySSQva4 #账户
+OSS_SECRETKEY: leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq #密码
 OSS_BUCKET: loveverse

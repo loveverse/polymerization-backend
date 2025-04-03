@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 @TableEngine(MySqlEngineConstant.InnoDB)
 @Table(name = "wallpaper_like",comment = "喜欢记录表")
 public class Like extends BaseEntity {
-    @Column(name = "user_id",comment = "用户id",isNull = false)
+    @Column(comment = "用户id",isNull = false)
     private Long userId;
 
-    @Column(name = "picture_id", comment = "图片id", isNull = false)
+    @Column(comment = "图片id", isNull = false)
     private Long pictureId;
 }

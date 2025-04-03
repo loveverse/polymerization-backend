@@ -48,7 +48,6 @@ public class MinioUtils {
                 minioClient.setBucketPolicy(args);
                 log.info("创建桶{}成功", bucketName);
             } catch (Exception e) {
-
                 log.error("创建桶失败：{}", e.getMessage());
             }
         } else {
@@ -154,7 +153,6 @@ public class MinioUtils {
             minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(path).stream(inputStream,
                     file.getSize(), -1).contentType(fileContentType).build());
         } catch (Exception e) {
-
             log.error("上传文件失败{}", e.getMessage());
         }
         return minioConfig.getEndpoint() + "/" + bucketName + "/" + path;

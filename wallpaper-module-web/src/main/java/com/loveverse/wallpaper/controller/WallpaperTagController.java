@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-02-28
  */
 @RestController
-@RequestMapping("/wallpaperTag")
+@RequestMapping("/wallpaper/tag")
 public class WallpaperTagController {
 
 }
