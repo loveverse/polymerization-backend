@@ -7,14 +7,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor        // 给final类型的生成构造函数
 public enum ResponseCode {
     SUCCESS(200, "操作成功"),
-    BAD_REQUEST_ERROR(400, "请求参数错误"),
-    NOT_LOGIN_ERROR(401, "未登录"),
-    //NO_AUTH_ERROR(403, "无权限"),
-    FORBIDDEN_ERROR(403, "禁止访问"),
-    NOT_FOUND_ERROR(404, "未找到该路径资源"),
-    SYSTEM_ERROR(500, "系统内部异常"),
-    OPERATION_ERROR(501, "操作失败");
 
+    // ================================= 业务错误码 ==================================
+    BAD_REQUEST(400, "请求参数错误"),
+    NOT_LOGIN(401, "账号未登录"),
+    FORBIDDEN(403, "无权限"),
+    NOT_FOUND(404, "请求未找到"),
+    METHOD_NOT_ALLOWED(405, "请求方法不允许"),
+    LOCKED(423, "资源被锁定"),
+    TOO_MANY_REQUESTS(429, "请求过于频繁"),
+
+    // ================================ 系统错误码 ==================================
+    SYSTEM_ERROR(500, "服务器内部异常"),
+    NOT_IMPLEMENTED(501, "功能未实现"),
+
+    // ================================ 未知错误码 ==================================
+    UNKNOWN(999, "未知错误");
     /**
      * 状态码
      */

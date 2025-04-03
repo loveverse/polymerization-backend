@@ -80,4 +80,5 @@ knife4j:
 #    - group: 'wallpaper'
 #      paths-to-match: '/**'
 #      packages-to-scan: com.loveverse.wallpaper.controller
-
+app:
+  env: @profileActive@

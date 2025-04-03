@@ -16,6 +16,9 @@ public class ResponseData<T> {
     private T data;
     @Schema(description = "消息",requiredMode = Schema.RequiredMode.REQUIRED)
     private String msg;
+    @Schema(description = "错误信息",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String errorInfo;
+
 
     public ResponseData(String msg, int code, T data) {
         this.msg = msg;

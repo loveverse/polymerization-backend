@@ -2,6 +2,7 @@ package com.loveverse.wallpaper.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.loveverse.fast.common.exception.BadRequestException;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.enums.SortEnum;
 import com.loveverse.wallpaper.entity.Picture;
@@ -32,10 +33,6 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
     private final WallpaperPictureMapper pictureMapper;
     @Override
     public List<WallpaperPicture> queryList(PictureReqDto dto) {
-        // 输入参数校验
-        if (dto == null) {
-            throw new IllegalArgumentException("请求参数不能为空");
-        }
 
         LambdaQueryWrapper<Picture> queryWrapper = new LambdaQueryWrapper<>();
         String sort = dto.getSort();
@@ -51,7 +48,7 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
             if (strategy != null) {
                 strategy.accept(queryWrapper, true); // 默认降序
             } else {
-                throw new IllegalArgumentException("不支持的排序类型: " + sort);
+                throw new BadRequestException("不支持的排序类型: " + sort);
             }
         }
 
@@ -63,7 +60,7 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
                     .collect(Collectors.toList());
         } catch (Exception e) {
             // 异常处理
-            throw new RuntimeException("查询图片列表失败", e);
+            throw new BadRequestException("查询图片列表失败", e);
         }
     }
 

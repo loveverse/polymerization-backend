@@ -1,32 +1,32 @@
 package com.loveverse.fast.common.exception;
 
-
-import com.loveverse.fast.common.http.ResponseCode;
-import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 自定义异常类
+ * @author love
+ * @since 2025/4/3
  */
-@Getter
-public class BusinessException extends RuntimeException {
+@Slf4j
+public abstract class BusinessException extends RuntimeException {
 
-    /**
-     * 错误码
-     */
-    private final int code;
-
-    public BusinessException(int code, String msg) {
-        super(msg);
-        this.code = code;
+    public BusinessException(String message, Object... args) {
+        super(String.format(replacePlaceholders(message), args));
     }
 
-    public BusinessException(ResponseCode errorCode) {
-        super(errorCode.getMsg());
-        this.code = errorCode.getCode();
+    public BusinessException(String message) {
+        super(message);
     }
 
-    public BusinessException(ResponseCode errorCode, String msg) {
-        super(msg);
-        this.code = errorCode.getCode();
+    public BusinessException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public BusinessException(Throwable cause) {
+        super(cause);
+    }
+
+    // Helper method to replace placeholders
+    private static String replacePlaceholders(String message) {
+        return message.replace("{}", "%s");
     }
 }
