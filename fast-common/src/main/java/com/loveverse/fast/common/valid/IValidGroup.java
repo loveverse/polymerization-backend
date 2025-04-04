@@ -16,5 +16,11 @@ public interface IValidGroup {
     interface Version {
 
     }
-
+    interface Add {};
+    interface Select {};
+    interface Page {};
+    interface Delete {};
+    interface Update {};
+    interface One {};
+    interface NeedData { }
 }

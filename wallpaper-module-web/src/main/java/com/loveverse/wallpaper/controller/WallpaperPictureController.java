@@ -1,8 +1,15 @@
 package com.loveverse.wallpaper.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
+import com.loveverse.fast.common.dto.PageReqDto;
+import com.loveverse.fast.common.dto.PageResDto;
 import com.loveverse.fast.common.http.ResponseCode;
 import com.loveverse.fast.common.http.ResponseData;
+import com.loveverse.fast.common.util.PageUtils;
 import com.loveverse.wallpaper.dto.PictureReqDto;
+import com.loveverse.wallpaper.entity.Picture;
 import com.loveverse.wallpaper.vo.WallpaperPicture;
 import com.loveverse.wallpaper.service.IWallpaperPictureService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +39,8 @@ public class WallpaperPictureController {
 
     @Operation(summary = "图片列表")
     @PostMapping("/list")
-    public ResponseData<List<WallpaperPicture>> pictureList(@Valid @RequestBody PictureReqDto dto) {
-        List<WallpaperPicture> list = wallpaperPictureService.queryList(dto);
-        return ResponseCode.SUCCESS.getResponse(list);
+    public ResponseData<PageResDto<Picture>> pictureList(@Valid @RequestBody PictureReqDto query) {
+        PageResDto<Picture> pageList = wallpaperPictureService.queryPageList(query);
+        return ResponseCode.SUCCESS.getResponse(pageList);
     }
 }

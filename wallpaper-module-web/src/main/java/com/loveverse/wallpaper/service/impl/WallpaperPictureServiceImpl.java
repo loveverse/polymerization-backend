@@ -2,7 +2,13 @@ package com.loveverse.wallpaper.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
+import com.loveverse.fast.common.dto.PageReqDto;
+import com.loveverse.fast.common.dto.PageResDto;
 import com.loveverse.fast.common.exception.BadRequestException;
+import com.loveverse.fast.common.util.PageUtils;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.enums.SortEnum;
 import com.loveverse.wallpaper.entity.Picture;
@@ -13,6 +19,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +38,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
     private final WallpaperPictureMapper pictureMapper;
-    @Override
-    public List<WallpaperPicture> queryList(PictureReqDto dto) {
 
+    @Override
+    public PageResDto<Picture> queryPageList(PictureReqDto qry) {
         LambdaQueryWrapper<Picture> queryWrapper = new LambdaQueryWrapper<>();
-        String sort = dto.getSort();
+        String sort = qry.getSort();
 
         // 排序逻辑映射表
         Map<String, BiConsumer<LambdaQueryWrapper<Picture>, Boolean>> sortStrategyMap = new HashMap<>();
@@ -51,24 +58,7 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
                 throw new BadRequestException("不支持的排序类型: " + sort);
             }
         }
-
-        try {
-            // 执行查询并转换结果
-            List<Picture> pictureList = pictureMapper.selectList(queryWrapper);
-            return pictureList.stream()
-                    .map(this::convertToWallpaperPicture) // 假设存在转换方法
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            // 异常处理
-            throw new BadRequestException("查询图片列表失败", e);
-        }
+        Page<Picture> picturePage = pictureMapper.selectPage(qry.getIPage(), queryWrapper);
+        return PageUtils.getPage(picturePage, picturePage.getRecords());
     }
-
-    // 假设的转换方法
-    private WallpaperPicture convertToWallpaperPicture(Picture picture) {
-        WallpaperPicture wallpaperPicture = new WallpaperPicture();
-        // 转换逻辑
-        return wallpaperPicture;
-    }
-
 }

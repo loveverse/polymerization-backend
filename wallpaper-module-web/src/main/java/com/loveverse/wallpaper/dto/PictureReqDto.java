@@ -1,17 +1,21 @@
 package com.loveverse.wallpaper.dto;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
+import com.loveverse.fast.common.dto.PageReqDto;
 import com.loveverse.wallpaper.annotation.ApiEnumDescription;
 import com.loveverse.wallpaper.enums.ProportionEnum;
 import com.loveverse.wallpaper.enums.ResolutionRatioEnum;
 import com.loveverse.wallpaper.enums.SortEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "图片列表请求参数")
-public class PictureReqDto {
+public class PictureReqDto extends PageReqDto {
     /**
      * 排序字段
      */
