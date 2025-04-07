@@ -18,10 +18,9 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.37.10:8848
+        username: nacos
+        password: nacos
       # 禁用配置中心
-      config:
-        enabled: false
-
 server:
   port: 30000
 

@@ -1,8 +1,19 @@
 spring:
   application:
     name: oss-third-party
+  datasource:
+    druid:
+
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:123456}
+    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
   profiles:
     active: @profileActive@
+  redis:
+    host: ${REDIS_HOST:192.168.37.10}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:10}
+    password: ${REDIS_PASSWORD:123456}
 server:
   port: 30100
   servlet:
@@ -10,8 +21,8 @@ server:
     context-path: /oss-third-party
 # 后续更换存储桶只需要根据不同oss填写
 minio:
-  endpoint: ${OSS_ENDPOINT}  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
-  access-key: ${OSS_ACCESSKEY}
-  secret-key: ${OSS_SECRETKEY}
-  bucket: ${OSS_BUCKET}
+  endpoint: ${OSS_ENDPOINT:http://192.168.37.10:9000}  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
+  access-key: ${OSS_ACCESSKEY:44h4ub0vvTDxF7cAuGBD}
+  secret-key: ${OSS_SECRETKEY:leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq}
+  bucket: ${OSS_BUCKET:oss_file}
 

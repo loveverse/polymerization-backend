@@ -2,12 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.loveverse</groupId>
     <artifactId>wallpaper-module-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>wallpaper-module-web</name>
     <description>wallpaper-module-web</description>
-
+    <parent>
+        <groupId>com.loveverse</groupId>
+        <artifactId>polymerization-backend</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <profiles>
         <!-- dev开发环境配置,prod为生产环境配置,没有测试人员暂不配置test -->
         <profile>
@@ -35,36 +38,24 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>com.loveverse</groupId>
             <artifactId>fast-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- 注册中心 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
+        <finalName>${jarName}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

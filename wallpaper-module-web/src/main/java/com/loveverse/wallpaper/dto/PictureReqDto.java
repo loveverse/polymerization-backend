@@ -21,7 +21,7 @@ public class PictureReqDto extends PageReqDto {
      */
     @ApiEnumDescription(value = SortEnum.class)
     @Schema(description = "壁纸排序字段")
-    private String sort;
+    private String sortField;
     /**
      * 分辨率
      */

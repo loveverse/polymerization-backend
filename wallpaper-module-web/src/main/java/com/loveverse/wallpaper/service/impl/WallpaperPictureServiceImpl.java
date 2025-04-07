@@ -42,7 +42,7 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
     @Override
     public PageResDto<Picture> queryPageList(PictureReqDto qry) {
         LambdaQueryWrapper<Picture> queryWrapper = new LambdaQueryWrapper<>();
-        String sort = qry.getSort();
+        String sort = qry.getSortField();
 
         // 排序逻辑映射表
         Map<String, BiConsumer<LambdaQueryWrapper<Picture>, Boolean>> sortStrategyMap = new HashMap<>();

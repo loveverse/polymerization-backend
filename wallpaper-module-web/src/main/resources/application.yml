@@ -16,9 +16,9 @@ spring:
     active: @profileActive@
   cloud:
     nacos:
-      config:
-        # 禁用配置中心
-        enabled: false
+#      config:
+#        # 禁用配置中心
+#        enabled: false
       discovery:
         server-addr: 192.168.37.10:8848
   mvc:

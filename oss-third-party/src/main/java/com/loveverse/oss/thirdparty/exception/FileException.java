@@ -1,5 +1,7 @@
 package com.loveverse.oss.thirdparty.exception;
 
+import com.loveverse.fast.common.exception.BusinessException;
+
 public abstract class FileException extends BusinessException {
     public FileException(String message, Object... args) {
         super(message, args);
