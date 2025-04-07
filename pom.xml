@@ -25,6 +25,7 @@
         <spring-cloud-ailbaba.version>2021.0.5.0</spring-cloud-ailbaba.version>
         <spring-cloud-loadbalancer.version>3.1.1</spring-cloud-loadbalancer.version>
         <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
+        <nacos-client.version>2.2.0</nacos-client.version>
         <!-- 数据库相关 -->
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
         <druid.version>1.2.24</druid.version>
@@ -35,7 +36,7 @@
         <mybatis-enhance-actable.version>1.5.0.RELEASE</mybatis-enhance-actable.version>
         <!-- 文档和工具 -->
         <knife4j.version>4.4.0</knife4j.version>
-        <hutool.version>5.8.24</hutool.version>
+        <hutool.version>5.8.25</hutool.version>
         <lombok.version>1.18.36</lombok.version>
     </properties>
     <!--统一管理依赖，并没有在项目中导入，子项目使用parent时，可以不用写版本，自动会使用这里的版本-->
@@ -110,7 +111,11 @@
                 <artifactId>spring-cloud-starter-loadbalancer</artifactId>
                 <version>${spring-cloud-loadbalancer.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos-client.version}</version>
+            </dependency>
             <!--mysql驱动-->
             <dependency>
                 <groupId>mysql</groupId>

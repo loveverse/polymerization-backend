@@ -29,7 +29,7 @@
         <mybatis-enhance-actable.version>1.5.0.RELEASE</mybatis-enhance-actable.version>
         <!-- 文档和工具 -->
         <knife4j.version>4.4.0</knife4j.version>
-        <hutool.version>5.8.24</hutool.version>
+        <hutool.version>5.8.25</hutool.version>
         <lombok.version>1.18.36</lombok.version>
     </properties>
 
