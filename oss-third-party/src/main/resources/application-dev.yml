@@ -1,17 +1,25 @@
-OSS_ENDPOINT: http://192.168.37.10:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
-OSS_ACCESSKEY: qDNIisJ6FU1QQySSQva4 #账户
-OSS_SECRETKEY: leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq #密码
-OSS_BUCKET: oss_file
-
-# mysql配置
-DATABASE_USERNAME: root
-DATABASE_PASSWORD: 123456
+# mysql 自定义字段
 DATABASE_IP: 192.168.37.10
 DATABASE_PORT: 3306
-DATABASE_NAME: oss_file
+DATABASE_NAME: oss_file_dev
 
-# redis配置
-REDIS_HOST: 192.168.37.10
-REDIS_PORT: 6379
-REDIS_DB: 10
-REDIS_PASSWORD: 123456
+spring:
+  datasource:
+    username: root
+    password: 123456
+  redis:
+    username: root
+    password: 123456
+    database: 10
+    host: ${DATABASE_IP}
+    port: 6379
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${DATABASE_IP}:8848
+
+minio:
+  bucket: oss_file
+  endpoint: http://192.168.37.10:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
+  access-key: qDNIisJ6FU1QQySSQva4 #账户
+  secret-key: leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq #密码

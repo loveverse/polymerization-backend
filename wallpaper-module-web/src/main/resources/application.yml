@@ -2,25 +2,81 @@ spring:
   application:
     name: wallpaper-module-web
   datasource:
-    username: ${DATABASE_USERNAME:root}
-    password: ${DATABASE_PASSWORD:123456}
-    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # createDatabaseIfNotExist=true 不存在则创建，目前只有 mysql 支持
+      url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${spring.datasource.username:root}
+      password: ${spring.redis.password:123456}
+      # 初始连接数
+      initial-size: 5
+      # 最小连接数
+      min-idle: 15
+      # 最大连接数
+      max-active: 30
+      # 超时时间(以秒数为单位)
+      remove-abandoned-timeout: 180
+      # 获取连接超时时间
+      max-wait: 3000
+      # 连接有效性检测时间
+      time-between-eviction-runs-millis: 60000
+      # 连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      # 连接在池中最大生存的时间
+      max-evictable-idle-time-millis: 900000
+      # 指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除
+      test-while-idle: true
+      # 指明是否在从池中取出连接前进行检验,如果检验失败, 则从池中去除连接并尝试取出另一个
+      test-on-borrow: true
+      # 是否在归还到池中前进行检验
+      test-on-return: false
+      # 检测连接是否有效
+      validation-query: select 1
+      # 配置监控统计
+      webStatFilter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        allow: localhost
+#        login-username: zrt
+#        login-password: qwe123#@!
+      filter:
+        stat:
+          enabled: true
+          # 记录慢SQL
+          log-slow-sql: true
+          slow-sql-millis: 1000
+        #          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+#    username: ${DATABASE_USERNAME:root}
+#    password: ${DATABASE_PASSWORD:123456}
+#    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: ${REDIS_HOST:192.168.36.10}
-    port: ${REDIS_PORT:6379}
-    database: ${REDIS_DB:10}
-    password: ${REDIS_PASSWORD:}
+    host: ${spring.redis.host:192.168.37.10}
+    port: ${spring.redis.port:6379}
+    database: ${spring.redis.database:10}
+    password: ${spring.redis.password:}
   # 默认dev环境
   profiles:
     active: @profileActive@
   cloud:
     nacos:
-#      config:
-#        # 禁用配置中心
-#        enabled: false
+      config:
+#        server-addr: ${spring.cloud.nacos.server-addr:192.168.37.10:8848}
+#        file-extension: yaml
+#        namespace: 26b9f38c-4729-4d9a-9689-ce9c2692d764
+        enabled: false
+      # 禁用配置中心
       discovery:
-        server-addr: 192.168.37.10:8848
+        server-addr: ${spring.cloud.nacos.discovery.server-addr:192.168.37.10:8848}
+#  config:
+#    import: optional:nacos
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -58,10 +114,6 @@ actable:
   unique:
     prefix: uni_
 
-logging:
-  level:
-    com.loveverse.wallpaper: info
-
 knife4j:
   # 开启knife4j，无需添加 @EnableKnife4j 注解
   enable: true
@@ -80,5 +132,3 @@ knife4j:
 #    - group: 'wallpaper'
 #      paths-to-match: '/**'
 #      packages-to-scan: com.loveverse.wallpaper.controller
-app:
-  env: @profileActive@

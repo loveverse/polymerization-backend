@@ -1,14 +1,20 @@
-# mysql配置
-DATABASE_USERNAME: root
-DATABASE_PASSWORD: 123456
+# mysql 自定义字段
 DATABASE_IP: 192.168.37.10
 DATABASE_PORT: 3306
 DATABASE_NAME: wallpaper_web_dev
 
-# redis配置
-REDIS_HOST: 192.168.37.10
-REDIS_PORT: 6379
-REDIS_DB: 10
-REDIS_PASSWORD: 123456
-
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${DATABASE_IP}:8848
+  datasource:
+    username: root
+    password: 123456
+  redis:
+    username: root
+    password: 123456
+    database: 10
+    host: ${DATABASE_IP}
+    port: 6379
 
