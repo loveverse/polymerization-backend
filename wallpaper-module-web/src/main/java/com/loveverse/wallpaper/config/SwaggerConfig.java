@@ -37,7 +37,7 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        log.info("加载swagger成功...");
+        log.info("✅加载swagger成功...");
         return new OpenAPI()
                 .info(new Info().title("壁纸系统标题")
                         .contact(new Contact().name("loveverse").email("loveverse@gmail.com"))

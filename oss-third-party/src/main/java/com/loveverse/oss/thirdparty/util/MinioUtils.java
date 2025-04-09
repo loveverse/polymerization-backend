@@ -1,8 +1,11 @@
 package com.loveverse.oss.thirdparty.util;
 
 import cn.hutool.core.util.StrUtil;
+import com.loveverse.fast.common.exception.ServerException;
 import com.loveverse.oss.thirdparty.config.MinioConfig;
+import com.loveverse.oss.thirdparty.exception.FileException;
 import io.minio.*;
+import io.minio.errors.*;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -16,7 +19,12 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -49,6 +57,7 @@ public class MinioUtils {
                 log.info("创建桶{}成功", bucketName);
             } catch (Exception e) {
                 log.error("创建桶失败：{}", e.getMessage());
+                throw new ServerException("创建桶失败：{}", e.getMessage());
             }
         } else {
             log.info("名为：{} 的桶已存在！", bucketName);
@@ -143,7 +152,7 @@ public class MinioUtils {
          * 2.计算文件哈希去重，查询minio对应存储桶文件是否存在
          * 3.上传文件返回文件id,url,name
          * */
-        // 传了存储桶，使用传入的，没传使用默认的loveverse
+        // 传了存储桶，使用传入的，没传使用默认的 loveverse
         String bucketName = getBucketName(bucket);
         // 没有的默认创建，有的啥也不干
         createBucketByCondition(bucketName);
@@ -154,9 +163,20 @@ public class MinioUtils {
                     file.getSize(), -1).contentType(fileContentType).build());
         } catch (Exception e) {
             log.error("上传文件失败{}", e.getMessage());
+            throw new FileException("上传文件失败", e.getMessage());
         }
         return minioConfig.getEndpoint() + "/" + bucketName + "/" + path;
     }
 
-
+    public void removeFile(String fileName, String bucket) {
+        try {
+            // 传了存储桶，使用传入的，没传使用默认的 loveverse
+            String bucketName = getBucketName(bucket);
+            String path = getCurrentMonthPath() + "/" + fileName;
+            minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(path).build());
+        } catch (Exception e) {
+            log.error("删除文件失败{}", e.getMessage());
+            throw new FileException("上传文件失败", e.getMessage());
+        }
+    }
 }

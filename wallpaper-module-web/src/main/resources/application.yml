@@ -1,6 +1,12 @@
 spring:
   application:
     name: wallpaper-module-web
+  # 默认dev环境
+  profiles:
+    active: @profileActive@
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     druid:
       # createDatabaseIfNotExist=true 不存在则创建，目前只有 mysql 支持
@@ -62,9 +68,7 @@ spring:
     port: ${spring.redis.port:6379}
     database: ${spring.redis.database:10}
     password: ${spring.redis.password:}
-  # 默认dev环境
-  profiles:
-    active: @profileActive@
+
   cloud:
     nacos:
       config:
@@ -77,9 +81,7 @@ spring:
         server-addr: ${spring.cloud.nacos.discovery.server-addr:192.168.37.10:8848}
 #  config:
 #    import: optional:nacos
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+
 server:
   servlet:
     context-path: /wallpaper-web-api

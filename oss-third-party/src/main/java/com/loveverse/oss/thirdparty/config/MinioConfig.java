@@ -1,6 +1,7 @@
 package com.loveverse.oss.thirdparty.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.loveverse.fast.common.exception.ServerException;
 import io.minio.MinioClient;
 import io.minio.SetBucketPolicyArgs;
 import io.minio.messages.Bucket;
@@ -45,6 +46,7 @@ public class MinioConfig {
             }
         } catch (Exception e) {
             log.error("设置桶策略错误: {}", e.getMessage());
+            throw new ServerException("设置桶策略错误", e.getCause());
         }
     }
 
@@ -59,6 +61,7 @@ public class MinioConfig {
             log.info("应用于存储桶的公有读取策略: {}", bucketName);
         } catch (Exception e) {
             log.error("无法为 {} 应用策略 : {}", bucketName, e.getMessage());
+            throw new ServerException("无法为 {} 应用策略 : {}", bucketName, e.getMessage());
         }
     }
 
@@ -80,7 +83,6 @@ public class MinioConfig {
 
         return objectMapper.writeValueAsString(policyMap);
     }
-
 
 
 }

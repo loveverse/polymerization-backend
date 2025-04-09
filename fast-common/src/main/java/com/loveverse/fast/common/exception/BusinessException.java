@@ -10,23 +10,27 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class BusinessException extends RuntimeException {
 
     public BusinessException(String message, Object... args) {
-        super(String.format(replacePlaceholders(message), args));
+        super(formatMessage(message, args));
     }
 
     public BusinessException(String message) {
         super(message);
     }
 
-    public BusinessException(String message, Throwable cause) {
-        super(message, cause);
+    public BusinessException(String message, Throwable cause, Object... args) {
+        super(formatMessage(message, args), cause);
     }
 
     public BusinessException(Throwable cause) {
         super(cause);
     }
 
-    // Helper method to replace placeholders
-    private static String replacePlaceholders(String message) {
-        return message.replace("{}", "%s");
+    private static String formatMessage(String message, Object... args) {
+        if (args == null || args.length == 0) {
+            return message;
+        }
+        // 替换占位符 {} 为 %s
+        String replaced = message.replace("{}", "%s");
+        return String.format(replaced, args);
     }
 }

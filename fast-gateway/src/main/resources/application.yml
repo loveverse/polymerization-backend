@@ -7,7 +7,7 @@ spring:
 #        - id: oss-third-party
 #          uri: lb://oss-third-party
 #          predicates:
-#            - Path=/oss-third-party-api/**
+#            - Path=//oss-file-api/**
 #          filters:
 #            # 去除路径的第一部分
 #            - StripPrefix=1

@@ -59,7 +59,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
             <version>${spring-boot.version}</version>
-
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -138,6 +137,7 @@
         <!-- 文档和工具 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
+<!--            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>-->
             <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
         </dependency>
@@ -153,6 +153,7 @@
             <version>${hutool.version}</version>
         </dependency>
     </dependencies>
+    <!-- 使用依赖管理，后续方便与本项目解耦拆分 -->
     <dependencyManagement>
         <dependencies>
             <!-- Spring Boot 2.x 依赖管理,大部分 spring 不需要写版本 -->

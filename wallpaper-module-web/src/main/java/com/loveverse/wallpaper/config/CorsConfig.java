@@ -23,7 +23,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("*");
-        log.info("加载cors配置成功...");
+        log.info("✅加载cors配置成功...");
     }
 
     @Override

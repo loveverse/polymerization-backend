@@ -1,19 +1,19 @@
 package com.loveverse.fast.common.global;
 
-import com.loveverse.fast.common.exception.ServiceException;
+import com.loveverse.fast.common.exception.BusinessException;
 import com.loveverse.fast.common.http.ResponseCode;
 import com.loveverse.fast.common.http.ResponseData;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ControllerAdvice 需要每个方法都加上 @ResponseBody, 否则无法返回json数据
@@ -21,61 +21,68 @@ import javax.servlet.http.HttpServletRequest;
  */
 
 @Data
+@Slf4j
 @RestControllerAdvice
-
 public class GlobalExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     private Environment env;
+    private Map<Class<? extends Throwable>, IGlobalExceptionHandler<?>> exceptionHandlers = new HashMap<>();
 
     /**
-     * 处理业务异常
+     * 异常分为业务异常和服务异常
+     * 服务是内部可能会出现的错误捕获
+     * 业务是参数等其他情况
+     *
+     * @param env dev
      */
-    @ExceptionHandler(ServiceException.class)
-    public ResponseData<Void> handleServiceException(ServiceException ex, HttpServletRequest request) {
-        log.warn("业务异常: {}", request.getRequestURI(), ex);
-        ResponseData<Void> responseData = ResponseCode.fromCode(ex.getCode()).getResponse(ex.getMsg());
-        if (isDevProfileActive()) {
-            responseData.setErrorInfo(ex.getMessage());
-        }
-        return responseData;
+    public GlobalExceptionHandler(Environment env) {
+        this.env = env;
+        log.info("✅全局异常初始化成功...");
+        registerDefaultHandlers();
     }
 
-    /**
-     * 处理请求方法不支持异常
-     */
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseData<Void> handleRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
-        log.warn("请求方法不支持: {}", request.getRequestURI(), ex);
-        ResponseData<Void> responseData = ResponseCode.METHOD_NOT_ALLOWED.getResponse();
-        if (isDevProfileActive()) {
-            responseData.setErrorInfo(ex.getMessage());
-        }
-        return responseData;
+    private void registerDefaultHandlers() {
+        registerExceptionHandler(BusinessException.class, (req, ex) -> {
+            log.error("参数异常: {}", req.getRequestURI(), ex);
+            ResponseData<Void> responseData = ResponseCode.BAD_REQUEST.getResponse();
+            if (isDevProfileActive()) {
+                responseData.setErrorInfo(ex.getMessage());
+            }
+            return responseData;
+        });
+
+        /**
+         * 处理系统异常,兜底处理所有异常
+         */
+        registerExceptionHandler(Exception.class, (req, ex) -> {
+            log.error("系统异常: {}", req.getRequestURI(), ex);
+            ResponseData<Void> responseData = ResponseCode.SYSTEM_ERROR.getResponse();
+            if (isDevProfileActive()) {
+                responseData.setErrorInfo(ex.getMessage());
+            }
+            return responseData;
+        });
     }
 
-    /**
-     * 处理权限异常
-     */
-    //public ResponseData<Void> handlePermissionException(ServiceException serviceException, HttpServletRequest request) {
-    //    log.warn("权限异常: {}", request.getRequestURI(), serviceException);
-    //    ResponseData<Void> responseData = ResponseCode.FORBIDDEN.getResponse(serviceException.getMessage());
-    //    if (isDevProfileActive()) {
-    //        responseData.setErrorInfo(serviceException.getMessage());
-    //    }
-    //    return responseData;
-    //}
+    public <T extends Throwable> void registerExceptionHandler(Class<T> exceptionType, IGlobalExceptionHandler<T> handler) {
+        exceptionHandlers.put(exceptionType, handler);
+    }
 
-    /**
-     * 处理系统异常,兜底处理所有异常
-     */
     @ExceptionHandler(Exception.class)
-    public ResponseData<Void> handleException(Throwable ex, HttpServletRequest request) {
-        log.error("系统异常: {}", request.getRequestURI(), ex);
-        ResponseData<Void> responseData = ResponseCode.SYSTEM_ERROR.getResponse();
-        if (isDevProfileActive()) {
-            responseData.setErrorInfo(ex.getMessage());
+    public ResponseData<Void> handleException(HttpServletRequest req, Throwable ex) {
+        for (Map.Entry<Class<? extends Throwable>, IGlobalExceptionHandler<? extends Throwable>> entry : exceptionHandlers.entrySet()) {
+            if (entry.getKey().isInstance(ex)) {
+                return handle(req, ex, entry.getValue());
+            }
         }
-        return responseData;
+        // 打印异常类型，便于排查
+        log.error("未匹配异常类型: {}", ex.getClass().getName());
+        return handle(req, ex, exceptionHandlers.get(Exception.class));
+    }
+
+    //@SuppressWarnings("unchecked")
+    private <T extends Throwable> ResponseData<Void> handle(HttpServletRequest req, Throwable ex, IGlobalExceptionHandler<? extends Throwable> handler) {
+        // 这里需要进行类型转换，确保类型安全
+        return ((IGlobalExceptionHandler<T>) handler).handle(req, (T) ex);
     }
 
     /**

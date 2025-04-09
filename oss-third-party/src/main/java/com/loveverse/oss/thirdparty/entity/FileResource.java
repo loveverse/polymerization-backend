@@ -9,9 +9,11 @@ import com.loveverse.fast.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "file-resource", comment = "文件表")
+@Table(value = "file_resource", comment = "文件表")
 public class FileResource extends BaseEntity {
     @Column(comment = "文件名称", isNull = true)
     private String fileName;
@@ -20,7 +22,7 @@ public class FileResource extends BaseEntity {
     private String fileUrl;
 
     @Column(comment = "文件大小", isNull = false)
-    private String fileSize;
+    private BigDecimal fileSize;
 
     @Column(comment = "文件类型", isNull = false)
     private String fileType;
