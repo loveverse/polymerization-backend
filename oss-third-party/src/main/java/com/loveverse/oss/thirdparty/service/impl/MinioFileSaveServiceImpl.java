@@ -1,8 +1,10 @@
 package com.loveverse.oss.thirdparty.service.impl;
 
+import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.db.DbRuntimeException;
 import com.loveverse.fast.common.exception.BadRequestException;
 import com.loveverse.oss.thirdparty.dto.response.FileInfoResDto;
@@ -12,15 +14,22 @@ import com.loveverse.oss.thirdparty.mapper.OssFileResourceMapper;
 import com.loveverse.oss.thirdparty.service.MinioFileSaveService;
 import com.loveverse.oss.thirdparty.util.MinioUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 @DependsOn("minioConfig")
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class MinioFileSaveServiceImpl implements MinioFileSaveService {
 
@@ -34,6 +43,8 @@ public class MinioFileSaveServiceImpl implements MinioFileSaveService {
      * 上传文件到 MinIO
      */
 
+    @Transactional
+    @Override
     public FileInfoResDto uploadFile(MultipartFile file, String bucket) {
         FileResource fileResource = new FileResource();
         long uuid = snowflake.nextId();
@@ -42,6 +53,14 @@ public class MinioFileSaveServiceImpl implements MinioFileSaveService {
         fileResource.setFileName(originalFileName);
         fileResource.setFileSize(BigDecimal.valueOf(file.getSize()));
         fileResource.setFileType(file.getContentType());
+        fileResource.setSuffix(FileNameUtil.getSuffix(originalFileName));
+
+        try (InputStream is = file.getInputStream()) {
+            fileResource.setFileHash(DigestUtil.sha256Hex(is));
+        } catch (IOException e) {
+            log.error("io异常", e);
+            throw new RuntimeException(e);
+        }
         // 文件url组成：域名 存储桶名 月份 文件名
         String fileUrl = minioUtils.uploadFile(file, originalFileName, bucket);
         fileResource.setFileUrl(fileUrl);
@@ -61,6 +80,7 @@ public class MinioFileSaveServiceImpl implements MinioFileSaveService {
         return fileInfoResDto; // 返回存储路径
     }
 
+    @Override
     public FileInfoResDto uploadPictureFile(MultipartFile file, String bucket) {
         FileInfoResDto fileInfoDto = new FileInfoResDto();
         long uuid = snowflake.nextId();

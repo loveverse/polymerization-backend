@@ -65,14 +65,17 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-#    username: ${DATABASE_USERNAME:root}
-#    password: ${DATABASE_PASSWORD:123456}
-#    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+  #    username: ${DATABASE_USERNAME:root}
+  #    password: ${DATABASE_PASSWORD:123456}
+  #    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
   redis:
     host: ${spring.redis.host:192.168.37.10}
     port: ${spring.redis.port:6379}
     database: ${spring.redis.database:10}
     password: ${spring.redis.password:123456}
+#    jedis:
+#      pool:
+#        enabled: true
 
 server:
   port: 30100
@@ -88,34 +91,34 @@ minio:
   access-key: ${minio.access-key:44h4ub0vvTDxF7cAuGBD}
   secret-key: ${minio.secret-key:leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq}
 
-#mybatis-plus:
-#  configuration:
-#    #使用驼峰法映射属性
-#    map-underscore-to-camel-case: true
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#  global-config:
-#    db-config:
-#      logic-delete-field: valid # 全局逻辑删除的实体字段名
-#      logic-delete-value: 'NULL' # 逻辑已删除值(默认为 1)
-#      logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
-#  mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
+mybatis-plus:
+  configuration:
+    #使用驼峰法映射属性
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: valid # 全局逻辑删除的实体字段名
+      logic-delete-value: 'NULL' # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
+  mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
 # 自动建表的工具配置
-#actable:
-#  table:
-#    # none: 不做处理
-#    # create: 会先将所有的表删除掉,重新构建表
-#    # update: 自动判断哪些表是新建的，哪些字段要修改类型等，哪些字段要删除，哪些字段要新增，该操作不会破坏原有数据。
-#    # add: 只做新增，比如新增表/新增字段/新增索引/新增唯一约束的功能，而不会去做修改和删除的操作
-#    auto: add
-#  model:
-#    pack: com.loveverse.wallpaper.entity
-#  database:
-#    type: mysql
-#  # 全局配置，不需要每个地方再重新写前缀
-#  index:
-#    prefix: idx_
-#  unique:
-#    prefix: uni_
+actable:
+  table:
+    # none: 不做处理
+    # create: 会先将所有的表删除掉,重新构建表
+    # update: 自动判断哪些表是新建的，哪些字段要修改类型等，哪些字段要删除，哪些字段要新增，该操作不会破坏原有数据。
+    # add: 只做新增，比如新增表/新增字段/新增索引/新增唯一约束的功能，而不会去做修改和删除的操作
+    auto: add
+  model:
+    pack: com.loveverse.oss.thirdparty.entity
+  database:
+    type: mysql
+  # 全局配置，不需要每个地方再重新写前缀
+  index:
+    prefix: idx_
+  unique:
+    prefix: uni_
 
 knife4j:
   # 开启knife4j，无需添加 @EnableKnife4j 注解

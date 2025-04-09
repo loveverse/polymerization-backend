@@ -1,14 +1,19 @@
 package com.loveverse.oss.thirdparty;
 
 import com.loveverse.fast.common.annotation.EnableGlobalExceptionHandler;
+import com.loveverse.fast.common.annotation.EnableMyBatisPlus;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 @Slf4j
-//@MapperScan("com.gitee.sunchenbin.mybatis.actable.dao.*")
-//@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.oss.thirdparty.*"}) // 扫描Actable包，不手动指定包会找不到
+@MapperScan(value = {"com.gitee.sunchenbin.mybatis.actable.dao.*", "com.loveverse.oss.thirdparty.mapper"})
+// 扫描Actable包，不手动指定包会找不到
+@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.oss.thirdparty.*"})
+@EnableMyBatisPlus
 @EnableGlobalExceptionHandler
 @SpringBootApplication
 public class OssThirdPartyApplication {

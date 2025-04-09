@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
     }
 
     private void registerDefaultHandlers() {
+        // 处理业务异常
         registerExceptionHandler(BusinessException.class, (req, ex) -> {
             log.error("参数异常: {}", req.getRequestURI(), ex);
             ResponseData<Void> responseData = ResponseCode.BAD_REQUEST.getResponse();
@@ -50,9 +51,7 @@ public class GlobalExceptionHandler {
             return responseData;
         });
 
-        /**
-         * 处理系统异常,兜底处理所有异常
-         */
+        // 处理系统异常,兜底处理所有异常
         registerExceptionHandler(Exception.class, (req, ex) -> {
             log.error("系统异常: {}", req.getRequestURI(), ex);
             ResponseData<Void> responseData = ResponseCode.SYSTEM_ERROR.getResponse();

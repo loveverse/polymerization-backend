@@ -27,11 +27,14 @@ public class FileResource extends BaseEntity {
     @Column(comment = "文件类型", isNull = false)
     private String fileType;
 
+    @Column(comment = "文件后缀", isNull = false)
+    private String suffix;
+
     @DefaultValue("B")
-    @Column(comment = "文件单位：B/Kb/Mb/Gb/Tb默认B",isNull = false)
+    @Column(comment = "文件单位：B/Kb/Mb/Gb/Tb默认B", defaultValue = "B", isNull = false)
     private String sizeUnit;
 
-    @Unique(columns = {"file_hash", ""})
+    //@Unique(columns = {"file_hash"})
     @Column(comment = "文件哈希，判断文件是否已经上传", isNull = false)
     private String fileHash;
 
