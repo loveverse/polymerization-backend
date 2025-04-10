@@ -18,5 +18,5 @@ spring:
 minio:
   bucket: loveverse
   endpoint: http://192.168.37.10:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
-  access-key: qDNIisJ6FU1QQySSQva4 #账户
-  secret-key: leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq #密码
+  access-key: r40Z2gQWc2XutrjzBbx6 #账户
+  secret-key: Nhuqw6QiQFJYAafVwK8dluHn6p6gYC5UsYfRMb0Y #密码

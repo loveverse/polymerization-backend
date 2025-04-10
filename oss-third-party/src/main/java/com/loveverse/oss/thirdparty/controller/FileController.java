@@ -3,6 +3,7 @@ package com.loveverse.oss.thirdparty.controller;
 import com.loveverse.fast.common.http.ResponseCode;
 import com.loveverse.fast.common.http.ResponseData;
 import com.loveverse.oss.thirdparty.dto.response.FileInfoResDto;
+import com.loveverse.oss.thirdparty.entity.FileResource;
 import com.loveverse.oss.thirdparty.service.MinioFileSaveService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +35,7 @@ public class FileController {
         FileInfoResDto fileInfoDto = minioService.uploadFile(file, bucket);
         return ResponseCode.SUCCESS.getResponse(fileInfoDto);
     }
+
     @Operation(summary = "图片上传（支持去重）")
     @PostMapping("/upload/picture")
     public ResponseData<FileInfoResDto> uploadPictureFile(@RequestParam("file") MultipartFile file, @RequestParam(value =
@@ -41,8 +43,20 @@ public class FileController {
         FileInfoResDto fileInfoDto = minioService.uploadPictureFile(file, bucket);
         return ResponseCode.SUCCESS.getResponse(fileInfoDto);
     }
+
     @GetMapping("/hello")
-    public ResponseData<String> hello(){
+    public ResponseData<String> hello() {
         return ResponseCode.SUCCESS.getResponse("hello");
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseData<FileResource> file(@PathVariable("id") Long id) {
+        FileResource fileInfoResDto = minioService.getFileInfo(id);
+        return ResponseCode.SUCCESS.getResponse(fileInfoResDto);
+    }
+    @GetMapping("/info")
+    public ResponseData<FileResource> file2(@RequestParam("id") Long id) {
+        FileResource fileInfoResDto = minioService.getFileInfo(id);
+        return ResponseCode.SUCCESS.getResponse(fileInfoResDto);
     }
 }

@@ -5,8 +5,6 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.db.DbRuntimeException;
-import com.loveverse.fast.common.exception.BadRequestException;
 import com.loveverse.oss.thirdparty.dto.response.FileInfoResDto;
 import com.loveverse.oss.thirdparty.entity.FileResource;
 import com.loveverse.oss.thirdparty.exception.DBException;
@@ -15,8 +13,6 @@ import com.loveverse.oss.thirdparty.service.MinioFileSaveService;
 import com.loveverse.oss.thirdparty.util.MinioUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -106,5 +102,10 @@ public class MinioFileSaveServiceImpl implements MinioFileSaveService {
 
         //fileInfoDto.setUrl(fileUrl);
         return fileInfoDto; // 返回存储路径
+    }
+
+    @Override
+    public FileResource getFileInfo(Long id) {
+        return fileResourceMapper.selectById(id);
     }
 }

@@ -9,6 +9,7 @@
 - 中科大镜像： `https://mirrors.tuna.tsinghua.edu.cn/`
 - 因为使用的是vm ware，所以选择不同虚拟化技术，vmware对应的是 `VMwareFusion` 所以镜像链接使用
 - `https://mirrors.ustc.edu.cn/centos-cloud/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-2004_01.VMwareFusion.box`
+- ubuntu镜像： `https://portal.cloud.hashicorp.com/vagrant/discover/generic/ubuntu1804`
 - 1.将镜像下载到本地安装
 - `vagrant box add [box名称] [本地镜像文件路径]`:路径不能有中文
 - `vagrant box list`:查看是否安装成功
@@ -77,3 +78,4 @@ https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4
 2. 在系统中创建挂载的配置文件 `mkdir -p /home/nginx/{conf,logs,html}`或`mkdir -p ~/nginx/{conf,logs,html}`,root用户~
    为root，普通用户一般为home
 
+## ubuntu首次进入使用sudo passwd 设置root密码

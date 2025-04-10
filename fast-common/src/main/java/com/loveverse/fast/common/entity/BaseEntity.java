@@ -16,10 +16,12 @@ import lombok.*;
 @Data
 public class BaseEntity extends BaseTime {
 
+    @TableField(fill = FieldFill.INSERT)
     @TableLogic
     @Column(comment = "逻辑删除[1:有效,null:删除]", defaultValue = "1")
     private Integer valid;
 
+    @TableField(fill = FieldFill.INSERT)
     @Version
     @Column(comment = "乐观锁版本号", isNull = false)
     private Long version;

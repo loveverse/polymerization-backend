@@ -1,6 +1,7 @@
 package com.loveverse.fast.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.TableCharset;
@@ -13,7 +14,7 @@ import lombok.Data;
 @TableEngine(MySqlEngineConstant.InnoDB)
 @Data
 public class BaseId {
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId(type = IdType.ASSIGN_ID)
     @Column(comment = "id", isKey = true)
     private Long id;
 }

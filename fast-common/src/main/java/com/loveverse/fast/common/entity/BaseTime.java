@@ -22,7 +22,7 @@ public class BaseTime extends BaseId {
     @Column(comment = "创建时间", type = MySqlTypeConstant.DATETIME,isNull = false)
     private LocalDateTime createTime;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @Column(comment = "更新时间", type = MySqlTypeConstant.DATETIME,isNull = false)
     private LocalDateTime updateTime;
 }

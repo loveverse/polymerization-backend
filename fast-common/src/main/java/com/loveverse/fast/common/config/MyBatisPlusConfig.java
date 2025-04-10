@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.loveverse.fast.common.annotation.EnableMyBatisPlus;
+import com.loveverse.fast.common.handler.IdGenerator;
 import com.loveverse.fast.common.handler.TimeObjectHandle;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -24,8 +26,8 @@ import java.util.Date;
  */
 @Slf4j
 @Configuration
+@EnableTransactionManagement
 public class MyBatisPlusConfig {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -36,7 +38,7 @@ public class MyBatisPlusConfig {
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         // 添加分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-        log.info("✅加载mybatis插件成功...");
+        log.info("✅mybatis插件初始化成功...");
         return interceptor;
     }
 
@@ -44,5 +46,11 @@ public class MyBatisPlusConfig {
     @ConditionalOnMissingBean
     public TimeObjectHandle timeObjectHandle() {
         return new TimeObjectHandle();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IdGenerator idGenerator() {
+        return new IdGenerator();
     }
 }
