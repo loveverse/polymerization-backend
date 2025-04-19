@@ -1,7 +1,8 @@
 package com.loveverse.wallpaper.controller;
 
-import com.loveverse.fast.common.http.ResponseCode;
-import com.loveverse.fast.common.http.ResponseData;
+
+import com.loveverse.core.http.ResponseCode;
+import com.loveverse.core.http.ResponseData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;

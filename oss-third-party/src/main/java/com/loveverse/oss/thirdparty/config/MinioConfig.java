@@ -1,7 +1,7 @@
 package com.loveverse.oss.thirdparty.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.loveverse.fast.common.exception.ServerException;
+import com.loveverse.core.exception.ServerException;
 import io.minio.MinioClient;
 import io.minio.SetBucketPolicyArgs;
 import io.minio.messages.Bucket;

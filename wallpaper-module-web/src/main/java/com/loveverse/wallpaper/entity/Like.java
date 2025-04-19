@@ -6,7 +6,8 @@ import com.gitee.sunchenbin.mybatis.actable.annotation.TableCharset;
 import com.gitee.sunchenbin.mybatis.actable.annotation.TableEngine;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlEngineConstant;
-import com.loveverse.fast.common.entity.BaseEntity;
+
+import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

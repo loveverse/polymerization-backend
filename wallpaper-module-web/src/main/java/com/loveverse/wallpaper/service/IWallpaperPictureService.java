@@ -2,8 +2,8 @@ package com.loveverse.wallpaper.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-import com.loveverse.fast.common.dto.PageReqDto;
-import com.loveverse.fast.common.dto.PageResDto;
+
+import com.loveverse.core.dto.PageResDto;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.entity.Picture;
 import com.loveverse.wallpaper.vo.WallpaperPicture;

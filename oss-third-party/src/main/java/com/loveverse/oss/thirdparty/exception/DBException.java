@@ -1,7 +1,7 @@
 package com.loveverse.oss.thirdparty.exception;
 
-import com.loveverse.fast.common.exception.BusinessException;
-import com.loveverse.fast.common.exception.ServerException;
+
+import com.loveverse.core.exception.ServerException;
 
 /**
  * @author love

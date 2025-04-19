@@ -3,11 +3,10 @@ package com.loveverse.wallpaper.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-import com.loveverse.fast.common.dto.PageReqDto;
-import com.loveverse.fast.common.dto.PageResDto;
-import com.loveverse.fast.common.http.ResponseCode;
-import com.loveverse.fast.common.http.ResponseData;
-import com.loveverse.fast.common.util.PageUtils;
+
+import com.loveverse.core.dto.PageResDto;
+import com.loveverse.core.http.ResponseCode;
+import com.loveverse.core.http.ResponseData;
 import com.loveverse.wallpaper.config.UserConfig;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.entity.Picture;

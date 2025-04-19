@@ -2,15 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.loveverse</groupId>
+        <artifactId>polymerization-backend</artifactId>
+        <version>${revision}</version>
+    </parent>
     <artifactId>oss-third-party</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>oss-third-party</name>
     <description>oss-third-party</description>
-    <parent>
-        <groupId>com.loveverse</groupId>
-        <artifactId>polymerization-backend</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <profiles>
         <!-- dev开发环境配置,prod为生产环境配置,没有测试人员暂不配置test -->
         <profile>
@@ -34,32 +35,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring-boot.version>2.6.13</spring-boot.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.loveverse</groupId>
-            <artifactId>fast-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.loveverse.core</groupId>
+            <artifactId>fast-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.9.0</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
-            <version>8.4.2</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.redisson</groupId>-->
-<!--            <artifactId>redisson-spring-boot-starter</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
     <build>
-        <finalName>${jarName}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

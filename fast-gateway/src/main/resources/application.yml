@@ -4,20 +4,20 @@ spring:
   cloud:
     gateway:
       routes:
-#        - id: oss-third-party
-#          uri: lb://oss-third-party
-#          predicates:
-#            - Path=//oss-file-api/**
-#          filters:
-#            # 去除路径的第一部分
-#            - StripPrefix=1
+        #        - id: oss-third-party
+        #          uri: lb://oss-third-party
+        #          predicates:
+        #            - Path=//oss-file-api/**
+        #          filters:
+        #            # 去除路径的第一部分
+        #            - StripPrefix=1
         - id: wallpaper-module-web
           uri: lb://wallpaper-module-web
           predicates:
             - Path=/wallpaper-web-api/**
-#          filters:
-#            # 去除路径的第一部分
-#            - StripPrefix=1
+      #          filters:
+      #            # 去除路径的第一部分
+      #            - StripPrefix=1
       # 去重响应头中的Vary、Access-Control-Allow-Origin 和 Access-Control-Allow-Credentials 字段，保留第一个出现的值
       default-filters:
         - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
@@ -25,5 +25,7 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.37.10:8848
+      config:
+        enabled: false
 server:
   port: 30000

@@ -1,7 +1,8 @@
 package com.loveverse.oss.thirdparty.util;
 
 import cn.hutool.core.util.StrUtil;
-import com.loveverse.fast.common.exception.ServerException;
+
+import com.loveverse.core.exception.ServerException;
 import com.loveverse.oss.thirdparty.config.MinioConfig;
 import com.loveverse.oss.thirdparty.exception.FileException;
 import io.minio.*;

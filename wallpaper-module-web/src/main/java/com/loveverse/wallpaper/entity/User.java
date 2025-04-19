@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.*;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlEngineConstant;
-import com.loveverse.fast.common.entity.BaseEntity;
+
+import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.*;
 
 import java.io.Serializable;

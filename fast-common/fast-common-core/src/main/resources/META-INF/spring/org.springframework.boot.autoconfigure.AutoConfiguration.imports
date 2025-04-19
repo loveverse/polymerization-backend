@@ -1,0 +1,2 @@
+com.loveverse.core.config.GlobalExceptionConfig
+com.loveverse.core.config.JacksonConfig

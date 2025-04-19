@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.loveverse</groupId>
         <artifactId>polymerization-backend</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <profiles>
         <!-- dev开发环境配置,prod为生产环境配置,没有测试人员暂不配置test -->
@@ -33,31 +33,19 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.6.13</spring-boot.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
     </properties>
 
 
     <dependencies>
         <dependency>
-            <groupId>com.loveverse</groupId>
-            <artifactId>fast-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
+            <groupId>com.loveverse.core</groupId>
+            <artifactId>fast-common-core</artifactId>
         </dependency>
         <!-- 注册中心 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <!-- 2020开始以不在维护，排除默认的 netflix-ribbon ，使用loadbalancer -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -68,28 +56,19 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
     </dependencies>
     <build>
-        <finalName>${jarName}</finalName>
+        <finalName>${jar-name}</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
+            <!-- 打包 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>com.loveverse.wallpaper.WallpaperModuleWebApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>repackage</id>
                         <goals>
-                            <goal>repackage</goal>
+                            <goal>repackage</goal> <!-- 将引入的 jar 打入其中 -->
                         </goals>
                     </execution>
                 </executions>

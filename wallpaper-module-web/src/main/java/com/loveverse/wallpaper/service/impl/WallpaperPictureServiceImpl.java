@@ -5,10 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-import com.loveverse.fast.common.dto.PageReqDto;
-import com.loveverse.fast.common.dto.PageResDto;
-import com.loveverse.fast.common.exception.BadRequestException;
-import com.loveverse.fast.common.util.PageUtils;
+
+import com.loveverse.core.dto.PageResDto;
+import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.enums.SortEnum;
 import com.loveverse.wallpaper.entity.Picture;
@@ -58,7 +57,8 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
                 throw new BadRequestException("不支持的排序类型: " + sort);
             }
         }
-        Page<Picture> picturePage = pictureMapper.selectPage(qry.getIPage(), queryWrapper);
-        return PageUtils.getPage(picturePage, picturePage.getRecords());
+        //Page<Picture> picturePage = pictureMapper.selectPage(qry.getIPage(), queryWrapper);
+        //return PageUtils.getPage(picturePage, picturePage.getRecords());
+        return null;
     }
 }

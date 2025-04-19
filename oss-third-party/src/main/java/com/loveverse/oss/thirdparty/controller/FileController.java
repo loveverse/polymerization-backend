@@ -1,7 +1,7 @@
 package com.loveverse.oss.thirdparty.controller;
 
-import com.loveverse.fast.common.http.ResponseCode;
-import com.loveverse.fast.common.http.ResponseData;
+import com.loveverse.core.http.ResponseCode;
+import com.loveverse.core.http.ResponseData;
 import com.loveverse.oss.thirdparty.dto.response.FileInfoResDto;
 import com.loveverse.oss.thirdparty.entity.FileResource;
 import com.loveverse.oss.thirdparty.service.MinioFileSaveService;

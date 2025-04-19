@@ -2,7 +2,8 @@ package com.loveverse.wallpaper.dto;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-import com.loveverse.fast.common.dto.PageReqDto;
+
+import com.loveverse.core.dto.PageReqDto;
 import com.loveverse.wallpaper.annotation.ApiEnumDescription;
 import com.loveverse.wallpaper.enums.ProportionEnum;
 import com.loveverse.wallpaper.enums.ResolutionRatioEnum;

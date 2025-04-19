@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.loveverse</groupId>
     <artifactId>polymerization-backend</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>polymerization-backend</name>
+    <version>${revision}</version>
+    <name>${project.artifactId}</name>
     <description>多应用聚合项目</description>
+    <packaging>pom</packaging>
 
     <modules>
         <module>fast-common</module>
@@ -15,190 +15,23 @@
         <module>wallpaper-module-web</module>
     </modules>
 
-
     <properties>
-        <jarName>${project.artifactId}:${project.version}</jarName>
+        <!-- 打包的项目名称 -->
+        <jar-name>${project.artifactId}:${project.version}</jar-name>
+        <!-- 统一项目版本 -->
+         <revision>1.0.0</revision>
+
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- spring 系列 -->
-        <spring-boot.version>2.6.13</spring-boot.version>
-        <spring-boot-data.version>2.6.9</spring-boot-data.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
-        <spring-cloud-ailbaba.version>2021.0.5.0</spring-cloud-ailbaba.version>
-        <spring-cloud-loadbalancer.version>3.1.1</spring-cloud-loadbalancer.version>
-        <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
-        <nacos-client.version>2.2.0</nacos-client.version>
-        <!-- 数据库相关 -->
-        <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
-        <druid.version>1.2.24</druid.version>
-        <redisson.version>3.17.7</redisson.version>
-        <!-- orm 模型和工具相关 -->
-        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <mybatis-plus-generator.version>3.5.10.1</mybatis-plus-generator.version>
-        <mybatis-enhance-actable.version>1.5.0.RELEASE</mybatis-enhance-actable.version>
-        <!-- 文档和工具 -->
-        <knife4j.version>4.4.0</knife4j.version>
-        <hutool.version>5.8.25</hutool.version>
+        <!-- 2021.0.1.0及之后的版本移除了对 Ribbon 默认依赖 -->
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
         <lombok.version>1.18.36</lombok.version>
     </properties>
-    <!--统一管理依赖，并没有在项目中导入，子项目使用parent时，可以不用写版本，自动会使用这里的版本-->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.loveverse</groupId>
-                <artifactId>fast-common</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
-            <!-- spring 依赖管理 -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- alibaba 依赖管理 -->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-ailbaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- 管理 SpringCloud 依赖 -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-tomcat</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <!--远程调用-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>${spring-cloud-openfeign.version}</version>
-            </dependency>
-            <!-- 配置中心来做配置管理 -->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-<!--            </dependency>-->
-<!--            &lt;!&ndash; 服务发现/注册 &ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
-<!--                &lt;!&ndash; 2020开始以不在维护，排除默认的 netflix-ribbon ，使用loadbalancer &ndash;&gt;-->
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>org.springframework.cloud</groupId>-->
-<!--                        <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
-<!--            </dependency>-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-                <version>${spring-cloud-loadbalancer.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.nacos</groupId>
-                <artifactId>nacos-client</artifactId>
-                <version>${nacos-client.version}</version>
-            </dependency>
-            <!--mysql驱动-->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql-connector-java.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-            <!--高性能数据库连接池-->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-            <!--redis：包含redis和redisson-->
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson.version}</version>
-            </dependency>
-            <!-- 数据库表代码自动生成 -->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-generator</artifactId>
-                <version>${mybatis-plus-generator.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.freemarker</groupId>
-                <artifactId>freemarker</artifactId>
-            </dependency>
-            <!-- 自动创建对象关联的数据表 -->
-            <dependency>
-                <groupId>com.gitee.sunchenbin.mybatis.actable</groupId>
-                <artifactId>mybatis-enhance-actable</artifactId>
-                <version>${mybatis-enhance-actable.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.baomidou</groupId>
-                        <artifactId>mybatis-plus-annotation</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <!--knife4j:集Swagger3 和 OpenAPI3 为一体的增强解决方案-->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-dependencies</artifactId>
-                <version>${knife4j.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!--tool-->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-
-            <!--        &lt;!&ndash; Sa-Token 权限认证，在线文档：https://sa-token.cc &ndash;&gt;-->
-            <!--        <dependency>-->
-            <!--            <groupId>cn.dev33</groupId>-->
-            <!--            <artifactId>sa-token-spring-boot-starter</artifactId>-->
-            <!--            <version>${sa-token.version}</version>-->
-            <!--        </dependency>-->
-            <!--        &lt;!&ndash; Sa-Token 整合 Redis （使用 jackson 序列化方式） &ndash;&gt;-->
-            <!--        <dependency>-->
-            <!--            <groupId>cn.dev33</groupId>-->
-            <!--            <artifactId>sa-token-redis-jackson</artifactId>-->
-            <!--            <version>${sa-token.version}</version>-->
-            <!--        </dependency>-->
-            <!--        <dependency>-->
-            <!--            <groupId>org.apache.commons</groupId>-->
-            <!--            <artifactId>commons-pool2</artifactId>-->
-            <!--        </dependency>-->
-        </dependencies>
-    </dependencyManagement>
-
+    <!-- 所有模块都会导入的依赖 -->
     <dependencies>
         <!-- lombok 管理 -->
         <dependency>
@@ -213,6 +46,45 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <!--统一管理依赖，并没有在项目中导入，子项目使用parent时，可以不用写版本，自动会使用这里的版本-->
+    <dependencyManagement>
+        <dependencies>
+            <!-- fast-common 公共管理依赖 -->
+            <dependency>
+                <groupId>com.loveverse.dependencies</groupId>
+                <artifactId>fast-common-dependencies</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring 依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud 依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <!-- spring cloud alibaba 依赖管理 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
     <build>
         <pluginManagement>
