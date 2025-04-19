@@ -13,6 +13,7 @@
         <module>fast-gateway</module>
         <module>oss-third-party</module>
         <module>wallpaper-module-web</module>
+        <module>java-study</module>
     </modules>
 
     <properties>
