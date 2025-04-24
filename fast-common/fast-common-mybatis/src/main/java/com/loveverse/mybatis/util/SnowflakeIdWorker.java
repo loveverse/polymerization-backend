@@ -1,4 +1,4 @@
-package com.loveverse.mybatis.utils;
+package com.loveverse.mybatis.util;
 
 /**
  * @author love

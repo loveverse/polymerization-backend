@@ -5,7 +5,6 @@ spring:
     # dev 配置会打印错误信息到前端
     active: @profileActive@
   mvc:
-
     pathmatch:
       matching-strategy: ant_path_matcher
   servlet:

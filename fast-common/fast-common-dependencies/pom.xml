@@ -34,6 +34,7 @@
         <druid.version>1.2.24</druid.version>
         <redisson.version>3.17.7</redisson.version>
 
+        <jwt.version>0.7.0</jwt.version>
         <!-- 存储桶相关 -->
         <okhttp.version>4.9.0</okhttp.version>
         <minio.version>8.4.2</minio.version>
@@ -59,14 +60,19 @@
                 <artifactId>fast-common-mybatis</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <!-- spring 依赖管理 -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>com.loveverse.redis</groupId>
+                <artifactId>fast-common-redis</artifactId>
+                <version>${revision}</version>
             </dependency>
+            <!-- spring 依赖管理 -->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-dependencies</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
 
             <!-- spring 系列 -->
             <dependency>
@@ -193,10 +199,21 @@
             </dependency>
 
             <!--redis：包含redis和redisson-->
+<!--            <dependency>-->
+<!--                <groupId>org.redisson</groupId>-->
+<!--                <artifactId>redisson-spring-boot-starter</artifactId>-->
+<!--                <version>${redisson.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
+                <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
             </dependency>
 
             <!-- 存储桶相关 -->
