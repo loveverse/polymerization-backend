@@ -7,6 +7,7 @@ import com.loveverse.core.http.ResponseData;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
     private void registerDefaultHandlers() {
         // 处理业务异常
         registerExceptionHandler(BusinessException.class, (req, ex) -> {
-            log.error("参数异常: {}", req.getRequestURI(), ex);
+            log.warn("参数异常: {}", req.getRequestURI(), ex);
             ResponseData<Void> responseData = ResponseCode.BAD_REQUEST.getResponse();
             if (isDevProfileActive()) {
                 responseData.setErrorInfo(ex.getMessage());

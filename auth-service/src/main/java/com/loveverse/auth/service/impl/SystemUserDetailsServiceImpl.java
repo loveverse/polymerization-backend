@@ -5,6 +5,7 @@ import com.loveverse.auth.entity.SystemUser;
 import com.loveverse.auth.mapper.UserMapper;
 import com.loveverse.auth.service.SystemUserDetailsService;
 import com.loveverse.core.exception.BadRequestException;
+import com.loveverse.redis.annotation.Cacheable;
 import org.redisson.client.RedisClient;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +28,7 @@ public class SystemUserDetailsServiceImpl implements SystemUserDetailsService {
     private RedisClient redisClient;
 
     @Override
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         SystemUser systemUser = userMapper.selectOne(new LambdaQueryWrapper<SystemUser>().eq(SystemUser::getUserName, username));

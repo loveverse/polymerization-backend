@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.loveverse</groupId>
+        <artifactId>polymerization-backend</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>file-upload-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>oss-third-party</name>
+    <description>oss-third-party</description>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <spring-boot.version>2.7.18</spring-boot.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.loveverse.core</groupId>
+            <artifactId>fast-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.loveverse.redis</groupId>
+            <artifactId>fast-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>com.loveverse.file.upload.OssThirdPartyApplication</mainClass>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <!-- 排除掉java中html,保留下xml、properties配置文件 -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*controller.html</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 启用application.yml资源过滤，会将文件占位符替换为实际值 -->
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 上面已经启用了application.yml，下面都是不需要使用占位符 -->
+                <filtering>false</filtering>
+                <includes>
+                    <include>*.yml</include>
+                    <include>*.xml</include>
+                    <include>*.sh</include>
+                </includes>
+                <excludes>
+                    <exclude>application.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
+
+</project>

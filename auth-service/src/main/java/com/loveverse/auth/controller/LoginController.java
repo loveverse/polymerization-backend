@@ -16,7 +16,6 @@ public class LoginController {
 
     @PostMapping("v1/user/login")
     public ResponseData<Void> login(){
-
         return ResponseCode.SUCCESS.getResponse("成功");
     }
 }

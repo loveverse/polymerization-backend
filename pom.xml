@@ -11,7 +11,7 @@
     <modules>
         <module>fast-common</module>
         <module>fast-gateway</module>
-        <module>oss-third-party</module>
+        <module>file-upload-service</module>
         <module>wallpaper-module-web</module>
         <module>java-study</module>
         <module>auth-service</module>
