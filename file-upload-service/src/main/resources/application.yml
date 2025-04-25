@@ -72,7 +72,7 @@ spring:
     host: ${spring.redis.host:192.168.37.10}
     port: ${spring.redis.port:6379}
     database: ${spring.redis.database:10}
-#    password: ${spring.redis.password:123456}
+    password: ${spring.redis.password:123456}
 #    jedis:
 #      pool:
 #        enabled: true
@@ -80,7 +80,7 @@ spring:
 server:
   port: 30100
   servlet:
-    # 设置应用的上下文路径， 所有请求会以/oss-third-party开头
+    # 设置应用的上下文路径， 所有请求会以/file-upload-api开头
     context-path: /file-upload-api
 
 # 后续更换存储桶只需要根据不同oss填写

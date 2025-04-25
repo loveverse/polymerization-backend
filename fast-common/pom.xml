@@ -16,5 +16,6 @@
         <module>fast-common-dependencies</module>
         <module>fast-common-core</module>
         <module>fast-common-mybatis</module>
+        <module>fast-common-redis</module>
     </modules>
 </project>

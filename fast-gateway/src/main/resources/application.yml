@@ -4,10 +4,10 @@ spring:
   cloud:
     gateway:
       routes:
-        #        - id: oss-third-party
-        #          uri: lb://oss-third-party
+        #        - id: file-upload-service
+        #          uri: lb://file-upload-service
         #          predicates:
-        #            - Path=//oss-file-api/**
+        #            - Path=/file-upload-api/**
         #          filters:
         #            # 去除路径的第一部分
         #            - StripPrefix=1

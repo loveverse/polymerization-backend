@@ -15,7 +15,6 @@
         <module>wallpaper-module-web</module>
         <module>java-study</module>
         <module>auth-service</module>
-        <module>fast-common/fast-common-redis</module>
     </modules>
 
     <properties>

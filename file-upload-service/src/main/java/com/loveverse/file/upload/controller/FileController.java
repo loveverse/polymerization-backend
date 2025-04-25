@@ -9,10 +9,14 @@ import com.loveverse.file.upload.service.MinioFileSaveService;
 import com.loveverse.redis.util.RedisUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @RestController
@@ -22,8 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
 
     private final MinioFileSaveService minioService;
-
+    //@Resource
     private final RedisUtils redisUtils;
+
+
 
     /**
      * 上传文件

@@ -9,8 +9,8 @@
     </parent>
     <artifactId>file-upload-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>oss-third-party</name>
-    <description>oss-third-party</description>
+    <name>file-upload-service</name>
+    <description>file-upload-service</description>
 
 
     <properties>

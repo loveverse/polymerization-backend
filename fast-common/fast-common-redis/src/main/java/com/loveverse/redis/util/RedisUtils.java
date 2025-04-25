@@ -1,9 +1,11 @@
 package com.loveverse.redis.util;
 
 import com.loveverse.redis.exception.RedisOperationException;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.*;
+import org.redisson.client.RedisClient;
 import org.redisson.client.RedisConnectionException;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +25,20 @@ import java.util.concurrent.TimeoutException;
  */
 @Slf4j
 @Component
+
 public class RedisUtils {
     @Resource
     private  RedissonClient redissonClient;
-
 
 
     // ============================== Common ==============================
 
     /**
      * 设置缓存
-     * @param key 键
+     *
+     * @param key   键
      * @param value 值
-     * @param time 时间(秒)
+     * @param time  时间(秒)
      */
     public <T> void set(String key, T value, long time) {
         validateKey(key);
@@ -53,6 +56,7 @@ public class RedisUtils {
 
     /**
      * 获取缓存
+     *
      * @param key 键
      * @return 值
      */
@@ -69,6 +73,7 @@ public class RedisUtils {
 
     /**
      * 删除缓存
+     *
      * @param keys 可以传一个或多个key
      */
     public void delete(String... keys) {
@@ -91,8 +96,9 @@ public class RedisUtils {
 
     /**
      * 获取分布式锁
-     * @param lockKey 锁key
-     * @param waitTime 等待时间(秒)
+     *
+     * @param lockKey   锁key
+     * @param waitTime  等待时间(秒)
      * @param leaseTime 持有时间(秒)
      * @return 是否获取成功
      */
@@ -113,6 +119,7 @@ public class RedisUtils {
 
     /**
      * 释放分布式锁
+     *
      * @param lockKey 锁key
      */
     public void unlock(String lockKey) {

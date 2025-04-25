@@ -8,7 +8,7 @@
 <configuration status="error" monitorInterval="30">
 
     <properties>
-        <property name="appName">oss-thirdparty</property>
+        <property name="appName">file-upload</property>
         <property name="baseDir">./</property>
     </properties>
 
@@ -70,7 +70,7 @@
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
 
-        <Logger name="com.loveverse.oss.thirdparty" level="debug" includeLocation="true" additivity="false">
+        <Logger name="com.loveverse.file.upload" level="debug" includeLocation="true" additivity="false">
             <appender-ref ref="Console"/>
         </Logger>
         <!--建立一个默认的root的logger-->

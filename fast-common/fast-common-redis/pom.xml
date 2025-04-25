@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.loveverse</groupId>
-        <artifactId>polymerization-backend</artifactId>
+        <artifactId>fast-common</artifactId>
         <version>${revision}</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>com.loveverse.redis</groupId>
@@ -47,7 +46,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-        <!-- 使用默认日志 -->
+        <!-- 使用默认日志，不进行传递 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>

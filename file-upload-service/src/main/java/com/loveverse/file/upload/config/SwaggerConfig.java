@@ -24,7 +24,7 @@ public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi wallpaperApi() {
-        return GroupedOpenApi.builder().group("文件上传接口文档").packagesToScan("com.loveverse.oss.thirdparty.controller")
+        return GroupedOpenApi.builder().group("文件上传接口文档").packagesToScan("com.loveverse.file.upload.controller")
                 .pathsToMatch("/**").build();
     }
 

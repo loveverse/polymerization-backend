@@ -6,12 +6,14 @@ import com.loveverse.redis.util.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.RedisClient;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,11 +29,12 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(Redisson.class)
+//@ConditionalOnClass(Redisson.class)
 @EnableConfigurationProperties(RedisProperties.class)
+@ConditionalOnProperty(prefix = "spring.redis", name = {"host", "cluster"})
 public class RedisAutoConfiguration {
     @Resource
-    private  RedisProperties redisProperties;
+    private RedisProperties redisProperties;
 
     @Bean
     @ConditionalOnProperty("spring.redis.cluster.nodes")
@@ -64,12 +67,15 @@ public class RedisAutoConfiguration {
     }
 
     @Bean
-    public RedisUtils redisUtils(){
+    @ConditionalOnMissingBean
+    public RedisUtils redisUtils( ) {
+        log.info("加载成功");
         return new RedisUtils();
     }
 
     @Bean
-    public DistributedLockUtil distributedLockUtil(){
+    @ConditionalOnMissingBean
+    public DistributedLockUtil distributedLockUtil() {
         return new DistributedLockUtil();
     }
 }
