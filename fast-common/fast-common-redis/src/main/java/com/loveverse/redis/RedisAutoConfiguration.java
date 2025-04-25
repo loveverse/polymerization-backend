@@ -62,7 +62,6 @@ public class RedisAutoConfiguration {
         if (redisProperties.getPassword() != null) {
             singleServerConfig.setPassword(redisProperties.getPassword());
         }
-        log.info(redisProperties.getPassword());
         log.info("✅redisson插件单机部署初始化成功...");
         return Redisson.create(config);
     }
@@ -70,7 +69,6 @@ public class RedisAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public RedisUtils redisUtils( ) {
-        log.info("加载成功");
         return new RedisUtils();
     }
 
