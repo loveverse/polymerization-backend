@@ -46,7 +46,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.loveverse.file.upload.OssThirdPartyApplication</mainClass>
+                    <mainClass>com.loveverse.file.upload.FileUploadServiceApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
@@ -95,5 +95,22 @@
             </resource>
         </resources>
     </build>
-
+    <profiles>
+        <!-- dev开发环境配置,prod为生产环境配置,没有测试人员暂不配置test -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profileActive>dev</profileActive>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profileActive>prod</profileActive>
+            </properties>
+        </profile>
+    </profiles>
 </project>

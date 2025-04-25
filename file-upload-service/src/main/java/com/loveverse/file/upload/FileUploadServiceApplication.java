@@ -8,13 +8,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 @Slf4j
-@MapperScan(value = {"com.gitee.sunchenbin.mybatis.actable.dao.*", "com.loveverse.oss.thirdparty.mapper"})
+@MapperScan(value = {"com.gitee.sunchenbin.mybatis.actable.dao.*", "com.loveverse.file.upload.mapper"})
 // 扫描Actable包，不手动指定包会找不到
-@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.oss.thirdparty.*"})
+@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.file.upload.*"})
 @SpringBootApplication
-public class OssThirdPartyApplication {
+public class FileUploadServiceApplication {
     public static void main(String[] args) {
-        ConfigurableEnvironment env = SpringApplication.run(OssThirdPartyApplication.class, args).getEnvironment();
+        ConfigurableEnvironment env = SpringApplication.run(FileUploadServiceApplication.class, args).getEnvironment();
         String path = env.getProperty("server.servlet.context-path", "");
         log.info("\n----------------------------------------------------------\n\t" +
                         "Application: '{}' is running Success! \n\t" +
