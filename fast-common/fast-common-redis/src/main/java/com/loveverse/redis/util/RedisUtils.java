@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.*;
 import org.redisson.client.RedisClient;
 import org.redisson.client.RedisConnectionException;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -25,11 +27,9 @@ import java.util.concurrent.TimeoutException;
  */
 @Slf4j
 @Component
-
 public class RedisUtils {
     @Resource
     private  RedissonClient redissonClient;
-
 
     // ============================== Common ==============================
 

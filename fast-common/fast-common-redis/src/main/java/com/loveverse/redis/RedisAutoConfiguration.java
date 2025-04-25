@@ -19,6 +19,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -31,7 +32,6 @@ import javax.annotation.Resource;
 @Configuration(proxyBeanMethods = false)
 //@ConditionalOnClass(Redisson.class)
 @EnableConfigurationProperties(RedisProperties.class)
-@ConditionalOnProperty(prefix = "spring.redis", name = {"host", "cluster"})
 public class RedisAutoConfiguration {
     @Resource
     private RedisProperties redisProperties;
@@ -62,6 +62,7 @@ public class RedisAutoConfiguration {
         if (redisProperties.getPassword() != null) {
             singleServerConfig.setPassword(redisProperties.getPassword());
         }
+        log.info(redisProperties.getPassword());
         log.info("✅redisson插件单机部署初始化成功...");
         return Redisson.create(config);
     }
