@@ -13,9 +13,10 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan("com.gitee.sunchenbin.mybatis.actable.dao.*")
-@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.auth.*"}) // 扫描Actable包，不手动指定包会找不到
+// 扫描Actable包，不手动指定包会找不到
+@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.auth.*"})
 public class AuthServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AuthServiceApplication.class);
+        SpringApplication.run(AuthServiceApplication.class, args);
     }
 }

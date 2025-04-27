@@ -21,7 +21,7 @@
         <!-- 打包的项目名称 -->
         <jar-name>${project.artifactId}:${project.version}</jar-name>
         <!-- 统一项目版本 -->
-         <revision>1.0.0</revision>
+        <revision>1.0.0</revision>
 
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +32,9 @@
         <!-- 2021.0.1.0及之后的版本移除了对 Ribbon 默认依赖 -->
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
         <lombok.version>1.18.36</lombok.version>
+
+        <!-- 打包部署插件相关 -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     </properties>
     <!-- 所有模块都会导入的依赖 -->
     <dependencies>
@@ -89,20 +92,67 @@
 
 
     <build>
+        <!-- 项目名称:版本 -->
+        <finalName>${jar-name}</finalName>
+        <resources>
+            <!-- java代码过滤 -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*controller.html</exclude>
+                </excludes>
+            </resource>
+            <!-- 启用资源过滤 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <!-- 改变 maven 默认构建行为插件 -->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <encoding>UTF-8</encoding>
+                        <finalName>${jar-name}</finalName>
+<!--                        <layers>-->
+<!--                            <enabled>true</enabled>-->
+<!--                        </layers>-->
                     </configuration>
+                    <!--在构建生命周期中执行一组目标的配置。每个目标可能有不同的配置。 -->
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
+        <!-- 模块构建需要用到的插件，回传到子模块 -->
+        <plugins>
+            <plugin>
+                <!-- maven-compiler-plugin 是 maven 自带的插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <!-- 动态获取 maven settings.xml 中的配置 -->
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <!--项目依赖库的仓库地址-->
     <repositories>
@@ -129,22 +179,22 @@
         </pluginRepository>
     </pluginRepositories>
 
-<!--    <profiles>-->
-<!--        &lt;!&ndash; dev开发环境配置,prod为生产环境配置,没有测试人员暂不配置test &ndash;&gt;-->
-<!--        <profile>-->
-<!--            <id>dev</id>-->
-<!--            <properties>-->
-<!--                <profileActive>dev</profileActive>-->
-<!--            </properties>-->
-<!--            <activation>-->
-<!--                <activeByDefault>true</activeByDefault>-->
-<!--            </activation>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>prod</id>-->
-<!--            <properties>-->
-<!--                <profileActive>prod</profileActive>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--    </profiles>-->
+    <!--    <profiles>-->
+    <!--        &lt;!&ndash; dev开发环境配置,prod为生产环境配置,没有测试人员暂不配置test &ndash;&gt;-->
+    <!--        <profile>-->
+    <!--            <id>dev</id>-->
+    <!--            <properties>-->
+    <!--                <profileActive>dev</profileActive>-->
+    <!--            </properties>-->
+    <!--            <activation>-->
+    <!--                <activeByDefault>true</activeByDefault>-->
+    <!--            </activation>-->
+    <!--        </profile>-->
+    <!--        <profile>-->
+    <!--            <id>prod</id>-->
+    <!--            <properties>-->
+    <!--                <profileActive>prod</profileActive>-->
+    <!--            </properties>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 </project>

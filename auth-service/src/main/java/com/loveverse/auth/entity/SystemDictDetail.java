@@ -27,10 +27,10 @@ public class SystemDictDetail extends BaseEntity {
     @Column(comment = "字典id", isNull = false)
     private Long dictId;
 
-    @Column(comment = "字典详情值")
+    @Column(comment = "字典详情值", length = 100, isNull = false)
     private String dictDetailValue;
 
-    @Column(comment = "字典详情名称")
+    @Column(comment = "字典详情名称", length = 100, isNull = false)
     private String dictDetailLabel;
 
     @Column(comment = "排序值", isNull = false, defaultValue = "0")
