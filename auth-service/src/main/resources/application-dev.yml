@@ -1,0 +1,20 @@
+# mysql 自定义字段
+DATABASE_IP: 192.168.37.10
+DATABASE_PORT: 3306
+DATABASE_NAME: auth_dev
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${DATABASE_IP}:8848
+  datasource:
+    username: root
+    password: 123456
+  redis:
+    username: root
+    password: 123456
+    database: 10
+    host: ${DATABASE_IP}
+    port: 6379
+

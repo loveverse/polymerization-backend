@@ -1,2 +1,3 @@
-com.loveverse.core.config.GlobalExceptionConfig
-com.loveverse.core.config.JacksonConfig
+com.loveverse.core.config.GlobalExceptionConfiguration
+com.loveverse.core.config.JacksonConfiguration
+com.loveverse.core.config.StartupLoggingConfiguration

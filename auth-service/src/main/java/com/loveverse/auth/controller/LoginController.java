@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/system")
 public class LoginController {
 
-    @PostMapping("v1/user/login")
-    public ResponseData<Void> login(){
-        return ResponseCode.SUCCESS.getResponse("成功");
+    @PostMapping("/v1/user/login")
+    public ResponseData<Void> login() {
+        return ResponseCode.SUCCESS.getResponse("登录成功");
+    }
+
+    @PostMapping("/v1/user/logout")
+    public ResponseData<Void> logout() {
+        return ResponseCode.SUCCESS.getResponse("退出登录成功");
     }
 }

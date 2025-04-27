@@ -1,6 +1,10 @@
+server:
+  servlet:
+    context-path: /wallpaper-web-api
+  port: 30300
 spring:
   application:
-    name: wallpaper-module-web
+    name: wallpaper-web-service
   # 默认dev环境
   profiles:
     active: @profileActive@
@@ -82,10 +86,7 @@ spring:
 #  config:
 #    import: optional:nacos
 
-server:
-  servlet:
-    context-path: /wallpaper-web-api
-  port: 30200
+
 mybatis-plus:
   configuration:
     #使用驼峰法映射属性

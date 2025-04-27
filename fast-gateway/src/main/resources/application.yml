@@ -11,8 +11,8 @@ spring:
         #          filters:
         #            # 去除路径的第一部分
         #            - StripPrefix=1
-        - id: wallpaper-module-web
-          uri: lb://wallpaper-module-web
+        - id: wallpaper-web-service
+          uri: lb://wallpaper-web-service
           predicates:
             - Path=/wallpaper-web-api/**
       #          filters:

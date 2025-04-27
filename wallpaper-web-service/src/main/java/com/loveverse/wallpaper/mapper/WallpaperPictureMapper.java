@@ -15,5 +15,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface WallpaperPictureMapper extends BaseMapper<Picture> {
 
+
 }
 

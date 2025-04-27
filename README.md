@@ -67,10 +67,11 @@ https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4
 # 聚合多应用
 
 ## 网关（30000）
+## 认证授权（30100）
 
-## oss存储（30100）
+## oss存储（30200）
 
-## 壁纸网站（30200）
+## 壁纸网站（30300）
 
 ## docker安装nginx
 

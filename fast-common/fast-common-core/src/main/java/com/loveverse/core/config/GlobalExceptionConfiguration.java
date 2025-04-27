@@ -1,7 +1,6 @@
 package com.loveverse.core.config;
 
 import com.loveverse.core.global.GlobalExceptionHandler;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -11,7 +10,7 @@ import org.springframework.core.env.Environment;
  * @since 2025/4/9
  */
 @Configuration
-public class GlobalExceptionConfig {
+public class GlobalExceptionConfiguration {
     @Bean
     public GlobalExceptionHandler globalExceptionHandler(Environment environment) {
         return new GlobalExceptionHandler(environment);

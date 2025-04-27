@@ -1,3 +1,8 @@
+server:
+  port: 30100
+  servlet:
+    # 设置应用的上下文路径， 所有请求会以/file-upload-api开头
+    context-path: /file-upload-api
 spring:
   application:
     name: file-upload-service
@@ -77,11 +82,7 @@ spring:
 #      pool:
 #        enabled: true
 
-server:
-  port: 30100
-  servlet:
-    # 设置应用的上下文路径， 所有请求会以/file-upload-api开头
-    context-path: /file-upload-api
+
 
 # 后续更换存储桶只需要根据不同oss填写
 minio:

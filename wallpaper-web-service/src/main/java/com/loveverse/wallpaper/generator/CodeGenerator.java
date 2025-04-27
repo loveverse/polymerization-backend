@@ -16,10 +16,10 @@ public class CodeGenerator {
             "&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
-    private static final String OUTPUT_DIR = "D:\\study\\back-end\\polymerization-backend\\wallpaper-module-web\\src" +
+    private static final String OUTPUT_DIR = "D:\\study\\back-end\\polymerization-backend\\wallpaper-web-service\\src" +
             "\\main" +
             "\\java";
-    private static final String XML_OUTPUT_PATH = "D:\\study\\back-end\\polymerization-backend\\wallpaper-module-web\\src" +
+    private static final String XML_OUTPUT_PATH = "D:\\study\\back-end\\polymerization-backend\\wallpaper-web-service\\src" +
             "\\main\\java\\com\\loveverse\\wallpaper\\mapper\\xml";
 
     public static void main(String[] args) {
