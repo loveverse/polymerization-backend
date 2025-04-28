@@ -80,3 +80,12 @@ https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4
    为root，普通用户一般为home
 
 ## ubuntu首次进入使用sudo passwd 设置root密码
+
+## 生成文件注释
+Editor -> File and Code Templates
+```java
+/**
+ * @author ${USER}
+ * @since ${DATE} ${TIME}
+ */
+```

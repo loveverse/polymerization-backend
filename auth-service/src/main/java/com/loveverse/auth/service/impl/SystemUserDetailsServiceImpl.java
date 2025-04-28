@@ -24,6 +24,7 @@ import java.util.Objects;
 /**
  * @author love
  * @since 2025/4/23
+ * @description 将 security 拦截的用户名密码改为数据库中已有的用户名密码
  */
 @Service
 @RequiredArgsConstructor
@@ -39,11 +40,11 @@ public class SystemUserDetailsServiceImpl implements SystemUserDetailsService {
     @Override
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         SystemUser systemUser = userMapper.selectOne(new LambdaQueryWrapper<SystemUser>().eq(SystemUser::getUserName, username));
         if (Objects.isNull(systemUser)) {
             throw new BadRequestException("用户名或密码错误");
         }
+        // 查询权限列表
         List<String> list = menuMapper.selectPermissionByUserId(systemUser.getId());
         return new LoginUser(systemUser, list);
     }

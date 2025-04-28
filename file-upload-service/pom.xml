@@ -34,7 +34,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.loveverse.file.upload.FileUploadServiceApplication</mainClass>
-                    <skip>true</skip>
+                    <!-- 跳过 Spring Boot 默认打包 -->
+                    <!--<skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>
