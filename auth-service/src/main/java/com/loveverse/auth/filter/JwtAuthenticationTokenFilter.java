@@ -1,14 +1,18 @@
 package com.loveverse.auth.filter;
 
 import com.loveverse.auth.config.JwtProperties;
+import com.loveverse.auth.dto.LoginUser;
 import com.loveverse.auth.util.JwtTokenUtil;
+import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.redis.util.RedisUtils;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBucket;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,16 +21,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author love
  * @since 2025/4/28
  */
 @RequiredArgsConstructor
+@Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final RedisUtils redisUtils;
     private final JwtTokenUtil jwtTokenUtil;
+    private final RedisUtils redisUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -44,7 +50,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             //}
             // 解析出用户id
             String userId = jwtTokenUtil.extractUserId(authToken);
-            //
+            String key = "login:" + userId;
+            LoginUser loginUser = (LoginUser) redisUtils.get(key);
+            if(Objects.isNull(loginUser)){
+                throw new UsernameNotFoundException("用户未登录");
+            }
+
+
             //if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             //    UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             //
@@ -57,6 +69,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             //        SecurityContextHolder.getContext().setAuthentication(authentication);
             //    }
             //}
+            // 将用户信息存入 SecurityContextHolder
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginUser,null,loginUser.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
         }
         filterChain.doFilter(request, response);
     }

@@ -8,7 +8,9 @@ import com.loveverse.auth.dto.LoginUser;
 import com.loveverse.auth.dto.login.SystemUserDto;
 import com.loveverse.auth.service.AuthService;
 import com.loveverse.auth.util.JwtTokenUtil;
+import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.redis.util.RedisUtils;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * @author love
@@ -25,33 +28,30 @@ import javax.annotation.Resource;
 @Service
 public class AuthServiceImpl implements AuthService {
     @Resource
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
+    private AuthenticationManager authenticationManager;
     @Resource
     private JwtTokenUtil jwtTokenUtil;
 
     @Resource
     private RedisUtils redisUtils;
 
-    @Resource
-    private JwtProperties jwtProperties;
-
     @Override
-    public LoginInfoRes userLogin(LoginInfoReq loginInfoReq) {
-        // 构造认证令牌
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginInfoReq.getUsername(), loginInfoReq.getPassword());
+    public LoginInfoRes userLogin(LoginInfoReq user) {
+        // AuthenticationManager authenticate 进行用户认证
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         // 对认证令牌进行校验，返回认证结果
-        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // 存储认证信息到 SpringSecurity 上下文中
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+        if (Objects.isNull(authenticate)) {
+            throw new BadRequestException("登录失败");
+        }
 
         // 获取用户信息
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        Long userId = loginUser.getUser().getId();
+        String userId = loginUser.getUser().getId().toString();
         String token = jwtTokenUtil.generateToken(loginUser);
-        redisUtils.set("login:" + userId, loginUser, jwtProperties.getExpireTime());
+        redisUtils.set("login:" + userId, loginUser, jwtTokenUtil.getJwtProperties().getExpireTime());
         SystemUserDto systemUserDto = new SystemUserDto();
         BeanUtil.copyProperties(loginUser.getUser(), systemUserDto, "password");
-
         LoginInfoRes loginInfoRes = new LoginInfoRes();
         loginInfoRes.setUser(systemUserDto);
         loginInfoRes.setToken(token);

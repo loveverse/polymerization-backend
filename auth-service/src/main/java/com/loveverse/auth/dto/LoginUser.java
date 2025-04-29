@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author love
@@ -32,16 +33,18 @@ public class LoginUser implements UserDetails {
         this.permissions = permissions;
     }
 
+
     private List<SimpleGrantedAuthority> authorities;
 
-    @JsonIgnore  // 防止存入redis时序列化出错，不进行序列化，也不存入redis中
+    // 返回用户的权限信息
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(authorities != null){
+        if (authorities != null) {
             return authorities;
         }
+        authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         // 用户拥有的权限列表
-        return Collections.emptyList();
+        return authorities;
     }
 
     @Override

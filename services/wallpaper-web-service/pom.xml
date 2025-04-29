@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.loveverse</groupId>
         <artifactId>polymerization-backend</artifactId>
-        <version>${revision}</version>
+        <version>1.0.0</version>
     </parent>
 
     <dependencies>

@@ -7,8 +7,9 @@ spring:
   application:
     name: auth-service
   redis:
-    host: 192.168.37.10
-    port: 6379
+    host: ${spring.redis.host:192.168.37.10}
+    port: ${spring.redis.port:6379}
+    database: ${spring.redis.database:2}
   profiles:
     # dev 配置会打印错误信息到前端
     active: @profileActive@

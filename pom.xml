@@ -12,7 +12,7 @@
         <module>fast-common</module>
         <module>fast-gateway</module>
         <module>file-upload-service</module>
-        <module>wallpaper-web-service</module>
+        <module>services/wallpaper-web-service</module>
         <module>java-study</module>
         <module>auth-service</module>
     </modules>
