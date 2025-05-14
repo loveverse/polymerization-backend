@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.RedisClient;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
@@ -40,6 +41,7 @@ public class RedisAutoConfiguration {
     @ConditionalOnProperty("spring.redis.cluster.nodes")
     public RedissonClient redissonClusterClient() {
         Config config = new Config();
+
         ClusterServersConfig clusterServersConfig = config.useClusterServers()
                 .setScanInterval(2000);
         if (redisProperties.getPassword() != null) {
@@ -48,6 +50,7 @@ public class RedisAutoConfiguration {
         redisProperties.getCluster().getNodes().forEach(node -> {
             clusterServersConfig.addNodeAddress("redis://" + node);
         });
+
         log.info("✅redisson插件集群部署初始化成功...");
         return Redisson.create(config);
     }
@@ -56,12 +59,14 @@ public class RedisAutoConfiguration {
     @ConditionalOnProperty(name = "spring.redis.host")
     public RedissonClient redissonSingleClient() {
         Config config = new Config();
+
         SingleServerConfig singleServerConfig = config.useSingleServer()
                 .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort())
                 .setDatabase(redisProperties.getDatabase());
         if (redisProperties.getPassword() != null) {
             singleServerConfig.setPassword(redisProperties.getPassword());
         }
+
         log.info("✅redisson插件单机部署初始化成功...");
         return Redisson.create(config);
     }
@@ -77,4 +82,5 @@ public class RedisAutoConfiguration {
     public DistributedLockUtil distributedLockUtil() {
         return new DistributedLockUtil();
     }
+
 }

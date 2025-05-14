@@ -67,9 +67,10 @@ https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4
 # 聚合多应用
 
 ## 网关（30000）
-## 认证授权（30100）
 
-## oss存储（30200）
+## oss存储（30100）
+
+## 认证授权（30200）
 
 ## 壁纸网站（30300）
 
@@ -89,3 +90,29 @@ Editor -> File and Code Templates
  * @since ${DATE} ${TIME}
  */
 ```
+
+
+## spring security
+使用spring security+Redis实现身份认证和权限鉴定【你们项目中怎么使用spring security来实现认证和授权的?】
+1. 客户端提交用户名和密码给登录接口
+2. 登录接口获取得到用户名和密码，封装成 authentication 对象
+  自定义登录接口:登录接口获取得到用户名和密码，封装成Authentication对象
+  调用ProviderManager的方法进行认证，如果认证通过生成jwt
+  把用户信息(登录用户信息和权限信息)存入redis中
+3. 调用AuthenticationManager里面的authenticate()方法进行身份认证
+4. 调用DaoAuthenticationProvider里面的authenticate()力法进行身份认证
+5. 调用自定义UserDetailsService接口的实现类的loadUserByUsername()方法查询用户相关信息 
+  5.1 调用Mapper层根据用户名查询对应的用户信息及其权限信息
+  5.2 把用户信息及其权限信息封装成UserDetails对象白定义类实现UserDetailsService接口:
+    重写loadUserByUsername(), 在这个方法中去查询数据库，获取用户信息和用户权限信息
+6. 返回UserDetails对象
+7. 通过PasswordEncoder对比UserDetails对象和Authentication对象中的密码
+8. 如果密码正确，把UserDetails对象里面的权限设置到authentication对象(用户信息和权限信息)
+9. 返回authentication对象
+10. 如果认证通过，使用userid生成一个jwt，把jwt令牌响应给前端，然后把登录成功的用户对象放到Redis，key是用户id，value是用户对象
+11. 前端发送请求都携带Token
+12. 定义正jwt认证过滤器，获取Token，解析Token，得到userid，根据userId查询Redis得到用户相关信息，把用户相关信息放到securityContext上下文对象中
+
+关注点:2、5、12
+
+

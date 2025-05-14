@@ -1,16 +1,24 @@
+server:
+  port: 30000
 spring:
   application:
     name: fast-gateway
   cloud:
     gateway:
       routes:
-        #        - id: file-upload-service
-        #          uri: lb://file-upload-service
-        #          predicates:
-        #            - Path=/file-upload-api/**
-        #          filters:
-        #            # 去除路径的第一部分
-        #            - StripPrefix=1
+        # 认证中心
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-api/**
+
+        # 文件上传服务
+        - id: file-upload-service
+          uri: lb://file-upload-service
+          predicates:
+            - Path=/file-upload-api/**
+
+        # 壁纸服务
         - id: wallpaper-web-service
           uri: lb://wallpaper-web-service
           predicates:
@@ -27,5 +35,4 @@ spring:
         server-addr: 192.168.37.10:8848
       config:
         enabled: false
-server:
-  port: 30000
+

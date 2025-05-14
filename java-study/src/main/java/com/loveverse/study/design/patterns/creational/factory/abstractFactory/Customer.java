@@ -7,6 +7,13 @@ import com.loveverse.study.design.patterns.creational.factory.abstractFactory.im
 @SuppressWarnings("SpellCheckingInspection")
 public class Customer {
     public static void main(String[] args) {
+        /**
+         * 抽象工厂
+         * 产品族：一个品牌下的所有产品（每个产品下都有手机，路由器）
+         * 产品等级：多个品牌下的同种产品 （小米，魅族，华为）
+         * 优点：符合开闭原则，扩展产品等级比较简单，只需要实现原有的路由器，手机等
+         * 缺点：产品族扩展非常困难，比如新增一个电脑，那么需要每个产品（小米，华为），都需要实现
+         */
         // 小米产品
         AbstractFactory xiaoMiFactory = new XiaoMiFactory();
         IPhoneProduct iPhoneProduct = xiaoMiFactory.phoneProduct();
@@ -26,12 +33,6 @@ public class Customer {
         IRouterProduct iRouterProduct1 = meiZuFactory.routerProduct();
         iRouterProduct1.stat();
         iRouterProduct1.openwifi();
-        /**
-         * 抽象工厂
-         * 产品族：一个品牌下的所有产品（每个产品下都有手机，路由器）
-         * 产品等级：多个品牌下的同种产品 （小米，魅族，华为）
-         * 优点：符合开闭原则，扩展产品等级比较简单，只需要实现原有的路由器，手机等
-         * 缺点：产品族扩展非常困难，比如新增一个电脑，那么需要每个产品（小米，华为），都需要实现
-         */
+
     }
 }

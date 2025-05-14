@@ -64,7 +64,8 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        // "状态：0-停用，1-正常"
+        return "1".equals(user.getStatus());
     }
 
     @Override

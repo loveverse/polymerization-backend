@@ -50,6 +50,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <!--统一管理依赖，并没有在项目中导入，子项目使用parent时，可以不用写版本，自动会使用这里的版本-->

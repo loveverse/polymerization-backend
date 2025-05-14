@@ -60,7 +60,7 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         SystemUser user = loginUser.getUser();
         Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
-        claims.put("userId", user.getId());
+        claims.put("userId", user.getId().toString());
         claims.put("authorities", authorities);
         return Jwts.builder()
                 .setClaims(claims) // 先设置claims,防止覆盖subject

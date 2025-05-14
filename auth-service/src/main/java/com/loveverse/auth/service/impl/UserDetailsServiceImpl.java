@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,14 +32,15 @@ public class UserDetailsServiceImpl implements UserDetailsService, Ordered {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         SystemUser user = userMapper.selectOne(new LambdaQueryWrapper<SystemUser>().eq(SystemUser::getUserName, username));
         if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException("用户名或密码错误");
+            throw new BadRequestException("用户不存在");
         }
         // Todo 查询菜单权限列表
-        List<String> list = menuMapper.selectPermissionByUserId(user.getId());
+        //List<String> list =  menuMapper.selectPermissionByUserId(user.getId());
         // 将数据封装成 UserDetails 返回
-        return new LoginUser(user, list);
+        return new LoginUser(user, Collections.emptyList());
     }
 
     @Override

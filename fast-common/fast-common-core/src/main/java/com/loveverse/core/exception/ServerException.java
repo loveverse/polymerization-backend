@@ -1,7 +1,7 @@
 package com.loveverse.core.exception;
 
 /**
- * 自定义服务器异常类，支持格式化消息
+ * 自定义服务器异常类，通常用于服务内部代码错误,支持格式化消息
  *
  * @author love
  * @since 2025/4/8

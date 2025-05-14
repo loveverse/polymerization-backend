@@ -6,6 +6,10 @@ server:
 spring:
   application:
     name: auth-service
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
   redis:
     host: ${spring.redis.host:192.168.37.10}
     port: ${spring.redis.port:6379}
@@ -13,6 +17,9 @@ spring:
   profiles:
     # dev 配置会打印错误信息到前端
     active: @profileActive@
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     druid:
       # createDatabaseIfNotExist=true 不存在则创建，目前只有 mysql 支持
@@ -71,8 +78,8 @@ spring:
         #        server-addr: ${spring.cloud.nacos.server-addr:192.168.37.10:8848}
         #        file-extension: yaml
         #        namespace: 26b9f38c-4729-4d9a-9689-ce9c2692d764
+        # 禁用配置中心
         enabled: false
-      # 禁用配置中心
       discovery:
         server-addr: ${spring.cloud.nacos.discovery.server-addr:192.168.37.10:8848}
 

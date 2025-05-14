@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class ResponseData<T> {
     @Schema(description = "消息",requiredMode = Schema.RequiredMode.REQUIRED)
     private String msg;
     @Schema(description = "错误信息",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String errorInfo;
+    private List<String> errorInfo;
 
 
     public ResponseData(String msg, int code, T data) {
