@@ -1,6 +1,7 @@
 package com.loveverse.core.global;
 
 
+import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.core.exception.BusinessException;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import java.security.AccessControlException;
 import java.util.*;
 
 
@@ -51,6 +54,8 @@ public class GlobalExceptionHandler {
         registerDefaultHandlers();
         // SpringMVC 异常
         registerSpringMvcHandlers();
+        // SpringSecurity 异常
+        registerSpringSecurityHandlers();
     }
 
     private void registerSpringMvcHandlers() {
@@ -98,10 +103,16 @@ public class GlobalExceptionHandler {
             log.warn("请求方法不正确: {}", req.getRequestURI(), ex);
             return ResponseCode.METHOD_NOT_ALLOWED.getResponse(ex.getMessage());
         });
-
     }
 
+    private void registerSpringSecurityHandlers(){
+        //registerExceptionHandler(AuthenticationEx.class);
+    }
     private void registerDefaultHandlers() {
+        registerExceptionHandler(BadRequestException.class,(req, ex) -> {
+            log.warn("请求异常: {}", req.getRequestURI(), ex);
+            return ResponseCode.BAD_REQUEST.getResponse(ex.getMessage());
+        });
         // 处理业务异常,所有与业务相关都集成该类
         registerExceptionHandler(BusinessException.class, (req, ex) -> {
             log.warn("业务异常: {}", req.getRequestURI(), ex);

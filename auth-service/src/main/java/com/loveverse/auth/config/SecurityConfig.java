@@ -2,23 +2,36 @@ package com.loveverse.auth.config;
 
 //import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.loveverse.auth.base.CustomAuthenticationProvider;
 import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
+import com.loveverse.auth.handler.AuthenticationEntryPointImpl;
 import com.loveverse.auth.service.impl.UserDetailsServiceImpl;
+import com.loveverse.core.exception.BadRequestException;
+import com.loveverse.core.http.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -39,11 +52,14 @@ import static com.alibaba.druid.sql.ast.SQLPartitionValue.Operator.List;
  * @since 2025/4/23
  */
 @Configuration
-//@EnableWebSecurity
-//@EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
     @Resource
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+
+
+
 
     /**
      * BCryptPasswordEncoder 加密器,可以实现 PasswordEncoder 自定义密码加密校验
@@ -62,18 +78,23 @@ public class SecurityConfig {
     }
 
 
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        return new CustomAuthenticationProvider();
+    }
+
 
     /**
      * 安全过滤器链配置
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
                 // 必须先禁用csrf才能使用antMatchers
                 .csrf().disable()
                 // 禁用默认 session，使用 token 设置无状态会话
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authorizeHttpRequests(auth -> auth
                         //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .antMatchers("/**").permitAll()
@@ -81,17 +102,14 @@ public class SecurityConfig {
                         //.antMatchers("/auth-api/auth/test").permitAll()
                         .anyRequest().authenticated()
                 )
+                .formLogin(AbstractHttpConfigurer::disable) // 禁用默认表单登录
+                .httpBasic(AbstractHttpConfigurer::disable) // 禁用 Basic Auth
+                .authenticationProvider(authenticationProvider())   // 自定义身份验证逻辑
+
+
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        //.userDetailsService(new UserDetailsServiceImpl())
-        // 添加异常处理
-        //.exceptionHandling(handling -> handling
-        //        .authenticationEntryPoint((request, response, authException) -> {
-        //            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-        //        })
-        //        .accessDeniedHandler((request, response, accessDeniedException) -> {
-        //            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
-        //        })
-        //);
+
+
         return http.build();
     }
 

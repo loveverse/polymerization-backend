@@ -32,7 +32,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, Ordered {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         SystemUser user = userMapper.selectOne(new LambdaQueryWrapper<SystemUser>().eq(SystemUser::getUserName, username));
         if (Objects.isNull(user)) {
             throw new BadRequestException("用户不存在");

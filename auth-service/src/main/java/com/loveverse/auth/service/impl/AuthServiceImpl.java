@@ -12,6 +12,7 @@ import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.redis.util.RedisUtils;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -46,10 +47,8 @@ public class AuthServiceImpl implements AuthService {
         // 调用 authenticationManager 的方法进行认证， Authentication 包含了登录用户信息和权限信息
         // 具体实现在 UserDetailsServiceImpl 重写 loadUserByUsername,查询数据库返回用户和权限
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        // 认证失败
-        if (Objects.isNull(authenticate)) {
-            throw new BadRequestException("用户名或密码错误");
-        }
+        // 认证失败 SpringSecurity 会自动抛出 AuthenticationException 异常,不需要手动抛
+
         // 认证成功，通过 userId 生成 token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();   // 获取用户信息
         //authenticate.getAuthorities()
@@ -66,7 +65,6 @@ public class AuthServiceImpl implements AuthService {
         loginInfoRes.setMenus(Collections.emptyList());
         loginInfoRes.setRoles(Collections.emptyList());
         return loginInfoRes;
-
     }
 
     /**
