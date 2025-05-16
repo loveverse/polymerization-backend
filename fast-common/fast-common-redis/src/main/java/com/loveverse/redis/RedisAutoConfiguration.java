@@ -1,5 +1,8 @@
 package com.loveverse.redis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.loveverse.redis.config.RedisProperties;
 import com.loveverse.redis.util.DistributedLockUtil;
 import com.loveverse.redis.util.RedisUtils;
@@ -35,7 +38,9 @@ public class RedisAutoConfiguration {
     @ConditionalOnProperty("spring.redis.cluster.nodes")
     public RedissonClient redissonClusterClient() {
         Config config = new Config();
-        config.setCodec(JsonJacksonCodec.INSTANCE);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        config.setCodec(new JsonJacksonCodec(objectMapper));
         ClusterServersConfig clusterServersConfig = config.useClusterServers()
                 .setScanInterval(2000);
         if (redisProperties.getPassword() != null) {
@@ -54,7 +59,9 @@ public class RedisAutoConfiguration {
     @ConditionalOnProperty(name = "spring.redis.host")
     public RedissonClient redissonSingleClient() {
         Config config = new Config();
-        config.setCodec(JsonJacksonCodec.INSTANCE);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        config.setCodec(new JsonJacksonCodec(objectMapper));
         SingleServerConfig singleServerConfig = config.useSingleServer()
                 .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort())
                 .setDatabase(redisProperties.getDatabase());
