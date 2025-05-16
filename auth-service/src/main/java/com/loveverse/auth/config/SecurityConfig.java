@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -64,14 +65,16 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
+
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
                 // 必须先禁用csrf才能使用antMatchers
                 .csrf().disable()
                 // 禁用默认 session，使用 token 设置无状态会话
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .antMatchers("/**").permitAll()
                         //.antMatchers("/auth-api/auth/v1/login").permitAll()
                         //.antMatchers("/auth-api/auth/test").permitAll()

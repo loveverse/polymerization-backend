@@ -26,7 +26,6 @@ import javax.annotation.Resource;
 public class FileController {
 
     private final MinioFileSaveService minioService;
-    //@Resource
     private final RedisUtils redisUtils;
 
 
