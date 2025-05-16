@@ -1,18 +1,13 @@
 package com.loveverse.auth.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.loveverse.auth.entity.SystemUser;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +25,7 @@ public class LoginUser implements UserDetails {
 
     public LoginUser(SystemUser user, List<String> permissions) {
         this.user = user;
+        // 通常不能将用户菜单放在登录一起返回,如果这个用户角色或者菜单改变,他拿到还是上一次,时效性较低
         this.permissions = permissions;
     }
 

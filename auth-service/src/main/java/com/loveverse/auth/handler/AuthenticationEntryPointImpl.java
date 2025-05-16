@@ -1,10 +1,6 @@
 package com.loveverse.auth.handler;
 
-import cn.hutool.extra.servlet.ServletUtil;
-import com.alibaba.druid.support.json.JSONUtils;
 import com.loveverse.core.exception.BadRequestException;
-import com.loveverse.core.http.ResponseCode;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -12,7 +8,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
 
 /**

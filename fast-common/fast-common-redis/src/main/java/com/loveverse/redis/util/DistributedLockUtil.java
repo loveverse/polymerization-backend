@@ -20,10 +20,10 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class DistributedLockUtil {
 
-    @Resource
-    private  RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
 
 
     /**

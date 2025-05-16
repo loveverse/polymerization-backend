@@ -3,27 +3,21 @@ package com.loveverse.redis;
 import com.loveverse.redis.config.RedisProperties;
 import com.loveverse.redis.util.DistributedLockUtil;
 import com.loveverse.redis.util.RedisUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
-import org.redisson.client.RedisClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 
 /**
  * @author love
@@ -31,17 +25,17 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-//@ConditionalOnClass(Redisson.class)
 @EnableConfigurationProperties(RedisProperties.class)
+@RequiredArgsConstructor
 public class RedisAutoConfiguration {
-    @Resource
-    private RedisProperties redisProperties;
+    // 这里需要使用,所以直接注入使用
+    private final RedisProperties redisProperties;
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     @ConditionalOnProperty("spring.redis.cluster.nodes")
     public RedissonClient redissonClusterClient() {
         Config config = new Config();
-
+        config.setCodec(JsonJacksonCodec.INSTANCE);
         ClusterServersConfig clusterServersConfig = config.useClusterServers()
                 .setScanInterval(2000);
         if (redisProperties.getPassword() != null) {
@@ -55,11 +49,12 @@ public class RedisAutoConfiguration {
         return Redisson.create(config);
     }
 
-    @Bean
+    // 调用 Redisson 方法在销毁前调用
+    @Bean(destroyMethod = "shutdown")
     @ConditionalOnProperty(name = "spring.redis.host")
     public RedissonClient redissonSingleClient() {
         Config config = new Config();
-
+        config.setCodec(JsonJacksonCodec.INSTANCE);
         SingleServerConfig singleServerConfig = config.useSingleServer()
                 .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort())
                 .setDatabase(redisProperties.getDatabase());
@@ -71,16 +66,17 @@ public class RedisAutoConfiguration {
         return Redisson.create(config);
     }
 
+    // 这里不需要直接使用,所以使用@Bean注入
     @Bean
     @ConditionalOnMissingBean
-    public RedisUtils redisUtils( ) {
-        return new RedisUtils();
+    public RedisUtils redisUtils(RedissonClient redissonClient) {
+        return new RedisUtils(redissonClient);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public DistributedLockUtil distributedLockUtil() {
-        return new DistributedLockUtil();
+    public DistributedLockUtil distributedLockUtil(RedissonClient redissonClient) {
+        return new DistributedLockUtil(redissonClient);
     }
 
 }

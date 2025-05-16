@@ -1,24 +1,18 @@
 package com.loveverse.auth.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.GifCaptcha;
 import cn.hutool.captcha.LineCaptcha;
-import cn.hutool.core.util.StrUtil;
 import com.loveverse.auth.dto.login.LoginInfoReq;
 import com.loveverse.auth.dto.login.LoginInfoRes;
 import com.loveverse.auth.service.AuthService;
-import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
 import com.loveverse.redis.util.RedisUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -33,8 +27,7 @@ import java.io.IOException;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-    @Resource
-    private RedisUtils redisUtils;
+    private final RedisUtils redisUtils;
 
     @PostMapping("/v1/register")
     public ResponseData<Void> register() {
@@ -44,7 +37,6 @@ public class AuthController {
     @Operation(summary = "系统用户登录", description = "需要使用 Base64 编码,兼容传输明文密码")
     @PostMapping("/v1/login")
     public ResponseData<LoginInfoRes> login(@Valid @RequestBody LoginInfoReq loginInfoReq) {
-        //throw new BadRequestException("内存溢出");
         LoginInfoRes loginInfoRes = authService.userLogin(loginInfoReq);
         return ResponseCode.SUCCESS.getResponse(loginInfoRes);
     }

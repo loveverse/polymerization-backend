@@ -13,9 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,11 +22,11 @@ import java.util.Objects;
  * @since 2025/4/23
  */
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService, Ordered {
-    @Resource
-    private UserMapper userMapper;
-    @Resource
-    private MenuMapper menuMapper;
+
+    private final UserMapper userMapper;
+    private final MenuMapper menuMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

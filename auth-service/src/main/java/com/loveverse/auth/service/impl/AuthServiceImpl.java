@@ -1,28 +1,21 @@
 package com.loveverse.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.loveverse.auth.config.JwtProperties;
+import com.loveverse.auth.dto.LoginUser;
 import com.loveverse.auth.dto.login.LoginInfoReq;
 import com.loveverse.auth.dto.login.LoginInfoRes;
-import com.loveverse.auth.dto.LoginUser;
 import com.loveverse.auth.dto.login.SystemUserDto;
 import com.loveverse.auth.service.AuthService;
 import com.loveverse.auth.util.JwtTokenUtil;
-import com.loveverse.core.exception.BadRequestException;
-import com.loveverse.core.http.ResponseCode;
 import com.loveverse.redis.util.RedisUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Objects;
 
 /**
  * @author love
@@ -30,14 +23,12 @@ import java.util.Objects;
  */
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    @Resource
-    private AuthenticationManager authenticationManager;
-    @Resource
-    private JwtTokenUtil jwtTokenUtil;
 
-    @Resource
-    private RedisUtils redisUtils;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final RedisUtils redisUtils;
 
     @Override
     public LoginInfoRes userLogin(LoginInfoReq user) {

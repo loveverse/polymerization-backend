@@ -2,49 +2,29 @@ package com.loveverse.auth.config;
 
 //import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.loveverse.auth.base.CustomAuthenticationProvider;
 import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
-import com.loveverse.auth.handler.AuthenticationEntryPointImpl;
-import com.loveverse.auth.service.impl.UserDetailsServiceImpl;
-import com.loveverse.core.exception.BadRequestException;
-import com.loveverse.core.http.ResponseCode;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-
-
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-
 import java.util.Arrays;
 import java.util.Collections;
-
-import static com.alibaba.druid.sql.ast.SQLPartitionValue.Operator.List;
 
 
 /**
@@ -53,13 +33,15 @@ import static com.alibaba.druid.sql.ast.SQLPartitionValue.Operator.List;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    // securityFilterChain 使用时才初始化 / 创建单独的配置类
+    @Lazy
     @Resource
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-
-
-
-
+    private AuthenticationProvider authenticationProvider;
 
     /**
      * BCryptPasswordEncoder 加密器,可以实现 PasswordEncoder 自定义密码加密校验
@@ -76,13 +58,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        return new CustomAuthenticationProvider();
-    }
-
 
     /**
      * 安全过滤器链配置
@@ -104,8 +79,7 @@ public class SecurityConfig {
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // 禁用默认表单登录
                 .httpBasic(AbstractHttpConfigurer::disable) // 禁用 Basic Auth
-                .authenticationProvider(authenticationProvider())   // 自定义身份验证逻辑
-
+                .authenticationProvider(authenticationProvider)   // 自定义身份验证逻辑
 
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

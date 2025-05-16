@@ -1,15 +1,10 @@
 package com.loveverse.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
-import com.gitee.sunchenbin.mybatis.actable.annotation.TableCharset;
-import com.gitee.sunchenbin.mybatis.actable.annotation.TableEngine;
-import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;
-import com.gitee.sunchenbin.mybatis.actable.constants.MySqlEngineConstant;
 import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

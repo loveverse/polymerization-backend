@@ -27,9 +27,10 @@ import java.util.concurrent.TimeoutException;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class RedisUtils {
-    @Resource
-    private  RedissonClient redissonClient;
+
+    private final RedissonClient redissonClient;
 
     // ============================== Common ==============================
 
