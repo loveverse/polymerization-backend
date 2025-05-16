@@ -40,6 +40,6 @@ public class JwtProperties {
     private String secret;
 
     // 令牌过期时间,单位毫秒，默认
-    private Long expireTime;
+    private long expireTime = 86400000;
 
 }

@@ -5,6 +5,7 @@ import com.loveverse.auth.dto.LoginUser;
 import com.loveverse.auth.entity.SystemUser;
 import io.jsonwebtoken.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -22,12 +23,9 @@ import java.util.function.Function;
 @Getter
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenUtil {
     private final JwtProperties jwtProperties;
-
-    public JwtTokenUtil(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-    }
 
     /**
      * 生成token过期时间，返回Date

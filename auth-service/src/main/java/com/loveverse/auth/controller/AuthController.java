@@ -3,6 +3,7 @@ package com.loveverse.auth.controller;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import com.loveverse.auth.constant.RedisKeyConstant;
 import com.loveverse.auth.dto.login.LoginInfoReq;
 import com.loveverse.auth.dto.login.LoginInfoRes;
 import com.loveverse.auth.service.AuthService;
@@ -59,7 +60,7 @@ public class AuthController {
                     schema = @Schema(type = "string", format = "binary")
             )
     )})
-    @GetMapping(value = "/v1/captcha/{uuid}",produces = "image/jpeg") // Todo 指定 produces 没有效果，接口未作校验，可能导致频繁刷新验证码
+    @GetMapping(value = "/v1/captcha/{uuid}", produces = "image/jpeg") // Todo 指定 produces 没有效果，接口未作校验，可能导致频繁刷新验证码
     public void captcha(HttpServletResponse response,
                         @PathVariable("uuid") String uuid,
                         @RequestParam(value = "w", defaultValue = "200") int w,
@@ -69,8 +70,8 @@ public class AuthController {
         response.setContentType("image/jpeg");
         // 生成验证码
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(w, h, 4, 50);
-
-        redisUtils.set("captcha_" + uuid, lineCaptcha.getCode(), 5 * 60 * 1000);
+        String key = RedisKeyConstant.build(RedisKeyConstant.CAPTCHA_UUID, uuid);
+        redisUtils.set(key, lineCaptcha.getCode(), 60);
         // 输出图片流
         lineCaptcha.write(response.getOutputStream());
     }
@@ -81,9 +82,9 @@ public class AuthController {
     }
 
     @Deprecated
-    @Operation(summary = "测试",deprecated = true)
+    @Operation(summary = "测试", deprecated = true)
     @GetMapping(value = "/test", produces = "image/jpeg")   // Todo 没有参数指定在文档有效果
     public ResponseData<String> hello() {
-        return ResponseCode.SUCCESS.getResponse("测试指定返回类型","hello");
+        return ResponseCode.SUCCESS.getResponse("测试指定返回类型", "hello");
     }
 }

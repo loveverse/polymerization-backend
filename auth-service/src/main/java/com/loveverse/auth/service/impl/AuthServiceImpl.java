@@ -1,10 +1,13 @@
 package com.loveverse.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.loveverse.auth.config.JwtProperties;
+import com.loveverse.auth.constant.RedisKeyConstant;
 import com.loveverse.auth.dto.LoginUser;
 import com.loveverse.auth.dto.login.LoginInfoReq;
 import com.loveverse.auth.dto.login.LoginInfoRes;
 import com.loveverse.auth.dto.login.SystemUserDto;
+import com.loveverse.auth.password.CaptchaAuthenticationToken;
 import com.loveverse.auth.service.AuthService;
 import com.loveverse.auth.util.JwtTokenUtil;
 import com.loveverse.redis.util.RedisUtils;
@@ -28,13 +31,15 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
+    private final JwtProperties jwtProperties;
     private final RedisUtils redisUtils;
 
     @Override
     public LoginInfoRes userLogin(LoginInfoReq user) {
+
         String password = decodeIfBase64(user.getPassword());
         // 获取得到用户名密码，封装成 Authentication 对象
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), password);
+        UsernamePasswordAuthenticationToken authenticationToken = new CaptchaAuthenticationToken(user.getUsername(), password, user.getCaptchaKey(), user.getCaptchaCode());
         // 调用 authenticationManager 的方法进行认证， Authentication 包含了登录用户信息和权限信息
         // 具体实现在 UserDetailsServiceImpl 重写 loadUserByUsername,查询数据库返回用户和权限
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
@@ -46,7 +51,8 @@ public class AuthServiceImpl implements AuthService {
         String userId = loginUser.getUser().getId().toString();
         String token = jwtTokenUtil.generateToken(loginUser);
         // 将用户信息存到 redis
-        redisUtils.set("login:" + userId, loginUser, jwtTokenUtil.getJwtProperties().getExpireTime());
+        String key = RedisKeyConstant.build(RedisKeyConstant.LOGIN_ID, userId);
+        redisUtils.set(key, loginUser, jwtProperties.getExpireTime() / 1000);
         // 返回用户信息、token、角色列表、权限菜单列表
         SystemUserDto systemUserDto = new SystemUserDto();
         BeanUtil.copyProperties(loginUser.getUser(), systemUserDto, "password");

@@ -19,4 +19,12 @@ public class LoginInfoReq {
     @Schema(description = "密码", example = "admin")
     @NotBlank(message = "密码不能为空")
     private String password;
+
+    @Schema(description = "验证码", example = "1234")
+    @NotBlank(message = "验证码不能为空")
+    private String captchaCode;
+
+    @Schema(description = "uuid", example = "")
+    @NotBlank(message = "uuid不能为空")
+    private String captchaKey;
 }
