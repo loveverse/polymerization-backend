@@ -3,10 +3,10 @@ package com.loveverse.auth.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.loveverse.auth.config.JwtProperties;
 import com.loveverse.auth.constant.RedisKeyConstant;
-import com.loveverse.auth.dto.LoginUser;
-import com.loveverse.auth.dto.login.LoginInfoReq;
-import com.loveverse.auth.dto.login.LoginInfoRes;
-import com.loveverse.auth.dto.login.SystemUserDto;
+import com.loveverse.auth.bo.LoginUserBO;
+import com.loveverse.auth.request.UserLoginDTO;
+import com.loveverse.auth.response.UserLoginVO;
+import com.loveverse.auth.response.SysUserVO;
 import com.loveverse.auth.password.CaptchaAuthenticationToken;
 import com.loveverse.auth.service.AuthService;
 import com.loveverse.auth.util.JwtTokenUtil;
@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final RedisUtils redisUtils;
 
     @Override
-    public LoginInfoRes userLogin(LoginInfoReq user) {
+    public UserLoginVO userLogin(UserLoginDTO user) {
 
         String password = decodeIfBase64(user.getPassword());
         // 获取得到用户名密码，封装成 Authentication 对象
@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
         // 认证失败 SpringSecurity 会自动抛出 AuthenticationException 异常,不需要手动抛
 
         // 认证成功，通过 userId 生成 token
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();   // 获取用户信息
+        LoginUserBO loginUser = (LoginUserBO) authenticate.getPrincipal();   // 获取用户信息
         //authenticate.getAuthorities()
         String userId = loginUser.getUser().getId().toString();
         String token = jwtTokenUtil.generateToken(loginUser);
@@ -54,9 +54,9 @@ public class AuthServiceImpl implements AuthService {
         String key = RedisKeyConstant.build(RedisKeyConstant.LOGIN_ID, userId);
         redisUtils.set(key, loginUser, jwtProperties.getExpireTime() / 1000);
         // 返回用户信息、token、角色列表、权限菜单列表
-        SystemUserDto systemUserDto = new SystemUserDto();
+        SysUserVO systemUserDto = new SysUserVO();
         BeanUtil.copyProperties(loginUser.getUser(), systemUserDto, "password");
-        LoginInfoRes loginInfoRes = new LoginInfoRes();
+        UserLoginVO loginInfoRes = new UserLoginVO();
         loginInfoRes.setUser(systemUserDto);
         loginInfoRes.setToken(token);
         loginInfoRes.setMenus(Collections.emptyList());

@@ -1,8 +1,9 @@
 package com.loveverse.auth.util;
 
+import com.loveverse.auth.bo.LoginUserBO;
+
+import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.config.JwtProperties;
-import com.loveverse.auth.dto.LoginUser;
-import com.loveverse.auth.entity.SystemUser;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +57,9 @@ public class JwtTokenUtil {
     }
 
     // 生成token
-    public String generateToken(LoginUser loginUser) {
+    public String generateToken(LoginUserBO loginUser) {
         Map<String, Object> claims = new HashMap<>();
-        SystemUser user = loginUser.getUser();
+        SysUser user = loginUser.getUser();
         Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
         claims.put("userId", user.getId().toString());
         claims.put("authorities", authorities);
@@ -72,7 +73,7 @@ public class JwtTokenUtil {
     }
 
     // 验证token
-    public Boolean validateToken(String token, LoginUser loginUser) {
+    public Boolean validateToken(String token, LoginUserBO loginUser) {
         final String userId = extractUserId(token);
         return userId.equals(loginUser.getUser().getId().toString()) && !isTokenExpired(token);
     }

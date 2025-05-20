@@ -16,17 +16,23 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@TableName("sys_user_role")
-@Table(name = "sys_user_role", comment = "用户角色表")
-public class SystemUserRole extends BaseEntity {
+@EqualsAndHashCode(callSuper = false)
+@TableName("sys_dict_detail")
+@Table(value = "sys_dict_detail", comment = "字典详情表")
+public class SysDictDetail extends BaseEntity {
     @TableId(type = IdType.AUTO)
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
 
-    @Column(comment = "用户id", isNull = false)
-    private Long userId;
+    @Column(comment = "字典id", isNull = false)
+    private Long dictId;
 
-    @Column(comment = "角色id", isNull = false)
-    private Long roleId;
+    @Column(comment = "字典详情值", length = 100, isNull = false)
+    private String dictDetailValue;
+
+    @Column(comment = "字典详情名称", length = 100, isNull = false)
+    private String dictDetailLabel;
+
+    @Column(comment = "排序值", isNull = false, defaultValue = "0")
+    private Integer sortOrder;
 }

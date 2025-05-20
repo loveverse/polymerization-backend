@@ -15,6 +15,7 @@
         <module>services/wallpaper-web-service</module>
         <module>java-study</module>
         <module>auth-service</module>
+        <module>fast-common/fast-common-security</module>
     </modules>
 
     <properties>

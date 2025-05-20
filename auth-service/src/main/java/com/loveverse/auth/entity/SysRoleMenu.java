@@ -14,23 +14,20 @@ import lombok.NoArgsConstructor;
  * @author love
  * @since 2025/4/23
  */
-
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@TableName("sys_dict")
-@Table(value = "sys_dict", comment = "字典表")
-public class SystemDict extends BaseEntity {
+@EqualsAndHashCode(callSuper = true)
+@TableName("sys_role_menu")
+@Table(name = "sys_role_menu", comment = "角色菜单")
+public class SysRoleMenu extends BaseEntity {
     @TableId(type = IdType.AUTO)
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
 
-    @Column(comment = "字典名（英文）", length = 100,isNull = false)
-    private String dictValue;
+    @Column(comment = "角色id", isNull = false)
+    private Long roleId;
 
-    @Column(comment = "字典名（中文名）", length = 100,isNull = false)
-    private String dictLabel;
 
-    @Column(comment = "字典类型", length = 100)
-    private String dictType;
+    @Column(comment = "菜单id", isNull = false)
+    private Long menuId;
 }

@@ -1,10 +1,10 @@
 package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.loveverse.auth.dto.LoginUser;
-import com.loveverse.auth.entity.SystemUser;
-import com.loveverse.auth.mapper.MenuMapper;
-import com.loveverse.auth.mapper.UserMapper;
+import com.loveverse.auth.bo.LoginUserBO;
+import com.loveverse.auth.entity.SysUser;
+import com.loveverse.auth.mapper.SysMenuMapper;
+import com.loveverse.auth.mapper.SysUserMapper;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
@@ -25,19 +25,19 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService, Ordered {
 
-    private final UserMapper userMapper;
-    private final MenuMapper menuMapper;
+    private final SysUserMapper userMapper;
+    private final SysMenuMapper menuMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SystemUser user = userMapper.selectOne(new LambdaQueryWrapper<SystemUser>().eq(SystemUser::getUserName, username));
-        if (Objects.isNull(user)) {
+        SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName, username));
+        if (user == null) {
             throw new BadRequestException("用户不存在");
         }
-        // Todo 查询菜单权限列表
+        // TODO 查询菜单权限列表
         //List<String> list =  menuMapper.selectPermissionByUserId(user.getId());
         // 将数据封装成 UserDetails 返回
-        return new LoginUser(user, Collections.emptyList());
+        return new LoginUserBO(user, Collections.emptyList());
     }
 
     @Override

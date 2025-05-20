@@ -15,7 +15,7 @@ public final class RedisKeyConstant {
     public static final String CAPTCHA_UUID = PREFIX + ":captcha:%s";
 
     public static String build(String pattern, Object... args) {
-        if (Objects.isNull(args)) {
+        if (args == null) {
             return pattern;
         }
         return String.format(pattern, args);

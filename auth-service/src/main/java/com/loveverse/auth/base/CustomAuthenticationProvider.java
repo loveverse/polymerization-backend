@@ -15,8 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
  * @author love
  * @since 2025/5/15 10:22
@@ -38,7 +36,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             String captchaCode = ((CaptchaAuthenticationToken) authentication).getCaptchaCode();
             String key = RedisKeyConstant.build(RedisKeyConstant.CAPTCHA_UUID, captchaKey);
             String storedCode = redisUtils.get(key);
-            if (Objects.isNull(storedCode) || !storedCode.equalsIgnoreCase(captchaCode)) {
+            if (storedCode == null || !storedCode.equalsIgnoreCase(captchaCode)) {
                 throw new BadRequestException("验证码错误或已过期");
             }
             // 验证成功后删除

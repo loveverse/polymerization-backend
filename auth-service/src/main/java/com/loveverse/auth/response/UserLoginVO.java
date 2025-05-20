@@ -1,7 +1,7 @@
-package com.loveverse.auth.dto.login;
+package com.loveverse.auth.response;
 
-import com.loveverse.auth.entity.SystemMenu;
-import com.loveverse.auth.entity.SystemRole;
+import com.loveverse.auth.entity.SysMenu;
+import com.loveverse.auth.entity.SysRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,16 +13,16 @@ import java.util.List;
  */
 @Data
 @Schema(description = "登录返回信息")
-public class LoginInfoRes {
+public class UserLoginVO {
 
     private String token;
 
     @Schema(description = "用户信息")
-    private SystemUserDto user;
+    private SysUserVO user;
 
     @Schema(description = "用户角色信息列表")
-    private List<SystemRole> roles;
+    private List<SysRole> roles;
 
     @Schema(description = "权限菜单列表")
-    private List<SystemMenu> menus;
+    private List<SysMenu> menus;
 }

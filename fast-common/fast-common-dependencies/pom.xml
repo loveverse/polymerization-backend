@@ -65,6 +65,11 @@
                 <artifactId>fast-common-redis</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.loveverse.security</groupId>
+                <artifactId>fast-common-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- spring 依赖管理 -->
 <!--            <dependency>-->
 <!--                <groupId>org.springframework.boot</groupId>-->

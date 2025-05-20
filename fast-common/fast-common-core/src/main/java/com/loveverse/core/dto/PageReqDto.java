@@ -2,7 +2,7 @@ package com.loveverse.core.dto;
 
 //import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.loveverse.core.valid.IValidGroup;
+import com.loveverse.core.valid.ValidGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 //import org.springframework.data.domain.PageRequest;
@@ -12,7 +12,6 @@ import lombok.Data;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 
 /**
  * @author love
@@ -23,14 +22,14 @@ import java.util.Map;
 public abstract class PageReqDto {
     // 为什么不使用int， 因为@NotNull对基本类型不生效，int默认值为0，无法使用@NotNull
     // @Min接收Long类型的值，不传时会自动进行隐式转换
-    @Min(value = 1L, groups = {IValidGroup.Page.class}, message = "page必须大于等于1")
-    @NotNull(groups = {IValidGroup.Page.class}, message = "page不能为空")
+    @Min(value = 1L, groups = {ValidGroup.Page.class}, message = "page必须大于等于1")
+    @NotNull(groups = {ValidGroup.Page.class}, message = "page不能为空")
     @Schema(description = "页码，默认为1")
     private Integer page = 1;
 
-    @Min(value = 1L, groups = {IValidGroup.Page.class}, message = "size必须大于等于1")
-    @Max(value = 1000L, groups = {IValidGroup.Page.class}, message = "size最大为1000")
-    @NotNull(groups = {IValidGroup.Page.class}, message = "size不能为空")
+    @Min(value = 1L, groups = {ValidGroup.Page.class}, message = "size必须大于等于1")
+    @Max(value = 1000L, groups = {ValidGroup.Page.class}, message = "size最大为1000")
+    @NotNull(groups = {ValidGroup.Page.class}, message = "size不能为空")
     @Schema(description = "每页数量,默认为10，最大为1000")
     private Integer size = 10;
 

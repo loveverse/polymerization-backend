@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_role")
 @Table(name = "sys_role", comment = "角色表")
-public class SystemRole extends BaseEntity {
+public class SysRole extends BaseEntity {
     @TableId(type = IdType.AUTO)
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
@@ -31,6 +31,6 @@ public class SystemRole extends BaseEntity {
     private String roleKey;
 
     @Column(comment = "角色状态：0-停用，1-正常", length = 1, isNull = false, defaultValue = "1")
-    private String status;
+    private Integer status;
 
 }

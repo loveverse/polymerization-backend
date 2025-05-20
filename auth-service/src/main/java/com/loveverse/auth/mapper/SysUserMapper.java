@@ -1,7 +1,7 @@
 package com.loveverse.auth.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.loveverse.auth.entity.SystemUser;
+import com.loveverse.auth.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,6 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2025/4/23
  */
 @Mapper
-public interface UserMapper extends BaseMapper<SystemUser> {
+public interface SysUserMapper extends BaseMapper<SysUser> {
 
 }

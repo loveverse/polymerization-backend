@@ -1,23 +1,11 @@
 package com.loveverse.auth.controller;
 
-import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.LineCaptcha;
-import com.loveverse.auth.dto.login.LoginInfoReq;
-import com.loveverse.auth.dto.login.LoginInfoRes;
-import com.loveverse.auth.service.AuthService;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
-import com.loveverse.redis.util.RedisUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
 
 /**
  * @author love

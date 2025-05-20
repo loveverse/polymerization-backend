@@ -1,7 +1,7 @@
 package com.loveverse.auth.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.loveverse.auth.entity.SystemMenu;
+import com.loveverse.auth.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @since 2025/4/25
  */
 @Mapper
-public interface MenuMapper extends BaseMapper<SystemMenu> {
+public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     List<String> selectPermissionByUserId(Long id);
 }

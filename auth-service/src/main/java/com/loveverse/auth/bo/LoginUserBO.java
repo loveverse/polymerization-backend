@@ -1,6 +1,6 @@
-package com.loveverse.auth.dto;
+package com.loveverse.auth.bo;
 
-import com.loveverse.auth.entity.SystemUser;
+import com.loveverse.auth.entity.SysUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
  */
 @Data
 @NoArgsConstructor
-public class LoginUser implements UserDetails {
-    private SystemUser user;
+public class LoginUserBO implements UserDetails {
+    private SysUser user;
 
     private List<String> permissions;
 
 
-    public LoginUser(SystemUser user, List<String> permissions) {
+    public LoginUserBO(SysUser user, List<String> permissions) {
         this.user = user;
         // 通常不能将用户菜单放在登录一起返回,如果这个用户角色或者菜单改变,他拿到还是上一次,时效性较低
         this.permissions = permissions;

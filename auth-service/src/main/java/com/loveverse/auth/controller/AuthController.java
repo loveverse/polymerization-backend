@@ -4,8 +4,8 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.loveverse.auth.constant.RedisKeyConstant;
-import com.loveverse.auth.dto.login.LoginInfoReq;
-import com.loveverse.auth.dto.login.LoginInfoRes;
+import com.loveverse.auth.request.UserLoginDTO;
+import com.loveverse.auth.response.UserLoginVO;
 import com.loveverse.auth.service.AuthService;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
@@ -43,8 +43,8 @@ public class AuthController {
 
     @Operation(summary = "系统用户登录", description = "需要使用 Base64 编码,兼容传输明文密码")
     @PostMapping("/v1/login")
-    public ResponseData<LoginInfoRes> login(@Valid @RequestBody LoginInfoReq loginInfoReq) {
-        LoginInfoRes loginInfoRes = authService.userLogin(loginInfoReq);
+    public ResponseData<UserLoginVO> login(@RequestBody @Valid UserLoginDTO loginInfoReq) {
+        UserLoginVO loginInfoRes = authService.userLogin(loginInfoReq);
         return ResponseCode.SUCCESS.getResponse(loginInfoRes);
     }
 

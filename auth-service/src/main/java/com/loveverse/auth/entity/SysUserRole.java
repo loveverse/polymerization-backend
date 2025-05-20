@@ -17,17 +17,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_role_menu")
-@Table(name = "sys_role_menu", comment = "角色菜单")
-public class SystemRoleMenu extends BaseEntity {
+@TableName("sys_user_role")
+@Table(name = "sys_user_role", comment = "用户角色表")
+public class SysUserRole extends BaseEntity {
     @TableId(type = IdType.AUTO)
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
 
+    @Column(comment = "用户id", isNull = false)
+    private Long userId;
+
     @Column(comment = "角色id", isNull = false)
     private Long roleId;
-
-
-    @Column(comment = "菜单id", isNull = false)
-    private Long menuId;
 }

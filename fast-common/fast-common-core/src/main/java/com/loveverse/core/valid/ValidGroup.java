@@ -1,6 +1,6 @@
 package com.loveverse.core.valid;
 
-public interface IValidGroup {
+public interface ValidGroup {
     interface Id {
     }
 
@@ -17,7 +17,7 @@ public interface IValidGroup {
 
     }
 
-    interface Add {
+    interface Create {
     }
 
     ;

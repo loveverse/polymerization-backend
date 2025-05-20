@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
 @Table(name = "sys_menu", comment = "菜单权限表")
-public class SystemMenu extends BaseEntity {
+public class SysMenu extends BaseEntity {
     @TableId(type = IdType.AUTO)
     @Column(isAutoIncrement = true, isKey = true, comment = "id")
     private Long id;

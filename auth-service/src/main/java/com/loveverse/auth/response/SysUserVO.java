@@ -1,6 +1,6 @@
-package com.loveverse.auth.dto.login;
+package com.loveverse.auth.response;
 
-import com.loveverse.mybatis.dto.BaseDto;
+import com.loveverse.mybatis.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "用户信息")
-public class SystemUserDto extends BaseDto {
+public class SysUserVO extends BaseVO {
 
     @Schema(description = "用户ID", example = "1")
     private Long id;

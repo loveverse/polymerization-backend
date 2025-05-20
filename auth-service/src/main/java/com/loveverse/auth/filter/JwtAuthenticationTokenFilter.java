@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //    // 解析出用户id
         //    String userId = jwtTokenUtil.extractUserId(authToken);
         //    String key = "login:" + userId;
-        //    LoginUser loginUser = (LoginUser) redisUtils.get(key);
+        //    LoginUserBO loginUser = (LoginUserBO) redisUtils.get(key);
         //    if(Objects.isNull(loginUser)){
         //        throw new UsernameNotFoundException("用户未登录");
         //    }

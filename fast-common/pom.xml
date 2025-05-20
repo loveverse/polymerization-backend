@@ -17,5 +17,6 @@
         <module>fast-common-core</module>
         <module>fast-common-mybatis</module>
         <module>fast-common-redis</module>
+        <module>fast-common-security</module>
     </modules>
 </project>
