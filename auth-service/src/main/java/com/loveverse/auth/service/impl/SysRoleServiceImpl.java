@@ -1,12 +1,16 @@
 package com.loveverse.auth.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.loveverse.auth.entity.SysRole;
 import com.loveverse.auth.mapper.SysRoleMapper;
-import com.loveverse.auth.request.SysRoleReqDTO;
-import com.loveverse.auth.response.SysRoleResVO;
+import com.loveverse.auth.request.SysRoleDTO;
+import com.loveverse.auth.request.SysRolePageDTO;
+import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.auth.service.SysRoleService;
+import com.loveverse.auth.util.PageUtils;
+import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -21,13 +25,13 @@ import java.util.stream.Collectors;
  * @author love
  * @since 2025/5/17 20:02
  */
-@Service
 @RequiredArgsConstructor
+@Service
 public class SysRoleServiceImpl implements SysRoleService {
     private final SysRoleMapper sysRoleMapper;
 
     @Override
-    public void createRole(SysRoleReqDTO sysRoleReqDTO) {
+    public void createRole(SysRoleDTO sysRoleReqDTO) {
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(sysRoleReqDTO, sysRole);
         sysRoleMapper.insert(sysRole);
@@ -39,7 +43,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public void updateRole(SysRoleReqDTO sysRoleReqDTO) {
+    public void updateRole(SysRoleDTO sysRoleReqDTO) {
         SysRole data = sysRoleMapper.selectById(sysRoleReqDTO.getId());
         if (data == null) {
             throw new BadRequestException("不存在该角色");
@@ -49,22 +53,33 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public List<SysRoleResVO> getRoleList() {
-        List<SysRole> systemRoles = sysRoleMapper.selectList(Wrappers.emptyWrapper());
+    public List<SysRoleVO> getRoleList() {
+        List<SysRole> systemRoles = sysRoleMapper.selectList(Wrappers.lambdaQuery());
         return Optional.ofNullable(systemRoles).orElse(Collections.emptyList()).stream().map(item -> {
-            SysRoleResVO sysRoleResVO = new SysRoleResVO();
+            SysRoleVO sysRoleResVO = new SysRoleVO();
             BeanUtils.copyProperties(item, sysRoleResVO);
             return sysRoleResVO;
         }).collect(Collectors.toList());
     }
 
     @Override
-    public List<SysRoleResVO> findRoleListByUserId(Long userId) {
+    public List<SysRoleVO> findRoleListByUserId(Long userId) {
         List<SysRole> roleList = sysRoleMapper.findRoleListByUserId(userId);
         return Optional.ofNullable(roleList).orElse(Collections.emptyList()).stream().map(item -> {
-            SysRoleResVO sysRoleResVO = new SysRoleResVO();
+            SysRoleVO sysRoleResVO = new SysRoleVO();
             BeanUtils.copyProperties(item, sysRoleResVO);
             return sysRoleResVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageResult<SysRoleVO> getRolePage(SysRolePageDTO sysRolePageDTO) {
+        IPage<SysRole> page = PageUtils.startPage(sysRolePageDTO);
+        IPage<SysRole> roleIPage = sysRoleMapper.selectPage(page, Wrappers.lambdaQuery());
+        return PageUtils.convert(roleIPage, item -> {
+            SysRoleVO sysRoleVO = new SysRoleVO();
+            BeanUtils.copyProperties(item, sysRoleVO);
+            return sysRoleVO;
+        });
     }
 }

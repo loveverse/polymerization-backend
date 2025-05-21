@@ -23,4 +23,5 @@ public class AuthServiceApplication {
         ConfigurableApplicationContext run = SpringApplication.run(AuthServiceApplication.class, args);
         run.getBean(DefaultSecurityFilterChain.class);
     }
+
 }

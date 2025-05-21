@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 
 @Data
 @Schema(description = "角色信息")
-public class SysRoleReqDTO {
+public class SysRoleDTO {
 
     @Null(groups = ValidGroup.Create.class)
     @NotNull(groups = ValidGroup.Update.class)

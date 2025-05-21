@@ -1,15 +1,8 @@
 package com.loveverse.wallpaper.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-
-import com.loveverse.core.dto.PageResDto;
+import com.loveverse.core.dto.PageResult;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.entity.Picture;
-import com.loveverse.wallpaper.vo.WallpaperPicture;
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * <p>
@@ -22,5 +15,5 @@ import java.util.List;
 public interface IWallpaperPictureService {
 
 
-    PageResDto<Picture> queryPageList(PictureReqDto query);
+    PageResult<Picture> queryPageList(PictureReqDto query);
 }

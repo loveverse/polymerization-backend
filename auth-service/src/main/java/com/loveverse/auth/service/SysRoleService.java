@@ -1,7 +1,9 @@
 package com.loveverse.auth.service;
 
-import com.loveverse.auth.request.SysRoleReqDTO;
-import com.loveverse.auth.response.SysRoleResVO;
+import com.loveverse.auth.request.SysRoleDTO;
+import com.loveverse.auth.request.SysRolePageDTO;
+import com.loveverse.auth.response.SysRoleVO;
+import com.loveverse.core.dto.PageResult;
 
 import java.util.List;
 
@@ -11,13 +13,15 @@ import java.util.List;
  */
 public interface SysRoleService {
 
-    void createRole(SysRoleReqDTO roleDto);
+    void createRole(SysRoleDTO roleDto);
 
     void deleteRoles(Long[] ids);
 
-    void updateRole(SysRoleReqDTO sysRoleDto);
+    void updateRole(SysRoleDTO sysRoleDto);
 
-    List<SysRoleResVO> getRoleList();
+    List<SysRoleVO> getRoleList();
 
-    List<SysRoleResVO> findRoleListByUserId(Long userId);
+    List<SysRoleVO> findRoleListByUserId(Long userId);
+
+    PageResult<SysRoleVO> getRolePage(SysRolePageDTO sysRolePageDTO);
 }

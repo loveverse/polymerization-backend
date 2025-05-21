@@ -2,8 +2,8 @@ package com.loveverse.auth.service.impl;
 
 import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.mapper.SysUserMapper;
-import com.loveverse.auth.request.SysUserReqDTO;
-import com.loveverse.auth.response.SysUserResVO;
+import com.loveverse.auth.request.SysUserDTO;
+import com.loveverse.auth.response.SysUserVO;
 import com.loveverse.auth.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +27,7 @@ public class SysUserServiceImpl implements SysUserService {
     private final SysUserMapper sysUserMapper;
 
     @Override
-    public void createUser(SysUserReqDTO sysUserReqDTO) {
+    public void createUser(SysUserDTO sysUserReqDTO) {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(sysUserReqDTO, sysUser);
         sysUser.setPassword(passwordEncoder.encode(sysUserReqDTO.getPassword()));
@@ -40,12 +40,12 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void updateUser(SysUserReqDTO sysUserReqDTO) {
+    public void updateUser(SysUserDTO sysUserReqDTO) {
 
     }
 
     @Override
-    public List<SysUserResVO> queryUserList() {
+    public List<SysUserVO> queryUserList() {
         return Collections.emptyList();
     }
 }

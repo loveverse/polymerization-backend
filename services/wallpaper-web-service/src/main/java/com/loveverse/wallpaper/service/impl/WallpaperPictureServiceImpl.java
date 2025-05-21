@@ -2,28 +2,20 @@ package com.loveverse.wallpaper.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 
-import com.loveverse.core.dto.PageResDto;
+import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.enums.SortEnum;
 import com.loveverse.wallpaper.entity.Picture;
-import com.loveverse.wallpaper.vo.WallpaperPicture;
 import com.loveverse.wallpaper.mapper.WallpaperPictureMapper;
 import com.loveverse.wallpaper.service.IWallpaperPictureService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -39,7 +31,7 @@ public class WallpaperPictureServiceImpl implements IWallpaperPictureService {
     private final WallpaperPictureMapper pictureMapper;
 
     @Override
-    public PageResDto<Picture> queryPageList(PictureReqDto qry) {
+    public PageResult<Picture> queryPageList(PictureReqDto qry) {
         LambdaQueryWrapper<Picture> queryWrapper = new LambdaQueryWrapper<>();
         String sort = qry.getSortField();
 

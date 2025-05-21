@@ -2,8 +2,8 @@
 //
 //import com.baomidou.mybatisplus.core.metadata.OrderItem;
 //import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-//import com.loveverse.fast.common.dto.PageReqDto;
-//import com.loveverse.fast.common.dto.PageResDto;
+//import com.loveverse.fast.common.dto.PageParam;
+//import com.loveverse.fast.common.dto.PageResult;
 //import org.springframework.data.domain.Pageable;
 //
 //import java.util.Collections;
@@ -25,12 +25,12 @@
 //        return mybatisPage;
 //    }
 //
-//    public static <T, U> PageResDto<T> getPage(Page<U> page, List<T> collect) {
-//        return new PageResDto<>(page.getCurrent(), page.getSize(), page.getTotal(), collect);
+//    public static <T, U> PageResult<T> getPage(Page<U> page, List<T> collect) {
+//        return new PageResult<>(page.getCurrent(), page.getSize(), page.getTotal(), collect);
 //    }
 //
-//    public static <T extends PageReqDto, U> PageResDto<U> defaultPage(T query) {
-//        return new PageResDto<>((long) query.getPage(), (long) query.getSize(), 0L, Collections.emptyList());
+//    public static <T extends PageParam, U> PageResult<U> defaultPage(T query) {
+//        return new PageResult<>((long) query.getPage(), (long) query.getSize(), 0L, Collections.emptyList());
 //    }
 //
 //}

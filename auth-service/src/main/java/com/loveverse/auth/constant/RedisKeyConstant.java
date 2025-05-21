@@ -1,7 +1,5 @@
 package com.loveverse.auth.constant;
 
-import java.util.Objects;
-
 /**
  * @author love
  * @since 2025/5/16 16:02

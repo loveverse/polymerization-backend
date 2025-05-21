@@ -1,7 +1,7 @@
 package com.loveverse.auth.controller;
 
-import com.loveverse.auth.request.SysUserReqDTO;
-import com.loveverse.auth.response.SysUserResVO;
+import com.loveverse.auth.request.SysUserDTO;
+import com.loveverse.auth.response.SysUserVO;
 import com.loveverse.auth.service.SysUserService;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
@@ -29,7 +29,7 @@ public class SysUserController {
     @Operation(summary = "新增用户")
     @HasPermission("sys:user:add")
     @PostMapping("/create")
-    public ResponseData<Void> createUser(@Validated(ValidGroup.Create.class) @RequestBody SysUserReqDTO sysUserReqDTO) {
+    public ResponseData<Void> createUser(@Validated(ValidGroup.Create.class) @RequestBody SysUserDTO sysUserReqDTO) {
         sysUserService.createUser(sysUserReqDTO);
         return ResponseCode.SUCCESS.getResponse("添加成功");
     }
@@ -45,15 +45,15 @@ public class SysUserController {
     @Operation(summary = "更新用户")
     @HasPermission("sys:user:update")
     @PutMapping("/update")
-    public ResponseData<Void> updateRole(@Validated(ValidGroup.Update.class) @RequestBody SysUserReqDTO sysUserReqDTO) {
+    public ResponseData<Void> updateUser(@Validated(ValidGroup.Update.class) @RequestBody SysUserDTO sysUserReqDTO) {
         sysUserService.updateUser(sysUserReqDTO);
         return ResponseCode.SUCCESS.getResponse("编辑成功");
     }
 
     @Operation(summary = "用户列表")
     @GetMapping("/list")
-    public ResponseData<List<SysUserResVO>> queryRoleList() {
-        List<SysUserResVO> userList = sysUserService.queryUserList();
+    public ResponseData<List<SysUserVO>> queryUserList() {
+        List<SysUserVO> userList = sysUserService.queryUserList();
         return ResponseCode.SUCCESS.getResponse(userList);
     }
 }

@@ -1,31 +1,18 @@
 package com.loveverse.wallpaper.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-
-import com.loveverse.core.dto.PageResDto;
+import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
-import com.loveverse.wallpaper.config.UserConfig;
 import com.loveverse.wallpaper.dto.PictureReqDto;
 import com.loveverse.wallpaper.entity.Picture;
-import com.loveverse.wallpaper.vo.WallpaperPicture;
 import com.loveverse.wallpaper.service.IWallpaperPictureService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -46,8 +33,8 @@ public class WallpaperPictureController {
 
     @Operation(summary = "图片列表")
     @PostMapping("/list")
-    public ResponseData<PageResDto<Picture>> pictureList(@Valid @RequestBody PictureReqDto query) {
-        PageResDto<Picture> pageList = wallpaperPictureService.queryPageList(query);
+    public ResponseData<PageResult<Picture>> pictureList(@Valid @RequestBody PictureReqDto query) {
+        PageResult<Picture> pageList = wallpaperPictureService.queryPageList(query);
         return ResponseCode.SUCCESS.getResponse(pageList);
     }
 

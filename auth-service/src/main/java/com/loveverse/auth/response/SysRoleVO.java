@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "角色信息")
-public class SysRoleResVO extends BaseVO {
+public class SysRoleVO extends BaseVO {
 
     @Schema(description = "角色名称", example = "admin")
     private String roleName;

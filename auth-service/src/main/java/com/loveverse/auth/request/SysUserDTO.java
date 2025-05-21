@@ -1,8 +1,5 @@
 package com.loveverse.auth.request;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.loveverse.core.valid.ValidGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -18,7 +15,7 @@ import java.util.List;
  */
 @Data
 @Schema(description = "用户信息")
-public class SysUserReqDTO {
+public class SysUserDTO {
     @Null(groups = ValidGroup.Create.class)
     @NotNull(groups = ValidGroup.Update.class)
     @Schema(description = "用户id", example = "1")

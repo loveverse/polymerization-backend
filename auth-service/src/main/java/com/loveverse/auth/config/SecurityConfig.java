@@ -85,8 +85,6 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)   // 自定义身份验证逻辑
 
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-
         return http.build();
     }
 
