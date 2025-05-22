@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("sys_dict_detail")
-@Table(value = "sys_dict_detail", comment = "字典详情表")
-public class SysDictDetail extends BaseEntity {
+@TableName("sys_dict_item")
+@Table(value = "sys_dict_item", comment = "字典详情表")
+public class SysDictItem extends BaseEntity {
     @TableId(type = IdType.AUTO)
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
@@ -28,10 +28,10 @@ public class SysDictDetail extends BaseEntity {
     private Long dictId;
 
     @Column(comment = "字典详情值", length = 100, isNull = false)
-    private String dictDetailValue;
+    private String dictItemValue;
 
     @Column(comment = "字典详情名称", length = 100, isNull = false)
-    private String dictDetailLabel;
+    private String dictItemLabel;
 
     @Column(comment = "排序值", isNull = false, defaultValue = "0")
     private Integer sortOrder;

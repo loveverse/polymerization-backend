@@ -14,13 +14,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema(description = "角色信息")
 public class SysRoleVO extends BaseVO {
+    @Schema(description = "角色id")
+    private Long id;
 
-    @Schema(description = "角色名称", example = "admin")
+    @Schema(description = "角色名称")
     private String roleName;
 
-    @Schema(description = "角色权限字符串", example = "admin")
+    @Schema(description = "角色权限字符串")
     private String roleKey;
 
-    @Schema(description = "角色状态：0-停用，1-正常,默认1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
+    @Schema(description = "角色状态：0-停用，1-正常,默认1")
     private Integer status;
 }
