@@ -15,7 +15,7 @@ public interface SysRoleService {
 
     void createRole(SysRoleDTO roleDto);
 
-    void deleteRoles(Long[] ids);
+    void deleteRoles(List<Long> ids);
 
     void updateRole(SysRoleDTO sysRoleDto);
 

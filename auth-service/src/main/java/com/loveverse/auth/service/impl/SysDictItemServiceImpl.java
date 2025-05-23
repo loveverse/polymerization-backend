@@ -10,6 +10,7 @@ import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,9 +48,11 @@ public class SysDictItemServiceImpl implements SysDictItemService {
         sysDictItemMapper.updateById(data);
     }
 
+
     @Override
-    public List<SysDictItemVO> getDictItemList() {
-        List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(Wrappers.lambdaQuery());
+    public List<SysDictItemVO> queryDictItemList(String dictId) {
+        List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(
+                Wrappers.<SysDictItem>lambdaQuery().eq(StringUtils.hasText(dictId), SysDictItem::getDictId, dictId));
         return Optional.ofNullable(sysDictItemList).orElse(Collections.emptyList()).stream().map(item -> {
             SysDictItemVO sysDictItemVO = new SysDictItemVO();
             BeanUtils.copyProperties(item, sysDictItemVO);

@@ -1,6 +1,5 @@
 package com.loveverse.auth.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.loveverse.auth.entity.SysRole;
@@ -13,8 +12,10 @@ import com.loveverse.auth.util.PageUtils;
 import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
  * @since 2025/5/17 20:02
  */
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
     private final SysRoleMapper sysRoleMapper;
@@ -38,8 +40,12 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public void deleteRoles(Long[] ids) {
-        sysRoleMapper.delete(Wrappers.<SysRole>update().lambda().in(SysRole::getId, CollUtil.toList(ids)));
+    public void deleteRoles(List<Long> ids) {
+        // TODO 使用 jackson 将 Long 类型转换为 String 到前端后，前端返回 String，会自动转换
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new BadRequestException("请选择要删除的角色");
+        }
+        sysRoleMapper.delete(Wrappers.<SysRole>lambdaUpdate().in(SysRole::getId, ids));
     }
 
     @Override

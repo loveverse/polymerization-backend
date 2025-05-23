@@ -16,5 +16,5 @@ public interface SysDictItemService {
 
     void updateDictItem(SysDictItemDTO sysDictDto);
 
-    List<SysDictItemVO> getDictItemList();
+    List<SysDictItemVO> queryDictItemList(String dictId);
 }

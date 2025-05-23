@@ -11,6 +11,7 @@ import com.loveverse.core.http.ResponseData;
 import com.loveverse.core.valid.ValidGroup;
 import com.loveverse.security.annotation.HasPermission;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -41,8 +42,8 @@ public class SysRoleController {
 
     @Operation(summary = "删除角色")
     @HasPermission("sys:role:delete")
-    @DeleteMapping("/delete")
-    public ResponseData<Void> deleteRoles(@RequestBody Long[] ids) {
+    @PostMapping("/delete")
+    public ResponseData<Void> deleteRoles(@RequestBody List<Long> ids) {
         sysRoleService.deleteRoles(ids);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }
