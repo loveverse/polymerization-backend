@@ -111,9 +111,10 @@ public class SysDictController {
         return ResponseCode.SUCCESS.getResponse(null);
     }
 
-    @Operation(summary = "获取字典项集合", description = "根据dictType获取，不传则获取所有的")
+    @Operation(summary = "获取字典项集合", description = "根据模块id获取，不传则获取所有的")
     @GetMapping("/dict-items")
-    public ResponseData<DictCollectionVO> queryDictItemsByDictType() {
-        return ResponseCode.SUCCESS.getResponse(null);
+    public ResponseData<DictCollectionVO> queryDictItemsByModuleId(@RequestParam(required = false) String moduleId) {
+        DictCollectionVO dictCollectionVO = sysDictItemService.queryDictItemsByModuleId(moduleId);
+        return ResponseCode.SUCCESS.getResponse(dictCollectionVO);
     }
 }

@@ -1,6 +1,7 @@
 package com.loveverse.auth.service;
 
 import com.loveverse.auth.request.SysDictItemDTO;
+import com.loveverse.auth.response.DictCollectionVO;
 import com.loveverse.auth.response.SysDictItemVO;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface SysDictItemService {
     void updateDictItem(SysDictItemDTO sysDictDto);
 
     List<SysDictItemVO> queryDictItemList(String dictId);
+
+    DictCollectionVO queryDictItemsByModuleId(String moduleId);
 }

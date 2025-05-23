@@ -1,20 +1,22 @@
 package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.loveverse.auth.entity.SysDict;
 import com.loveverse.auth.entity.SysDictItem;
 import com.loveverse.auth.mapper.SysDictItemMapper;
+import com.loveverse.auth.mapper.SysDictMapper;
 import com.loveverse.auth.request.SysDictItemDTO;
+import com.loveverse.auth.response.DictCollectionVO;
 import com.loveverse.auth.response.SysDictItemVO;
 import com.loveverse.auth.service.SysDictItemService;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class SysDictItemServiceImpl implements SysDictItemService {
+    private final SysDictMapper sysDictMapper;
     private final SysDictItemMapper sysDictItemMapper;
 
     @Override
@@ -58,5 +61,42 @@ public class SysDictItemServiceImpl implements SysDictItemService {
             BeanUtils.copyProperties(item, sysDictItemVO);
             return sysDictItemVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public DictCollectionVO queryDictItemsByModuleId(String moduleId) {
+        List<SysDict> sysDictList = sysDictMapper.selectList(
+                Wrappers.<SysDict>lambdaQuery().eq(StringUtils.hasText(moduleId), SysDict::getModuleId, moduleId));
+        if (CollectionUtils.isEmpty(sysDictList)) {
+            return new DictCollectionVO();
+        }
+        List<Long> dictIds = sysDictList.stream().map(SysDict::getId).collect(Collectors.toList());
+        // 避免查询无效dictId
+        List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(
+                Wrappers.<SysDictItem>lambdaQuery().in(SysDictItem::getDictId, dictIds));
+
+        Map<Long, List<SysDictItemVO>> dictItemMap = sysDictItemList.stream().collect(
+                Collectors.groupingBy(SysDictItem::getDictId, Collectors.mapping(item -> {
+                    SysDictItemVO sysDictItemVO = new SysDictItemVO();
+                    BeanUtils.copyProperties(item, sysDictItemVO);
+                    return sysDictItemVO;
+                }, Collectors.toList())));
+
+        DictCollectionVO dictCollectionVO = new DictCollectionVO();
+        Map<String, List<SysDictItemVO>> dictMap = new HashMap<>();
+        Map<String, Map<String, Object>> dictKeyMap = new HashMap<>();
+        sysDictList.forEach(dict -> {
+            List<SysDictItemVO> items = dictItemMap.getOrDefault(dict.getId(), Collections.emptyList());
+            dictMap.put(dict.getDictValue(), items);
+            Map<String, Object> itemMap = items.stream()
+                    .collect(Collectors.toMap(
+                            SysDictItemVO::getDictItemValue,
+                            SysDictItemVO::getDictItemLabel,
+                            (existing, replacement) -> existing)); // 防止出现重复键
+            dictKeyMap.put(dict.getDictValue(), itemMap);
+        });
+        dictCollectionVO.setDictMap(dictMap);
+        dictCollectionVO.setDictKeyMap(dictKeyMap);
+        return dictCollectionVO;
     }
 }

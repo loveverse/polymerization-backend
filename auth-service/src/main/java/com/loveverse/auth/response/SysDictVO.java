@@ -29,5 +29,5 @@ public class SysDictVO extends BaseVO {
     private String dictLabel;
 
     @Schema(description = "字典类型分组,null为通用")
-    private String dictType;
+    private Long moduleId;
 }
