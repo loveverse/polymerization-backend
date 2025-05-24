@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
     <!-- 去掉下面分组，服务会打包到 com.loveverse -->
-<!--    <groupId>com.loveverse.auth</groupId>-->
+    <!--    <groupId>com.loveverse.auth</groupId>-->
     <artifactId>auth-service</artifactId>
 
 
@@ -44,7 +44,16 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
+        <!-- dto vo 转换工具，替换 BeanUtils.copyProperties -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <!-- 直接继承依赖管理中的 provided -->
+        </dependency>
     </dependencies>
     <build>
         <plugins>

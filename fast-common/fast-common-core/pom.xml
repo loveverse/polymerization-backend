@@ -54,16 +54,17 @@
             <!--<artifactId>knife4j-openapi2-spring-boot-starter</artifactId>-->
             <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
         </dependency>
-        <!-- dto vo 转换工具，替换 BeanUtils.copyProperties -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!-- dto vo 转换工具，替换 BeanUtils.copyProperties；不推荐放在 common-core 中，即使每个子模块都需要使用，因为 mapstruct-processor 使用 provided 时不会继续传递导致未生成代码 -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.mapstruct</groupId>-->
+        <!--            <artifactId>mapstruct</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.mapstruct</groupId>-->
+        <!--            <artifactId>mapstruct-processor</artifactId>-->
+        <!--            &lt;!&ndash; 因为在 auth-service 中使用时，provided 不会将依赖传递到 auth-service 中，导致未生成代码，但是生成代码只需要在编译和测试中使用，所以需要引用的服务中显示指定 &ndash;&gt;-->
+        <!--&lt;!&ndash;            <scope>provided</scope>&ndash;&gt;-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>

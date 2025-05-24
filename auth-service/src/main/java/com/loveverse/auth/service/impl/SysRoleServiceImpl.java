@@ -35,8 +35,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     private final SystemConverter systemConverter;
 
     @Override
-    public void createRole(SysRoleDTO sysRoleReqDTO) {
-        SysRole sysRole = systemConverter.convertRoleToEntity(sysRoleReqDTO);
+    public void createRole(SysRoleDTO sysRoleDTO) {
+        SysRole sysRole = systemConverter.convertRoleToEntity(sysRoleDTO);
         sysRoleMapper.insert(sysRole);
     }
 
@@ -50,43 +50,30 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public void updateRole(SysRoleDTO sysRoleReqDTO) {
-        SysRole data = sysRoleMapper.selectById(sysRoleReqDTO.getId());
+    public void updateRole(SysRoleDTO sysRoleDTO) {
+        SysRole data = sysRoleMapper.selectById(sysRoleDTO.getId());
         if (data == null) {
             throw new BadRequestException("不存在该角色");
         }
-        BeanUtils.copyProperties(sysRoleReqDTO, data);
-        sysRoleMapper.updateById(data);
+        sysRoleMapper.updateById(systemConverter.convertRoleToEntity(sysRoleDTO));
     }
 
     @Override
     public List<SysRoleVO> getRoleList() {
         List<SysRole> systemRoles = sysRoleMapper.selectList(Wrappers.lambdaQuery());
-        return Optional.ofNullable(systemRoles).orElse(Collections.emptyList()).stream().map(item -> {
-            SysRoleVO sysRoleResVO = new SysRoleVO();
-            BeanUtils.copyProperties(item, sysRoleResVO);
-            return sysRoleResVO;
-        }).collect(Collectors.toList());
+        return Optional.ofNullable(systemRoles).orElse(Collections.emptyList()).stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
     }
 
     @Override
     public List<SysRoleVO> findRoleListByUserId(Long userId) {
         List<SysRole> roleList = sysRoleMapper.findRoleListByUserId(userId);
-        return Optional.ofNullable(roleList).orElse(Collections.emptyList()).stream().map(item -> {
-            SysRoleVO sysRoleResVO = new SysRoleVO();
-            BeanUtils.copyProperties(item, sysRoleResVO);
-            return sysRoleResVO;
-        }).collect(Collectors.toList());
+        return Optional.ofNullable(roleList).orElse(Collections.emptyList()).stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
     }
 
     @Override
     public PageResult<SysRoleVO> getRolePage(SysRolePageDTO sysRolePageDTO) {
         IPage<SysRole> page = PageUtils.startPage(sysRolePageDTO);
         IPage<SysRole> roleIPage = sysRoleMapper.selectPage(page, Wrappers.lambdaQuery());
-        return PageUtils.convert(roleIPage, item -> {
-            SysRoleVO sysRoleVO = new SysRoleVO();
-            BeanUtils.copyProperties(item, sysRoleVO);
-            return sysRoleVO;
-        });
+        return PageUtils.convert(roleIPage, systemConverter::convertRoleToVO);
     }
 }

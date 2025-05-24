@@ -8,5 +8,6 @@ import com.loveverse.auth.response.UserLoginVO;
  * @since 2025/4/28
  */
 public interface AuthService {
+
     UserLoginVO userLogin(UserLoginDTO loginInfoReq);
 }

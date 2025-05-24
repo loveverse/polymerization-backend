@@ -257,6 +257,8 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
+                <!-- 子项目使用时会继承 provided 作用域 -->
+                <scope>provided</scope>
             </dependency>
             <!--tool-->
             <dependency>

@@ -1,6 +1,5 @@
 package com.loveverse.auth.controller;
 
-import com.loveverse.auth.entity.SysRole;
 import com.loveverse.auth.request.SysRoleDTO;
 import com.loveverse.auth.request.SysRolePageDTO;
 import com.loveverse.auth.response.SysRoleVO;
@@ -11,7 +10,6 @@ import com.loveverse.core.http.ResponseData;
 import com.loveverse.core.valid.ValidGroup;
 import com.loveverse.security.annotation.HasPermission;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
