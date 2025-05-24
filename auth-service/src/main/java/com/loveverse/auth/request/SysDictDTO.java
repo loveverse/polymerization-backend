@@ -1,16 +1,8 @@
 package com.loveverse.auth.request;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
-import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import com.loveverse.core.valid.ValidGroup;
-import com.loveverse.mybatis.entity.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,8 +16,8 @@ import javax.validation.constraints.Null;
 @Schema(description = "字典信息")
 public class SysDictDTO {
 
-    @Null(groups = ValidGroup.Create.class)
-    @NotNull(groups = ValidGroup.Update.class)
+        @Null(groups = ValidGroup.Create.class)
+        @NotNull(groups = ValidGroup.Update.class)
     @Schema(description = "字典id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
     private Long id;
 

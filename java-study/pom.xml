@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.loveverse</groupId>
         <artifactId>polymerization-backend</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>com.loveverse.study</groupId>

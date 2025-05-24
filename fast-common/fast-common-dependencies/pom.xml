@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <name>fast-common-dependencies</name>
     <description>所有公共模块的依赖管理</description>
-    <!-- 即使引入 spring-boot-dependencies， 用到 spring 相关依赖还是手动写下依赖管理，方便知道用到那些库 -->
+    <!-- 即使引入 spring-boot-dependencies， 用到 spring 相关依赖还是手动写下依赖管理，方便知道用到那些库和库的版本 -->
     <properties>
         <!-- 项目版本号 -->
         <revision>1.0.0</revision>
@@ -42,6 +42,7 @@
         <!-- 文档和工具 -->
         <knife4j.version>4.4.0</knife4j.version>
         <hutool.version>5.8.25</hutool.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok.version>1.18.36</lombok.version>
 
     </properties>
@@ -71,13 +72,13 @@
                 <version>${revision}</version>
             </dependency>
             <!-- spring 依赖管理 -->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-dependencies</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-dependencies</artifactId>-->
+            <!--                <version>${spring-boot.version}</version>-->
+            <!--                <type>pom</type>-->
+            <!--                <scope>import</scope>-->
+            <!--            </dependency>-->
 
             <!-- spring 系列 -->
             <dependency>
@@ -116,11 +117,11 @@
                 <version>${spring-boot.version}</version>
             </dependency>
             <!-- 日志相关 -->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-log4j2</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-starter-log4j2</artifactId>-->
+            <!--                <version>${spring-boot.version}</version>-->
+            <!--            </dependency>-->
             <!--全局排除spring-boot-starter-logging内的所有依赖-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -210,11 +211,11 @@
             </dependency>
 
             <!--redis：包含redis和redisson-->
-<!--            <dependency>-->
-<!--                <groupId>org.redisson</groupId>-->
-<!--                <artifactId>redisson-spring-boot-starter</artifactId>-->
-<!--                <version>${redisson.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.redisson</groupId>-->
+            <!--                <artifactId>redisson-spring-boot-starter</artifactId>-->
+            <!--                <version>${redisson.version}</version>-->
+            <!--            </dependency>-->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
@@ -246,6 +247,16 @@
                 <version>${knife4j.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
             </dependency>
             <!--tool-->
             <dependency>

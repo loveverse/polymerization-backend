@@ -2,6 +2,7 @@ package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.loveverse.auth.converter.SystemConverter;
 import com.loveverse.auth.entity.SysRole;
 import com.loveverse.auth.mapper.SysRoleMapper;
 import com.loveverse.auth.request.SysRoleDTO;
@@ -31,11 +32,11 @@ import java.util.stream.Collectors;
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
     private final SysRoleMapper sysRoleMapper;
+    private final SystemConverter systemConverter;
 
     @Override
     public void createRole(SysRoleDTO sysRoleReqDTO) {
-        SysRole sysRole = new SysRole();
-        BeanUtils.copyProperties(sysRoleReqDTO, sysRole);
+        SysRole sysRole = systemConverter.convertRoleToEntity(sysRoleReqDTO);
         sysRoleMapper.insert(sysRole);
     }
 

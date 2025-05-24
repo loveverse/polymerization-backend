@@ -8,8 +8,8 @@
         <artifactId>polymerization-backend</artifactId>
         <version>${revision}</version>
     </parent>
-
-    <groupId>com.loveverse.auth</groupId>
+    <!-- 去掉下面分组，服务会打包到 com.loveverse -->
+<!--    <groupId>com.loveverse.auth</groupId>-->
     <artifactId>auth-service</artifactId>
 
 

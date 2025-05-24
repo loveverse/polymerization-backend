@@ -8,6 +8,7 @@ import com.loveverse.core.http.ResponseData;
 import com.loveverse.core.valid.ValidGroup;
 import com.loveverse.security.annotation.HasPermission;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author love
  * @since 2025/5/23 15:39
  */
+@Tag(name = "模块管理")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/module")

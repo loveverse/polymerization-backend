@@ -12,15 +12,14 @@
         <module>fast-common</module>
         <module>fast-gateway</module>
         <module>file-upload-service</module>
-        <module>services/wallpaper-web-service</module>
         <module>java-study</module>
         <module>auth-service</module>
-        <module>fast-common/fast-common-security</module>
+        <module>services/wallpaper-web-service</module>
     </modules>
 
     <properties>
         <!-- 打包的项目名称 -->
-        <jar-name>${project.artifactId}:${project.version}</jar-name>
+        <jar-name>${project.artifactId}-${project.version}</jar-name>
         <!-- 统一项目版本 -->
         <revision>1.0.0</revision>
 
@@ -36,6 +35,7 @@
 
         <!-- 打包部署插件相关 -->
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
     </properties>
     <!-- 所有模块都会导入的依赖 -->
     <dependencies>
@@ -146,6 +146,31 @@
         </pluginManagement>
         <!-- 模块构建需要用到的插件，回传到子模块 -->
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <!-- maven-compiler-plugin 是 maven 自带的插件 -->
                 <groupId>org.apache.maven.plugins</groupId>
