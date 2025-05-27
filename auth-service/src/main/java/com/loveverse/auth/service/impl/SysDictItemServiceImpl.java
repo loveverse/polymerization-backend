@@ -60,7 +60,7 @@ public class SysDictItemServiceImpl implements SysDictItemService {
             SysDictItemVO sysDictItemVO = new SysDictItemVO();
             BeanUtils.copyProperties(item, sysDictItemVO);
             return sysDictItemVO;
-        }).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(SysDictItemVO::getSortOrder)).collect(Collectors.toList());
     }
 
     @Override

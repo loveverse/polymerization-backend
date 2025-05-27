@@ -12,13 +12,17 @@ import com.loveverse.auth.mapper.SysModuleMapper;
 import com.loveverse.auth.request.SysModuleDTO;
 import com.loveverse.auth.response.SysModuleVO;
 import com.loveverse.auth.service.SysModuleService;
+import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,21 +49,28 @@ public class SysModuleServiceImpl implements SysModuleService {
     public void deleteModule(String id) {
         sysModuleMapper.deleteById(id);
         List<SysDict> sysDictList = sysDictMapper.selectList(Wrappers.<SysDict>lambdaUpdate().eq(SysDict::getModuleId, id));
-        List<Long> dictIds = sysDictList.stream().map(SysDict::getId).collect(Collectors.toList());
-        sysDictMapper.delete(Wrappers.<SysDict>lambdaUpdate().in(SysDict::getId, dictIds));
-        sysDictItemMapper.delete(Wrappers.<SysDictItem>lambdaUpdate().in(SysDictItem::getDictId, dictIds));
+        if (!CollectionUtils.isEmpty(sysDictList)) {
+            List<Long> dictIds = sysDictList.stream().map(SysDict::getId).collect(Collectors.toList());
+            sysDictMapper.delete(Wrappers.<SysDict>lambdaUpdate().in(SysDict::getId, dictIds));
+            sysDictItemMapper.delete(Wrappers.<SysDictItem>lambdaUpdate().in(SysDictItem::getDictId, dictIds));
+        }
 
     }
 
     @Override
-    public void updateModule(SysModuleDTO sysModuleReqDTO) {
-
+    public void updateModule(SysModuleDTO sysModuleDTO) {
+        SysModule sysModule = sysModuleMapper.selectById(sysModuleDTO.getId());
+        if (sysModule == null) {
+            throw new BadRequestException("不存在该记录");
+        }
+        sysModuleMapper.updateById(systemConverter.convertModuleToEntity(sysModuleDTO));
     }
 
     @Override
-
     public List<SysModuleVO> getModuleList() {
         List<SysModule> sysModules = sysModuleMapper.selectList(Wrappers.lambdaQuery());
-        return Optional.ofNullable(sysModules).orElse(Collections.emptyList()).stream().map(systemConverter::convertModuleToVO).collect(Collectors.toList());
+        return Optional.ofNullable(sysModules).orElse(Collections.emptyList()).stream()
+                .map(systemConverter::convertModuleToVO)
+                .sorted(Comparator.comparing(SysModuleVO::getSortOrder)).collect(Collectors.toList());
     }
 }

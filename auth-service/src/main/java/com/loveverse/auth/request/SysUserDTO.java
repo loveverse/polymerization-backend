@@ -36,7 +36,7 @@ public class SysUserDTO {
     private String sex;
 
     @Schema(description = "状态：0-停用，1-正常", maxLength = 1, example = "1")
-    private String status;
+    private Integer status;
 
     @Schema(description = "手机号", maxLength = 32)
     private String phoneNumber;

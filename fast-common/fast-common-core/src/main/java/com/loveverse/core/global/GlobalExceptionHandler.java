@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -53,8 +54,7 @@ public class GlobalExceptionHandler {
         registerDefaultHandlers();
         // SpringMVC 异常
         registerSpringMvcHandlers();
-        // SpringSecurity 异常
-        registerSpringSecurityHandlers();
+        registerSQLHandlers();
     }
 
     private void registerSpringMvcHandlers() {
@@ -78,10 +78,6 @@ public class GlobalExceptionHandler {
             log.warn("参数绑定异常: {}", req.getRequestURI(), ex);
             return ResponseCode.BAD_REQUEST.getResponse(Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage());
         });
-        registerExceptionHandler(HttpMessageNotReadableException.class, (req, ex) -> {
-            log.warn("参数绑定异常: {}", req.getRequestURI(), ex);
-            return ResponseCode.BAD_REQUEST.getResponse("");
-        });
 
         registerExceptionHandler(HttpMessageNotReadableException.class, (req, ex) -> {
             log.warn("请求体缺失或格式错误: {}", req.getRequestURI(), ex);
@@ -104,11 +100,16 @@ public class GlobalExceptionHandler {
         });
     }
 
-    private void registerSpringSecurityHandlers(){
-        //registerExceptionHandler(AuthenticationEx.class);
+
+    private void registerSQLHandlers() {
+        registerExceptionHandler(DuplicateKeyException.class, (req, ex) -> {
+            log.warn("SQL异常: {}", req.getRequestURI(), ex);
+            return ResponseCode.BAD_REQUEST.getResponse("输入的内容发生重复,请修改");
+        });
     }
+
     private void registerDefaultHandlers() {
-        registerExceptionHandler(BadRequestException.class,(req, ex) -> {
+        registerExceptionHandler(BadRequestException.class, (req, ex) -> {
             log.warn("请求异常: {}", req.getRequestURI(), ex);
             return ResponseCode.BAD_REQUEST.getResponse(ex.getMessage());
         });
@@ -156,6 +157,9 @@ public class GlobalExceptionHandler {
         Set<Throwable> seen = new HashSet<>();
         while (ex.getCause() != null && !seen.contains(ex.getCause())) {
             seen.add(ex.getCause());
+            if (ex instanceof DuplicateKeyException) {
+                return ex;
+            }
             ex = ex.getCause();
         }
         return ex;
@@ -186,7 +190,6 @@ public class GlobalExceptionHandler {
                 candidateClasses.add(cls);
             }
         }
-
         // 3. 按继承深度排序（子类优先）
         candidateClasses.sort((c1, c2) -> {
             if (c1.isAssignableFrom(c2)) return 1;

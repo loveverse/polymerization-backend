@@ -5,6 +5,7 @@ import com.loveverse.auth.request.SysRolePageDTO;
 import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.core.dto.PageResult;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -19,9 +20,12 @@ public interface SysRoleService {
 
     void updateRole(SysRoleDTO sysRoleDto);
 
-    List<SysRoleVO> getRoleList();
+    List<SysRoleVO> getRoleList(Integer status);
 
     List<SysRoleVO> findRoleListByUserId(Long userId);
 
     PageResult<SysRoleVO> getRolePage(SysRolePageDTO sysRolePageDTO);
+
+
+    List<SysRoleVO> roleListByRoleIds(List<Long> roleIds);
 }

@@ -1,7 +1,9 @@
 package com.loveverse.auth.service;
 
 import com.loveverse.auth.request.SysUserDTO;
+import com.loveverse.auth.request.SysUserPageDTO;
 import com.loveverse.auth.response.SysUserVO;
+import com.loveverse.core.dto.PageResult;
 
 
 import java.util.List;
@@ -13,9 +15,11 @@ import java.util.List;
 public interface SysUserService {
     void createUser(SysUserDTO sysUserReqDTO);
 
-    void deleteUsers(Long[] ids);
+    void deleteUsers(List<Long> ids);
 
     void updateUser(SysUserDTO sysUserReqDTO);
 
     List<SysUserVO> queryUserList();
+
+    PageResult<SysUserVO> getUserPage(SysUserPageDTO sysUserPageDTO);
 }

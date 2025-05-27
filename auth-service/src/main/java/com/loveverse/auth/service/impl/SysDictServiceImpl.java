@@ -1,6 +1,7 @@
 package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.loveverse.auth.converter.SystemConverter;
 import com.loveverse.auth.entity.SysDict;
 import com.loveverse.auth.mapper.SysDictMapper;
 import com.loveverse.auth.request.SysDictDTO;
@@ -25,11 +26,11 @@ import java.util.stream.Collectors;
 public class SysDictServiceImpl implements SysDictService {
     private final SysDictMapper sysDictMapper;
 
+    private final SystemConverter systemConverter;
+
     @Override
-    public void createDict(SysDictDTO sysDictDto) {
-        SysDict sysDict = new SysDict();
-        BeanUtils.copyProperties(sysDictDto, sysDict);
-        sysDictMapper.insert(sysDict);
+    public void createDict(SysDictDTO sysDictDTO) {
+        sysDictMapper.insert(systemConverter.convertDictToEntity(sysDictDTO));
     }
 
     @Override
@@ -38,32 +39,17 @@ public class SysDictServiceImpl implements SysDictService {
     }
 
     @Override
-    public void updateDict(SysDictDTO sysDictDto) {
-        SysDict data = sysDictMapper.selectById(sysDictDto.getId());
+    public void updateDict(SysDictDTO sysDictDTO) {
+        SysDict data = sysDictMapper.selectById(sysDictDTO.getId());
         if (data == null) {
             throw new BadRequestException("不存在该字典");
         }
-        BeanUtils.copyProperties(sysDictDto, data);
-        sysDictMapper.updateById(data);
+        sysDictMapper.updateById(systemConverter.convertDictToEntity(sysDictDTO));
     }
 
     @Override
     public List<SysDictVO> getDictList() {
         List<SysDict> sysDictList = sysDictMapper.selectList(Wrappers.lambdaQuery());
-        return Optional.ofNullable(sysDictList).orElse(Collections.emptyList()).stream().map(item -> {
-            SysDictVO sysDictVO = new SysDictVO();
-            BeanUtils.copyProperties(item, sysDictVO);
-            return sysDictVO;
-        }).collect(Collectors.toList());
-    }
-
-    @Override
-    public void createDictItem(SysDictDTO sysDictDto) {
-
-    }
-
-    @Override
-    public void deleteDictItem(String id) {
-
+        return Optional.ofNullable(sysDictList).orElse(Collections.emptyList()).stream().map(systemConverter::convertDictToVO).collect(Collectors.toList());
     }
 }

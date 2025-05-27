@@ -22,7 +22,7 @@ import java.util.List;
 @Tag(name = "模块管理")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/module")
+@RequestMapping("/v1/system/module")
 public class SysModuleController {
     private final SysModuleService sysModuleService;
 
@@ -37,7 +37,7 @@ public class SysModuleController {
     @Operation(summary = "删除模块")
     @HasPermission("sys:module:delete")
     @DeleteMapping("/delete")
-    public ResponseData<Void> deleteModules(@RequestParam String id) {
+    public ResponseData<Void> deleteModules(@RequestParam("id") String id) {
         sysModuleService.deleteModule(id);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }

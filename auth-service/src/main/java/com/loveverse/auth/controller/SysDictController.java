@@ -30,7 +30,7 @@ import java.util.List;
 @ApiSupport(order = 99)
 @RequiredArgsConstructor
 @RestController // 自动将响应转换为 json 格式
-@RequestMapping("/v1/dict")
+@RequestMapping("/v1/system/dict")
 public class SysDictController {
     private final SysDictService sysDictService;
     private final SysDictItemService sysDictItemService;
@@ -46,7 +46,7 @@ public class SysDictController {
     @Operation(summary = "删除字典")
     @HasPermission("sys:dict:delete")
     @DeleteMapping("/delete")
-    public ResponseData<Void> deleteDict(@RequestParam String id) {
+    public ResponseData<Void> deleteDict(@RequestParam("id") String id) {
         sysDictService.deleteDict(id);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }
@@ -77,7 +77,7 @@ public class SysDictController {
     @Operation(summary = "删除字典项")
     @HasPermission("sys:dict:delete")
     @DeleteMapping("/dict-item/delete")
-    public ResponseData<Void> deleteDictItem(@RequestParam String id) {
+    public ResponseData<Void> deleteDictItem(@RequestParam("id") String id) {
         sysDictItemService.deleteDictItem(id);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }
@@ -102,10 +102,11 @@ public class SysDictController {
             @Parameter(name = "dictValue", description = "字典的value,查询对应的字典集合，不传查所有", example = "sex_type"),
             @Parameter(name = "dictType", description = "根据字典类型查询，可以对字典进行分组，")
     })
+    @Deprecated
     @GetMapping("/dict-items/{dictValue}")
     public ResponseData<DictCollectionVO> queryDictItemsByValue(
             @PathVariable(name = "dictValue", required = false) String dictValue,
-            @RequestParam(name = "dictType", required = false) String dictType) {
+            @RequestParam(name = "moduleId", required = false) String moduleId) {
         return ResponseCode.SUCCESS.getResponse(null);
     }
 

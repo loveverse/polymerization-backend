@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 
 /**
  * @author love
@@ -29,7 +31,7 @@ public class SysUserVO extends BaseVO {
     private String sex;
 
     @Schema(description = "状态：0-停用，1-正常")
-    private String status;
+    private Integer status;
 
     @Schema(description = "手机号")
     private String phoneNumber;
@@ -37,6 +39,7 @@ public class SysUserVO extends BaseVO {
     @Schema(description = "邮箱")
     private String email;
 
-    @Schema(description = "用户类型：0-管理员，1-普通用户")
-    private String userType;
+
+    @Schema(description = "角色信息")
+    private List<SysRoleVO> roleList;
 }

@@ -16,8 +16,8 @@ import javax.validation.constraints.Null;
 @Schema(description = "字典信息")
 public class SysDictDTO {
 
-        @Null(groups = ValidGroup.Create.class)
-        @NotNull(groups = ValidGroup.Update.class)
+    @Null(groups = ValidGroup.Create.class)
+    @NotNull(groups = ValidGroup.Update.class)
     @Schema(description = "字典id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
     private Long id;
 
@@ -29,7 +29,7 @@ public class SysDictDTO {
     @Schema(description = "字典名（中文名）", maxLength = 100, example = "性别")
     private String dictLabel;
 
-    @Schema(description = "字典类型分组,null为通用", requiredMode = Schema.RequiredMode.NOT_REQUIRED, maxLength = 100)
-    private String dictType;
+    @Schema(description = "业务模块分组,null为通用", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String moduleId;
 
 }

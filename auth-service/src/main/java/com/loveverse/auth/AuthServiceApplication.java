@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@EnableTransactionManagement(proxyTargetClass = true)
 @MapperScan(value = {"com.gitee.sunchenbin.mybatis.actable.dao.*", "com.loveverse.auth.mapper"})
 // 扫描Actable包，不手动指定包会找不到
-//@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.auth.*"})
+@ComponentScan(basePackages = {"com.gitee.sunchenbin.mybatis.actable.manager.*", "com.loveverse.auth.*"})
 public class AuthServiceApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(AuthServiceApplication.class, args);

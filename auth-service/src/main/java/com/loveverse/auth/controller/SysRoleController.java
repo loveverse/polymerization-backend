@@ -26,7 +26,7 @@ import java.util.List;
 @Tag(name = "角色管理", description = "系统角色相关操作接口")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/role")
+@RequestMapping("/v1/system/role")
 public class SysRoleController {
     private final SysRoleService sysRoleService;
 
@@ -56,8 +56,8 @@ public class SysRoleController {
 
     @Operation(summary = "角色列表")
     @GetMapping("/list")
-    public ResponseData<List<SysRoleVO>> getRoleList() {
-        List<SysRoleVO> roleList = sysRoleService.getRoleList();
+    public ResponseData<List<SysRoleVO>> getRoleList(@RequestParam("status") Integer status) {
+        List<SysRoleVO> roleList = sysRoleService.getRoleList(status);
         return ResponseCode.SUCCESS.getResponse(roleList);
     }
 

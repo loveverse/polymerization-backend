@@ -1,14 +1,15 @@
 package com.loveverse.auth.converter;
 
+import com.loveverse.auth.entity.SysDict;
 import com.loveverse.auth.entity.SysModule;
 import com.loveverse.auth.entity.SysRole;
+import com.loveverse.auth.request.SysDictDTO;
 import com.loveverse.auth.request.SysModuleDTO;
 import com.loveverse.auth.request.SysRoleDTO;
+import com.loveverse.auth.response.SysDictVO;
 import com.loveverse.auth.response.SysModuleVO;
 import com.loveverse.auth.response.SysRoleVO;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 
@@ -16,8 +17,8 @@ import org.mapstruct.ReportingPolicy;
  * @author love
  * @since 2025/5/24 11:27
  */
-@Mapper(componentModel = "spring",
-        unmappedSourcePolicy = ReportingPolicy.IGNORE // 全局忽略未映射的源字段
+@Mapper(componentModel = "spring"
+        //unmappedSourcePolicy = ReportingPolicy.IGNORE // 全局忽略未映射的源字段
 )
 public interface SystemConverter {
     //@Mapping(target = "createTime", ignore = true)
@@ -33,4 +34,11 @@ public interface SystemConverter {
 
     SysModuleVO convertModuleToVO(SysModule sysModule);
 
+    SysDict convertDictToEntity(SysDictDTO sysDictDTO);
+
+    SysDictVO convertDictToVO(SysDict sysDict);
+
+    //SysDictItem convertDictItemToEntity(SysDictItemDTO sysDictItemDTO);
+    //
+    //SysDictItemVO convertDictItemToVO(SysDictItem sysDictItem);
 }

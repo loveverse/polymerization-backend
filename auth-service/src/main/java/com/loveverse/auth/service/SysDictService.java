@@ -18,7 +18,4 @@ public interface SysDictService {
 
     List<SysDictVO> getDictList();
 
-    void createDictItem(SysDictDTO sysDictDto);
-
-    void deleteDictItem(String id);
 }

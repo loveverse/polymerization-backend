@@ -14,7 +14,6 @@ import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -59,8 +58,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public List<SysRoleVO> getRoleList() {
-        List<SysRole> systemRoles = sysRoleMapper.selectList(Wrappers.lambdaQuery());
+    public List<SysRoleVO> getRoleList(Integer status) {
+        List<SysRole> systemRoles = sysRoleMapper.selectList(Wrappers.<SysRole>lambdaQuery().eq(status != null, SysRole::getStatus, status));
         return Optional.ofNullable(systemRoles).orElse(Collections.emptyList()).stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
     }
 
@@ -75,5 +74,20 @@ public class SysRoleServiceImpl implements SysRoleService {
         IPage<SysRole> page = PageUtils.startPage(sysRolePageDTO);
         IPage<SysRole> roleIPage = sysRoleMapper.selectPage(page, Wrappers.lambdaQuery());
         return PageUtils.convert(roleIPage, systemConverter::convertRoleToVO);
+    }
+
+    @Override
+    public List<SysRoleVO> roleListByRoleIds(List<Long> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
+        List<SysRole> roleList = sysRoleMapper.selectList(Wrappers.<SysRole>lambdaQuery().in(SysRole::getId, roleIds));
+        return Optional.ofNullable(roleList).orElse(Collections.emptyList()).stream().map(item -> {
+            SysRoleVO sysRoleVO = new SysRoleVO();
+            sysRoleVO.setId(item.getId());
+            sysRoleVO.setRoleName(item.getRoleName());
+            sysRoleVO.setRoleKey(item.getRoleKey());
+            return sysRoleVO;
+        }).collect(Collectors.toList());
     }
 }
