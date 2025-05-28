@@ -3,8 +3,9 @@ package com.loveverse.auth.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.loveverse.auth.entity.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author love
@@ -13,5 +14,5 @@ import java.util.ArrayList;
 @Mapper
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
-    void insertBatch(ArrayList<SysUserRole> userRoles);
+    void insertBatch(@Param("list") List<SysUserRole> userRoles);
 }

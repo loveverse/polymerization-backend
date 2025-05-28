@@ -14,6 +14,7 @@ import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -84,9 +85,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<SysRole> roleList = sysRoleMapper.selectList(Wrappers.<SysRole>lambdaQuery().in(SysRole::getId, roleIds));
         return Optional.ofNullable(roleList).orElse(Collections.emptyList()).stream().map(item -> {
             SysRoleVO sysRoleVO = new SysRoleVO();
-            sysRoleVO.setId(item.getId());
-            sysRoleVO.setRoleName(item.getRoleName());
-            sysRoleVO.setRoleKey(item.getRoleKey());
+            BeanUtils.copyProperties(item, sysRoleVO, "createTime", "updateTime", "status");
             return sysRoleVO;
         }).collect(Collectors.toList());
     }

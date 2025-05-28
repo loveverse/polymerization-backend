@@ -1,5 +1,6 @@
 package com.loveverse.auth.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.loveverse.mybatis.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class SysRoleVO extends BaseVO {
     @Schema(description = "角色权限字符串")
     private String roleKey;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "角色状态：0-停用，1-正常,默认1")
     private Integer status;
 }

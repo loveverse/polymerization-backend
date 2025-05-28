@@ -11,6 +11,10 @@ import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 public class IdGenerator implements IdentifierGenerator {
     @Override
     public Long nextId(Object entity) {
+        return generateId();
+    }
+
+    public Long generateId() {
         // 使用实体类名作为业务键，或者提取参数生成业务键
         //String bizKey = entity.getClass().getName();
         // 根据业务键调用分布式ID生成服务

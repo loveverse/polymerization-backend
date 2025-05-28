@@ -40,7 +40,7 @@ public class SysUserController {
 
     @Operation(summary = "删除用户")
     @HasPermission("sys:user:delete")
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public ResponseData<Void> deleteUsers(@RequestBody List<Long> ids) {
         sysUserService.deleteUsers(ids);
         return ResponseCode.SUCCESS.getResponse("删除成功");

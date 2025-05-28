@@ -93,7 +93,8 @@ mybatis-plus:
       logic-delete-field: valid # 全局逻辑删除的实体字段名
       logic-delete-value: 'NULL' # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
-  mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
+  mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml,classpath*:com/loveverse/auth/mapper/*/*.xml
+
 
 # 自动建表的工具配置
 actable:

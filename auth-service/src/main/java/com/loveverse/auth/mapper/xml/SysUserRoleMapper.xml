@@ -3,9 +3,10 @@
 
 <mapper namespace="com.loveverse.auth.mapper.SysUserRoleMapper">
     <insert id="insertBatch">
-        insert into sys_user_role (user_id, role_id) values
-        <foreach collection="userRoles" item="s" separator=",">
-            (#{s.userId}, #{s.roleId})
+        insert into sys_user_role (id, user_id, role_id, create_time, update_time, valid, version) values
+        <foreach collection="list" item="s" separator=",">
+            (#{s.id},#{s.userId}, #{s.roleId},NOW(),NOW(),1,0)
         </foreach>
     </insert>
+
 </mapper>
