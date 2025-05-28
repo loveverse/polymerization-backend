@@ -10,4 +10,6 @@ import com.loveverse.auth.response.UserLoginVO;
 public interface AuthService {
 
     UserLoginVO userLogin(UserLoginDTO loginInfoReq);
+
+    void userLogout();
 }

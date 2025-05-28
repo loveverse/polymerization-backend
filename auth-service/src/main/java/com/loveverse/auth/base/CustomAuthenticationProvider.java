@@ -3,6 +3,7 @@ package com.loveverse.auth.base;
 
 import com.loveverse.auth.constant.RedisKeyConstant;
 import com.loveverse.auth.password.CaptchaAuthenticationToken;
+import com.loveverse.auth.service.impl.UserDetailsServiceImpl;
 import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.redis.util.RedisUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new BadRequestException("用户名或密码错误");
+        }
         if (authentication instanceof CaptchaAuthenticationToken) {
             String captchaKey = ((CaptchaAuthenticationToken) authentication).getCaptchaKey();
             String captchaCode = ((CaptchaAuthenticationToken) authentication).getCaptchaCode();
@@ -39,12 +44,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             if (storedCode == null || !storedCode.equalsIgnoreCase(captchaCode)) {
                 throw new BadRequestException("验证码错误或已过期");
             }
-            // 验证成功后删除
+            // 验证成功后删除,失败不需要重新输入验证码
             redisUtils.delete(key);
-        }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadRequestException("用户名或密码错误");
         }
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }

@@ -5,7 +5,6 @@ import com.loveverse.auth.request.SysRolePageDTO;
 import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.core.dto.PageResult;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**

@@ -60,14 +60,17 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public List<SysRoleVO> getRoleList(Integer status) {
-        List<SysRole> systemRoles = sysRoleMapper.selectList(Wrappers.<SysRole>lambdaQuery().eq(status != null, SysRole::getStatus, status));
-        return Optional.ofNullable(systemRoles).orElse(Collections.emptyList()).stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
+        List<SysRole> systemRoles = sysRoleMapper.selectList(
+                Wrappers.<SysRole>lambdaQuery().eq(status != null, SysRole::getStatus, status));
+        return Optional.ofNullable(systemRoles).orElse(Collections.emptyList())
+                .stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
     }
 
     @Override
     public List<SysRoleVO> findRoleListByUserId(Long userId) {
         List<SysRole> roleList = sysRoleMapper.findRoleListByUserId(userId);
-        return Optional.ofNullable(roleList).orElse(Collections.emptyList()).stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
+        return Optional.ofNullable(roleList).orElse(Collections.emptyList())
+                .stream().map(systemConverter::convertRoleToVO).collect(Collectors.toList());
     }
 
     @Override

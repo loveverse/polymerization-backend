@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Base64;
 import java.util.Collections;
@@ -64,11 +66,19 @@ public class AuthServiceImpl implements AuthService {
         return loginInfoRes;
     }
 
+    @Override
+    public void userLogout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserBO userBO = (LoginUserBO) authentication.getPrincipal();
+        String key = RedisKeyConstant.build(RedisKeyConstant.LOGIN_ID, userBO.getUser().getId().toString());
+        redisUtils.delete(key);
+    }
+
     /**
      * 如果输入是 Base64 编码，则解码；否则返回原字符串
      */
     public String decodeIfBase64(String str) {
-        if (str == null || str.isEmpty()) {
+        if (!StringUtils.hasText(str)) {
             return str;
         }
         try {

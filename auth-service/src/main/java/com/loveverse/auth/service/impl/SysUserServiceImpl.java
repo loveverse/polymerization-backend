@@ -50,7 +50,7 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setPassword(passwordEncoder.encode(sysUserDTO.getPassword()));
         sysUserMapper.insert(sysUser);
         List<Long> roleIds = sysUserDTO.getRoleIds();
-        saveUserRoles(roleIds);
+        saveUserRoles(roleIds, sysUser.getId());
     }
 
     @Transactional
@@ -81,7 +81,7 @@ public class SysUserServiceImpl implements SysUserService {
                 Wrappers.<SysUserRole>lambdaQuery()
                         .eq(SysUserRole::getUserId, sysUser.getId())
         );
-        saveUserRoles(sysUserDTO.getRoleIds());
+        saveUserRoles(sysUserDTO.getRoleIds(), sysUser.getId());
     }
 
 
@@ -136,14 +136,14 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserVOS;
     }
 
-    private void saveUserRoles(List<Long> roleIds) {
+    private void saveUserRoles(List<Long> roleIds, Long userId) {
         // 空列表直接返回
         if (!CollectionUtils.isEmpty(roleIds)) {
             // 创建用户角色关联对象列表
             List<SysUserRole> userRoles = roleIds.stream().map(item -> {
                         SysUserRole sysUserRole = new SysUserRole();
                         //sysUserRole.setId(idGenerator.generateId());
-                        sysUserRole.setUserId(sysUserRole.getId());
+                        sysUserRole.setUserId(userId);
                         sysUserRole.setRoleId(item);
                         //sysUserRole.setCreateTime(LocalDateTime.now());
                         //sysUserRole.setUpdateTime(LocalDateTime.now());

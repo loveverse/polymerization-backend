@@ -31,18 +31,18 @@ import java.io.IOException;
 @ApiSupport(order = 99)
 @RequiredArgsConstructor
 @RestController // 自动将响应转换为 json 格式
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
     private final AuthService authService;
     private final RedisUtils redisUtils;
 
-    @PostMapping("/v1/register")
+    @PostMapping("/register")
     public ResponseData<Void> register() {
         return null;
     }
 
     @Operation(summary = "系统用户登录", description = "需要使用 Base64 编码,兼容传输明文密码")
-    @PostMapping("/v1/login")
+    @PostMapping("/login")
     public ResponseData<UserLoginVO> login(@RequestBody @Valid UserLoginDTO loginInfoReq) {
         UserLoginVO loginInfoRes = authService.userLogin(loginInfoReq);
         return ResponseCode.SUCCESS.getResponse(loginInfoRes);
@@ -60,7 +60,7 @@ public class AuthController {
                     schema = @Schema(type = "string", format = "binary")
             )
     )})
-    @GetMapping(value = "/v1/captcha/{uuid}", produces = "image/jpeg") // Todo 指定 produces 没有效果，接口未作校验，可能导致频繁刷新验证码
+    @GetMapping(value = "/captcha/{uuid}", produces = "image/jpeg") // Todo 指定 produces 没有效果，接口未作校验，可能导致频繁刷新验证码
     public void captcha(HttpServletResponse response,
                         @PathVariable("uuid") String uuid,
                         @RequestParam(value = "w", defaultValue = "200") int w,
@@ -76,8 +76,9 @@ public class AuthController {
         lineCaptcha.write(response.getOutputStream());
     }
 
-    @PostMapping("/v1/logout")
+    @PostMapping("/logout")
     public ResponseData<Void> logout() {
+        authService.userLogout();
         return ResponseCode.SUCCESS.getResponse("退出登录成功");
     }
 

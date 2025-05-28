@@ -17,8 +17,8 @@ import org.mapstruct.ReportingPolicy;
  * @author love
  * @since 2025/5/24 11:27
  */
-@Mapper(componentModel = "spring"
-        //unmappedSourcePolicy = ReportingPolicy.IGNORE // 全局忽略未映射的源字段
+@Mapper(componentModel = "spring",
+        unmappedSourcePolicy = ReportingPolicy.IGNORE // 全局忽略未映射的源字段
 )
 public interface SystemConverter {
     //@Mapping(target = "createTime", ignore = true)
