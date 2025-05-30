@@ -1,17 +1,18 @@
 package com.loveverse.auth.util;
 
 import com.loveverse.auth.bo.LoginUserBO;
-
-import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.config.JwtProperties;
+import com.loveverse.auth.entity.SysUser;
+import com.loveverse.core.exception.BadRequestException;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import javax.security.auth.login.CredentialException;
+import javax.security.auth.login.CredentialExpiredException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,40 +30,22 @@ public class JwtTokenUtil {
     private final JwtProperties jwtProperties;
 
     /**
-     * 生成token过期时间，返回Date
+     * 生成token过期时间，返回Date,设置是毫秒，需要乘1000
      *
      * @return date
      */
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + jwtProperties.getExpireTime());
-    }
-
-    /**
-     * 解析token中负载信息
-     *
-     * @param token
-     * @return
-     */
-    public Claims getClaimsFromToken(String token) {
-        Claims claims = null;
-        try {
-            claims = Jwts.parser()
-                    .setSigningKey(jwtProperties.getSecret())
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            log.info("JWT格式验证失败：{}", token);
-        }
-        return claims;
+        return new Date(System.currentTimeMillis() + jwtProperties.getExpireTime() * 1000L);
     }
 
     // 生成token
     public String generateToken(LoginUserBO loginUser) {
         Map<String, Object> claims = new HashMap<>();
         SysUser user = loginUser.getUser();
-        Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
+        // 只存放一些基本信息
         claims.put("userId", user.getId().toString());
-        claims.put("authorities", authorities);
+        claims.put("username", user.getUserName());
+        claims.put("authorities", loginUser.getAuthorities());
         return Jwts.builder()
                 .setClaims(claims) // 先设置claims,防止覆盖subject
                 .setSubject(user.getId().toString()) // 再单独修改sub
@@ -83,7 +66,6 @@ public class JwtTokenUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
-
     // 提取过期时间
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -91,45 +73,38 @@ public class JwtTokenUtil {
 
     // 提取声明
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+        final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
-    // 提取所有声明
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtProperties.getSecret())
-                .parseClaimsJws(token)
-                .getBody();
-    }
 
     // 检查token是否过期
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // 解析token并验证
-    public Claims parseToken(String token) {
+    // 提取所有声明
+    public Claims getAllClaimsFromToken(String token) {
         try {
             return Jwts.parser()
                     .setSigningKey(jwtProperties.getSecret())
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            log.error("Token expired", e);
-            throw new RuntimeException("Token expired");
+            log.error("Token已过期", e);
+            throw new BadCredentialsException("Token已过期");
         } catch (UnsupportedJwtException e) {
-            log.error("Token unsupported", e);
-            throw new RuntimeException("Token unsupported");
+            log.error("不支持的Token格式", e);
+            throw new BadCredentialsException("不支持的Token格式");
         } catch (MalformedJwtException e) {
-            log.error("Token malformed", e);
-            throw new RuntimeException("Token malformed");
+            log.error("Token格式错误", e);
+            throw new BadCredentialsException("Token格式错误");
         } catch (SignatureException e) {
-            log.error("Invalid token signature", e);
-            throw new RuntimeException("Invalid token signature");
+            log.error("无效的Token签名", e);
+            throw new BadCredentialsException("无效的Token签名");
         } catch (Exception e) {
-            log.error("Invalid token", e);
-            throw new RuntimeException("Invalid token");
+            log.error("无效的Token", e);
+            throw new BadCredentialsException("无效的Token");
         }
     }
 }

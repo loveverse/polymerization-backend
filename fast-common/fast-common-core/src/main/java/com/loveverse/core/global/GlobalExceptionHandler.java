@@ -124,10 +124,10 @@ public class GlobalExceptionHandler {
             return ResponseCode.SYSTEM_ERROR.getResponse();
         });
         // 通常不会走到这,只有 Error 或者 Throwable 及其子类才会执行(OutOfMemoryError)
-        registerExceptionHandler(Throwable.class, (req, ex) -> {
-            log.error("系统严重错误: {}", req.getRequestURI(), ex);
-            return ResponseCode.UNKNOWN.getResponse("系统严重错误");
-        });
+        //registerExceptionHandler(Throwable.class, (req, ex) -> {
+        //    log.error("系统严重错误: {}", req.getRequestURI(), ex);
+        //    return ResponseCode.UNKNOWN.getResponse("系统严重错误");
+        //});
     }
 
     public <T extends Throwable> void registerExceptionHandler(Class<T> exceptionType, IGlobalExceptionHandler<T> handler) {

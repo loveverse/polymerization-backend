@@ -11,6 +11,7 @@ import com.loveverse.auth.response.SysModuleVO;
 import com.loveverse.auth.response.SysRoleVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
 
 /**
@@ -21,6 +22,8 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE // 全局忽略未映射的源字段
 )
 public interface SystemConverter {
+    SystemConverter INSTANCE = Mappers.getMapper(SystemConverter.class);
+
     //@Mapping(target = "createTime", ignore = true)
     //@Mapping(target = "updateTime", ignore = true)
     //@Mapping(target = "valid", ignore = true)

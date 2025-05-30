@@ -39,7 +39,10 @@ public class JwtProperties {
     // 令牌密钥,必须使用最少88位的Base64对该令牌进行编码
     private String secret;
 
-    // 令牌过期时间,单位毫秒，默认
-    private long expireTime = 86400000;
+    // 令牌过期时间,单位秒，默认1天
+    private long expireTime = 24 * 60 * 60;
+
+    // 验证码的开关,默认false
+    private Boolean captchaEnable = false;
 
 }

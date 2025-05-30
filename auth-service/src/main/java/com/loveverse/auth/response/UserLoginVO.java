@@ -1,11 +1,10 @@
 package com.loveverse.auth.response;
 
-import com.loveverse.auth.entity.SysMenu;
-import com.loveverse.auth.entity.SysRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author love
@@ -14,15 +13,16 @@ import java.util.List;
 @Data
 @Schema(description = "登录返回信息")
 public class UserLoginVO {
+    @Schema(description = "用户id", example = "1")
+    private Long userId;
 
+    @Schema(description = "访问令牌,需要在请求头添加 Authorization：${token}", example = "a")
     private String token;
 
-    @Schema(description = "用户信息")
-    private SysUserVO user;
+    @Schema(description = "令牌前缀", example = "Bearer")
+    private String tokenPrefix;
 
-    @Schema(description = "用户角色信息列表")
-    private List<SysRole> roles;
+    @Schema(description = "过期时间", example = "86400")
+    private LocalDateTime expireTime;
 
-    @Schema(description = "权限菜单列表")
-    private List<SysMenu> menus;
 }

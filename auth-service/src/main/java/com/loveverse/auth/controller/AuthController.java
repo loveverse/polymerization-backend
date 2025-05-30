@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,10 +42,10 @@ public class AuthController {
         return null;
     }
 
-    @Operation(summary = "系统用户登录", description = "需要使用 Base64 编码,兼容传输明文密码")
+    @Operation(summary = "使用账号密码登录（包含验证码）", description = "使用 Base64 编码,兼容传输明文密码")
     @PostMapping("/login")
-    public ResponseData<UserLoginVO> login(@RequestBody @Valid UserLoginDTO loginInfoReq) {
-        UserLoginVO loginInfoRes = authService.userLogin(loginInfoReq);
+    public ResponseData<UserLoginVO> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+        UserLoginVO loginInfoRes = authService.userLogin(userLoginDTO);
         return ResponseCode.SUCCESS.getResponse(loginInfoRes);
     }
 
@@ -82,10 +83,11 @@ public class AuthController {
         return ResponseCode.SUCCESS.getResponse("退出登录成功");
     }
 
-    @Deprecated
+    //@Deprecated
     @Operation(summary = "测试", deprecated = true)
     @GetMapping(value = "/test", produces = "image/jpeg")   // Todo 没有参数指定在文档有效果
     public ResponseData<String> hello() {
-        return ResponseCode.SUCCESS.getResponse("测试指定返回类型", "hello");
+        throw new BadCredentialsException("手动触发认证异常");
+        //return ResponseCode.SUCCESS.getResponse("测试指定返回类型", "hello");
     }
 }

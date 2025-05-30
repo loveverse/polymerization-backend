@@ -21,10 +21,15 @@ public class UserLoginDTO {
     private String password;
 
     @Schema(description = "验证码", example = "1234")
-    @NotBlank(message = "验证码不能为空")
+    @NotBlank(message = "验证码不能为空", groups = CaptchaEnableGroup.class)
     private String captchaCode;
 
     @Schema(description = "uuid", example = "")
-    @NotBlank(message = "uuid不能为空")
+    @NotBlank(message = "uuid不能为空", groups = CaptchaEnableGroup.class)
     private String captchaKey;
+
+    // 开启验证码校验的分组
+    public interface CaptchaEnableGroup {
+
+    }
 }

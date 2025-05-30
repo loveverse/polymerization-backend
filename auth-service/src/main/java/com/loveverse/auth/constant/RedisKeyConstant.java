@@ -12,6 +12,9 @@ public final class RedisKeyConstant {
 
     public static final String CAPTCHA_UUID = PREFIX + ":captcha:%s";
 
+    // 用户权限组合
+    public static final String USER_PERMS = PREFIX + ":perms:%s";
+
     public static String build(String pattern, Object... args) {
         if (args == null) {
             return pattern;

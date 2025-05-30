@@ -1,13 +1,13 @@
 package com.loveverse.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.loveverse.auth.bo.LoginUserBO;
 import com.loveverse.auth.config.JwtProperties;
 import com.loveverse.auth.constant.RedisKeyConstant;
-import com.loveverse.auth.bo.LoginUserBO;
-import com.loveverse.auth.request.UserLoginDTO;
-import com.loveverse.auth.response.UserLoginVO;
-import com.loveverse.auth.response.SysUserVO;
 import com.loveverse.auth.password.CaptchaAuthenticationToken;
+import com.loveverse.auth.request.UserLoginDTO;
+import com.loveverse.auth.response.SysUserVO;
+import com.loveverse.auth.response.UserLoginVO;
 import com.loveverse.auth.service.AuthService;
 import com.loveverse.auth.util.JwtTokenUtil;
 import com.loveverse.redis.util.RedisUtils;
@@ -19,8 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
-import java.util.Collections;
+import java.util.Date;
 
 /**
  * @author love
@@ -49,20 +51,20 @@ public class AuthServiceImpl implements AuthService {
 
         // 认证成功，通过 userId 生成 token
         LoginUserBO loginUser = (LoginUserBO) authenticate.getPrincipal();   // 获取用户信息
-        //authenticate.getAuthorities()
-        String userId = loginUser.getUser().getId().toString();
+        Long userId = loginUser.getUser().getId();
         String token = jwtTokenUtil.generateToken(loginUser);
-        // 将用户信息存到 redis
-        String key = RedisKeyConstant.build(RedisKeyConstant.LOGIN_ID, userId);
-        redisUtils.set(key, loginUser, jwtProperties.getExpireTime() / 1000);
+        // 将用户信息存到 redis，以userId作为key
+        String key = RedisKeyConstant.build(RedisKeyConstant.LOGIN_ID, userId.toString());
+        redisUtils.set(key, loginUser, jwtProperties.getExpireTime());
         // 返回用户信息、token、角色列表、权限菜单列表
-        SysUserVO systemUserDto = new SysUserVO();
-        BeanUtil.copyProperties(loginUser.getUser(), systemUserDto, "password");
         UserLoginVO loginInfoRes = new UserLoginVO();
-        loginInfoRes.setUser(systemUserDto);
         loginInfoRes.setToken(token);
-        loginInfoRes.setMenus(Collections.emptyList());
-        loginInfoRes.setRoles(Collections.emptyList());
+        loginInfoRes.setUserId(userId);
+        loginInfoRes.setTokenPrefix(jwtProperties.getPrefix());
+
+        Date date = jwtTokenUtil.extractExpiration(token);
+        LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        loginInfoRes.setExpireTime(localDateTime);
         return loginInfoRes;
     }
 

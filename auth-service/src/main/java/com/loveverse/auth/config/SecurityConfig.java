@@ -3,6 +3,9 @@ package com.loveverse.auth.config;
 //import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
 
 import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
+import com.loveverse.auth.handler.AccessDeniedHandlerImpl;
+import com.loveverse.auth.handler.AuthenticationEntryPointImpl;
+import io.undertow.servlet.handlers.ServletPathMatches;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +20,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,6 +36,7 @@ import java.util.Collections;
 
 /**
  * @author love
+ * @description Spring Security 的过滤器链在 Spring MVC 的 DispatcherServlet 之前执行，在 Spring MVC 配置的跨域无法作用到 Spring Security
  * @since 2025/4/23
  */
 @Configuration
@@ -38,6 +45,8 @@ import java.util.Collections;
 public class SecurityConfig {
 
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     // securityFilterChain 使用时才初始化 / 创建单独的配置类
     @Lazy
@@ -66,25 +75,40 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
                 // 必须先禁用csrf才能使用antMatchers
                 .csrf().disable()
                 // 禁用默认 session，使用 token 设置无状态会话
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .antMatchers("/**").permitAll()
-                        //.antMatchers("/auth-api/auth/v1/login").permitAll()
-                        //.antMatchers("/auth-api/auth/test").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        // 放行预检请求
+                        .requestMatchers(request -> HttpMethod.OPTIONS.matches(request.getMethod())).permitAll()
+                        /**
+                         * Spring Security 的 requestMatchers 是在应用上下文路径之后进行匹配的。
+                         * 当请求到达时，首先会去掉 context-path (/auth-api)
+                         * 然后剩下的路径 (/v1/auth/captcha) 才会被用来与 Security 的匹配器比较
+                         * 免登录的页面（不能加/auth-api前缀）
+                         */
+                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/test")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/captcha")).permitAll()
+                        // 放行静态资源
+                        .requestMatchers(new AntPathRequestMatcher("/doc.html")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/webjars/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v3/**")).permitAll()
+                        //.antMatchers("/**").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable) // 禁用默认表单登录
                 .httpBasic(AbstractHttpConfigurer::disable) // 禁用 Basic Auth
                 .authenticationProvider(authenticationProvider)   // 自定义身份验证逻辑
 
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(accessDeniedHandler)
+                        .authenticationEntryPoint(authenticationEntryPoint));
+
         return http.build();
     }
 
