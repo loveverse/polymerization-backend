@@ -31,13 +31,13 @@ public class JwtProperties {
     * */
 
     // 令牌名称
-    private String header;
+    private String header = "Authorization";
 
     // 令牌前缀
-    private String prefix;
+    private String prefix = "Bearer";
 
     // 令牌密钥,必须使用最少88位的Base64对该令牌进行编码
-    private String secret;
+    private String secret = "ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=";
 
     // 令牌过期时间,单位秒，默认1天
     private long expireTime = 24 * 60 * 60;

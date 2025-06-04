@@ -1,11 +1,6 @@
 package com.loveverse.auth.config;
 
-//import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
-
 import com.loveverse.auth.filter.JwtAuthenticationTokenFilter;
-import com.loveverse.auth.handler.AccessDeniedHandlerImpl;
-import com.loveverse.auth.handler.AuthenticationEntryPointImpl;
-import io.undertow.servlet.handlers.ServletPathMatches;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +9,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
@@ -40,11 +36,12 @@ import java.util.Collections;
  * @since 2025/4/23
  */
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity   // 启用注解机制的安全确认
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
@@ -84,30 +81,39 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 放行预检请求
                         .requestMatchers(request -> HttpMethod.OPTIONS.matches(request.getMethod())).permitAll()
-                        /**
+                        /*
                          * Spring Security 的 requestMatchers 是在应用上下文路径之后进行匹配的。
                          * 当请求到达时，首先会去掉 context-path (/auth-api)
                          * 然后剩下的路径 (/v1/auth/captcha) 才会被用来与 Security 的匹配器比较
                          * 免登录的页面（不能加/auth-api前缀）
                          */
-                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/login")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/test")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/captcha")).permitAll()
                         // 放行静态资源
                         .requestMatchers(new AntPathRequestMatcher("/doc.html")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/webjars/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v3/**")).permitAll()
+
+                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/test")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v1/auth/captcha/*")).permitAll()
+
                         //.antMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable) // 禁用默认表单登录
                 .httpBasic(AbstractHttpConfigurer::disable) // 禁用 Basic Auth
                 .authenticationProvider(authenticationProvider)   // 自定义身份验证逻辑
 
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(accessDeniedHandler)
-                        .authenticationEntryPoint(authenticationEntryPoint));
+                        .authenticationEntryPoint(authenticationEntryPoint) // 处理认证失败
+                        .accessDeniedHandler(accessDeniedHandler))
+                /*
+                 * 为什么使用 AuthorizationFilter 而不是 UsernamePasswordAuthenticationFilter ？
+                 * 1. 如果TokenFilter 在 UsernamePasswordAuthenticationFilter 前，但请求并不是 /login，这时，TokenFilter 异常不会被 ExceptionTranslationFilter 捕获，因为他还没执行，直接导致 Spring 抛出 500
+                 * 2. AuthorizationFilter 会检查 SecurityContextHolder 中是否存在 Authentication 对象；JWT 鉴权的核心任务就是提前构建这个 Authentication，所以必须 在它执行之前 做好 JWT 校验
+                 * 3. SpringSecurity 默认使用 ExceptionTranslationFilter 处理认证异常（401）和授权异常（403），它的位置在 AuthorizationFilter 前面，所以 TokenFilter 不能太靠前，否则异常不会被 ExceptionTranslationFilter 处理
+                 */
+                .addFilterBefore(jwtAuthenticationTokenFilter, AuthorizationFilter.class); // 处理权限不足
 
         return http.build();
     }

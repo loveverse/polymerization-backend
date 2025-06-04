@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+import sun.security.util.Debug;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,17 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *
  * @author love
+ * @description 用来解决匿名用户访问无权限资源时的异常
  * @since 2025/5/14 17:38
- * @description 访问一个需要认证的 URL 资源，但是此时自己尚未认证（登录）的情况下,调用此类
  */
 @Component
 @Slf4j
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.warn(authException.getMessage(),"888");
-        response.getWriter().write(JSONUtil.toJsonStr(ResponseCode.BAD_REQUEST.getResponse(authException.getMessage())));
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        log.warn("用户未登录:{}", authException.getMessage());
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JSONUtil.toJsonStr(ResponseCode.NOT_LOGIN.getResponse(authException.getMessage())));
     }
 }

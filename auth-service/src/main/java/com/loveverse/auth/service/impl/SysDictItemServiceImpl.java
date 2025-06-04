@@ -1,5 +1,6 @@
 package com.loveverse.auth.service.impl;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.loveverse.auth.entity.SysDict;
 import com.loveverse.auth.entity.SysDictItem;
@@ -44,6 +45,7 @@ public class SysDictItemServiceImpl implements SysDictItemService {
     @Override
     public void updateDictItem(SysDictItemDTO sysDictItemDTO) {
         SysDictItem data = sysDictItemMapper.selectById(sysDictItemDTO.getId());
+
         if (data == null) {
             throw new BadRequestException("不存在该字典项");
         }

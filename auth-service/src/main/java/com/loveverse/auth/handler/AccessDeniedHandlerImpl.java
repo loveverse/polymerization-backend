@@ -14,15 +14,16 @@ import java.io.IOException;
 
 /**
  * @author love
+ * @description 用来解决认证过的用户访问无权限资源时的异常
  * @since 2025/5/30 8:35
- * @description 用户尝试访问受保护资源时出现的身份异常，在身份验证失败时被调用
  */
 @Component
 @Slf4j
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.warn(accessDeniedException.getMessage(),"888");
-        response.getWriter().write(JSONUtil.toJsonStr(ResponseCode.BAD_REQUEST.getResponse(accessDeniedException.getMessage())));
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+        log.warn("无权限访问: {}", accessDeniedException.getMessage());
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JSONUtil.toJsonStr(ResponseCode.NOT_LOGIN.getResponse(accessDeniedException.getMessage())));
     }
 }

@@ -115,19 +115,12 @@ actable:
   unique:
     prefix: uni_
 
-jwt:
-  header: Authorization
-  expire-time: 86400 # 单位秒,默认一天
-  secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
-  prefix: Bearer
-  captchaEnable: false
-
 knife4j:
   # 开启knife4j，无需添加 @EnableKnife4j 注解
   enable: true
   setting:
     language: zh-CN # 中文
-
+#
 #logging:
 #  level:
 #    org.springframework.security: DEBUG

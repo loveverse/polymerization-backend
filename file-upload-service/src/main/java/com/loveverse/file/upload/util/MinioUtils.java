@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.loveverse.core.exception.ServerException;
 import com.loveverse.file.upload.config.MinioConfig;
 import com.loveverse.file.upload.exception.FileException;
+import com.loveverse.file.upload.exception.MinioException;
 import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -46,7 +47,7 @@ public class MinioUtils {
                 log.info("创建桶{}成功", bucketName);
             } catch (Exception e) {
                 log.error("创建桶失败：{}", e.getMessage());
-                throw new ServerException("创建桶失败：{}", e.getMessage());
+                throw new MinioException("创建桶失败：{}", e.getMessage());
             }
         } else {
             log.info("名为：{} 的桶已存在！", bucketName);

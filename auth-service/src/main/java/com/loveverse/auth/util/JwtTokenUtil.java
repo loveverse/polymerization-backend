@@ -3,16 +3,16 @@ package com.loveverse.auth.util;
 import com.loveverse.auth.bo.LoginUserBO;
 import com.loveverse.auth.config.JwtProperties;
 import com.loveverse.auth.entity.SysUser;
-import com.loveverse.core.exception.BadRequestException;
+import com.loveverse.auth.exception.JwtAuthenticationException;
+import com.loveverse.auth.exception.JwtTokenExpiredException;
+import com.loveverse.auth.exception.JwtTokenInvalidException;
+import com.sun.javafx.geom.transform.SingularMatrixException;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.login.CredentialException;
-import javax.security.auth.login.CredentialExpiredException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,6 @@ import java.util.function.Function;
  * @since 2025/4/19
  */
 @Getter
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenUtil {
@@ -91,20 +90,11 @@ public class JwtTokenUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            log.error("Token已过期", e);
-            throw new BadCredentialsException("Token已过期");
-        } catch (UnsupportedJwtException e) {
-            log.error("不支持的Token格式", e);
-            throw new BadCredentialsException("不支持的Token格式");
-        } catch (MalformedJwtException e) {
-            log.error("Token格式错误", e);
-            throw new BadCredentialsException("Token格式错误");
-        } catch (SignatureException e) {
-            log.error("无效的Token签名", e);
-            throw new BadCredentialsException("无效的Token签名");
-        } catch (Exception e) {
-            log.error("无效的Token", e);
-            throw new BadCredentialsException("无效的Token");
+            throw new JwtTokenExpiredException("Token已过期", e);
+        } catch (UnsupportedJwtException | MalformedJwtException | SingularMatrixException e) {
+            throw new JwtTokenInvalidException("无效的Token签名", e);
+        } catch (IllegalArgumentException e) {
+            throw new JwtAuthenticationException("Token不能为空", e);
         }
     }
 }

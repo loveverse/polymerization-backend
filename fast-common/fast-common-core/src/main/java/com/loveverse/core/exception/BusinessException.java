@@ -1,12 +1,5 @@
 package com.loveverse.core.exception;
 
-import lombok.extern.slf4j.Slf4j;
-
-/**
- * @author love
- * @since 2025/4/3
- */
-@Slf4j
 public abstract class BusinessException extends RuntimeException {
 
     public BusinessException(String message, Object... args) {

@@ -6,7 +6,7 @@ package com.loveverse.core.exception;
  * @author love
  * @since 2025/4/8
  */
-public class ServerException extends RuntimeException {
+public abstract class ServerException extends RuntimeException {
 
     /**
      * 构造函数，支持格式化消息

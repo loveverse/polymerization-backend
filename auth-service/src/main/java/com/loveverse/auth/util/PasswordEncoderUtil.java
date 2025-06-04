@@ -1,6 +1,9 @@
 package com.loveverse.auth.util;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.DigestUtils;
+
+import java.util.Arrays;
 
 /**
  * @author love
@@ -14,8 +17,8 @@ public class PasswordEncoderUtil implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {
-        // 重写加密逻辑
-        return "";
+        // 重写加密逻辑，使用md5加密
+        return Arrays.toString(DigestUtils.md5Digest(rawPassword.toString().getBytes()));
     }
 
     @Override

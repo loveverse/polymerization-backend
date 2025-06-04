@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableResourceServer
+@EnableWebSecurity
 //@EnableTransactionManagement(proxyTargetClass = true)
 @MapperScan(value = {"com.gitee.sunchenbin.mybatis.actable.dao.*", "com.loveverse.auth.mapper"})
 // 扫描Actable包，不手动指定包会找不到

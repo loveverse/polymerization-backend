@@ -1,9 +1,9 @@
-package com.loveverse.auth.base;
+package com.loveverse.auth.service.impl;
 
 
+import com.loveverse.auth.config.JwtProperties;
 import com.loveverse.auth.constant.RedisKeyConstant;
 import com.loveverse.auth.password.CaptchaAuthenticationToken;
-import com.loveverse.auth.service.impl.UserDetailsServiceImpl;
 import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.redis.util.RedisUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class AuthenticationProviderImpl implements AuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final RedisUtils redisUtils;
+
+    private final JwtProperties jwtProperties;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -36,7 +38,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadRequestException("用户名或密码错误");
         }
-        if (authentication instanceof CaptchaAuthenticationToken) {
+        if (authentication instanceof CaptchaAuthenticationToken && jwtProperties.getCaptchaEnable()) {
             String captchaKey = ((CaptchaAuthenticationToken) authentication).getCaptchaKey();
             String captchaCode = ((CaptchaAuthenticationToken) authentication).getCaptchaCode();
             String key = RedisKeyConstant.build(RedisKeyConstant.CAPTCHA_UUID, captchaKey);

@@ -85,9 +85,9 @@ public class AuthController {
 
     //@Deprecated
     @Operation(summary = "测试", deprecated = true)
-    @GetMapping(value = "/test", produces = "image/jpeg")   // Todo 没有参数指定在文档有效果
+    @GetMapping(value = "/test"/*, produces = "image/jpeg"*/)   // Todo 没有参数指定在文档有效果
     public ResponseData<String> hello() {
-        throw new BadCredentialsException("手动触发认证异常");
-        //return ResponseCode.SUCCESS.getResponse("测试指定返回类型", "hello");
+        //throw new BadCredentialsException("手动触发认证异常");
+        return ResponseCode.SUCCESS.getResponse("测试指定返回类型", "hello");
     }
 }

@@ -3,10 +3,14 @@ package com.loveverse.auth.filter;
 import com.loveverse.auth.bo.LoginUserBO;
 import com.loveverse.auth.config.JwtProperties;
 import com.loveverse.auth.constant.RedisKeyConstant;
+import com.loveverse.auth.exception.JwtAuthenticationException;
+import com.loveverse.auth.exception.JwtTokenExpiredException;
+import com.loveverse.auth.exception.JwtTokenInvalidException;
 import com.loveverse.auth.util.JwtTokenUtil;
-import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.redis.util.RedisUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +31,7 @@ import java.util.Objects;
  * @since 2025/4/28
  */
 @RequiredArgsConstructor
+@Slf4j
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -36,19 +41,20 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final RedisUtils redisUtils;
 
+
     @Override
+    //@SuppressWarnings("NullableProblems")
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         // 获取请求头中token（Authorization）字段
         String authToken = request.getHeader(jwtProperties.getHeader());
         if (!StringUtils.hasText(authToken)) {
-            filterChain.doFilter(request, response); // 放行（可能后续过滤器会处理认证）
+            filterChain.doFilter(request, response); // 没有 token 直接放行（可能后续过滤器会处理认证）
             // 终止过滤器链，不再执行后面逻辑
             return;
         }
-        // 兼容前端没携带 Bearer 前缀
+        // 存在 token，兼容前端没携带 Bearer 前缀
         String token = authToken.replace(jwtProperties.getPrefix(), "").trim();
-
-        // 解析出用户id
         String userId = jwtTokenUtil.extractUserId(token);
         String key = RedisKeyConstant.build(RedisKeyConstant.LOGIN_ID, userId);
         LoginUserBO loginUser = redisUtils.get(key);
@@ -60,8 +66,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
         filterChain.doFilter(request, response);
-
     }
 }
