@@ -17,11 +17,13 @@ COMMIT;
 
 BEGIN;
 INSERT INTO `sys_dict`
-values (1, 'sex_type', '性别类型', null, NOW(), NOW(), 1, 1);
+values (1, 'sex_type', '性别类型', NOW(), NOW(), 1, 1, NULL);
 INSERT INTO `sys_dict`
-values (2, 'user_status_type', '用户状态', null, NOW(), NOW(), 1, 1);
+values (2, 'user_status_type', '用户状态', NOW(), NOW(), 1, 1, NULL);
 INSERT INTO `sys_dict`
-values (3, 'common_status_type', '通用状态', null, NOW(), NOW(), 1, 1);
+values (3, 'common_status_type', '通用状态', NOW(), NOW(), 1, 1, NULL);
+INSERT INTO `sys_dict`
+values (4, 'menu_type', '菜单类型', NOW(), NOW(), 1, 1, NULL);
 COMMIT;
 
 BEGIN;
@@ -33,4 +35,12 @@ INSERT INTO `sys_dict_item`
 values (3, 2, '0', '停用', 0, NOW(), NOW(), 1, 1);
 INSERT INTO `sys_dict_item`
 values (4, 2, '1', '启用', 0, NOW(), NOW(), 1, 1);
+INSERT INTO `sys_dict_item`
+values (5, 4, '0', '目录', 0, NOW(), NOW(), 1, 1);
+INSERT INTO `sys_dict_item`
+values (6, 4, '1', '菜单', 0, NOW(), NOW(), 1, 1);
+INSERT INTO `sys_dict_item`
+values (7, 4, '2', '按钮', 0, NOW(), NOW(), 1, 1);
+INSERT INTO `sys_dict_item`
+values (8, 4, '3', '模块', 0, NOW(), NOW(), 1, 1);
 COMMIT;

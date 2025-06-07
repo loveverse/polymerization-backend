@@ -21,13 +21,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "sys_menu", comment = "菜单权限表")
 public class SysMenu extends BaseEntity {
     @TableId(type = IdType.AUTO)
-    @Column(isAutoIncrement = true, isKey = true, comment = "id")
+    @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
+
+    @Column(comment = "模块id", isNull = false)
+    private Long moduleId;
 
     @Column(comment = "菜单名称", length = 32, isNull = false)
     private String menuName;
 
-    @Column(comment = "路由路径（全路径）", length = 128, isNull = false)
+    @Column(comment = "路由路径（全路径）", length = 128)
     private String path;
 
     @Column(comment = "菜单类型：0-目录，1-菜单，2-按钮", length = 30, isNull = false, defaultValue = "0")
@@ -47,6 +50,5 @@ public class SysMenu extends BaseEntity {
 
     @Column(comment = "排序值", isNull = false, defaultValue = "0")
     private Integer sortOrder;
-
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface SysDictService {
     void createDict(SysDictDTO sysDictDto);
 
-    void deleteDict(String id);
+    void deleteDict(Long id);
 
     void updateDict(SysDictDTO sysDictDto);
 

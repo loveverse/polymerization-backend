@@ -12,7 +12,7 @@ import java.util.List;
 public interface SysModuleService  {
     void createModule(SysModuleDTO sysModuleReqDTO);
 
-    void deleteModule(String id);
+    void deleteModule(Long id);
 
     void updateModule(SysModuleDTO sysModuleReqDTO);
 

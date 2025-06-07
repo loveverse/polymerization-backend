@@ -13,11 +13,11 @@ import java.util.List;
 public interface SysDictItemService {
     void createDictItem(SysDictItemDTO sysDictDto);
 
-    void deleteDictItem(String id);
+    void deleteDictItem(Long id);
 
     void updateDictItem(SysDictItemDTO sysDictDto);
 
-    List<SysDictItemVO> queryDictItemList(String dictId);
+    List<SysDictItemVO> queryDictItemList(Long dictId);
 
-    DictCollectionVO queryDictItemsByModuleId(String moduleId);
+    DictCollectionVO queryDictItemsByModuleId(Long moduleId);
 }

@@ -27,7 +27,7 @@ public class SysModuleController {
     private final SysModuleService sysModuleService;
 
     @Operation(summary = "新增模块")
-    @HasPermission("sys:module:add")
+    //@HasPermission("sys:module:add")
     @PostMapping("/create")
     public ResponseData<Void> createModule(@Validated(ValidGroup.Create.class) @RequestBody SysModuleDTO sysModuleReqDTO) {
         sysModuleService.createModule(sysModuleReqDTO);
@@ -37,7 +37,7 @@ public class SysModuleController {
     @Operation(summary = "删除模块")
     @HasPermission("sys:module:delete")
     @DeleteMapping("/delete")
-    public ResponseData<Void> deleteModules(@RequestParam("id") String id) {
+    public ResponseData<Void> deleteModules(@RequestParam("id") Long id) {
         sysModuleService.deleteModule(id);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }

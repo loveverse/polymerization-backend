@@ -46,7 +46,7 @@ public class SysDictController {
     @Operation(summary = "删除字典")
     @HasPermission("sys:dict:delete")
     @DeleteMapping("/delete")
-    public ResponseData<Void> deleteDict(@RequestParam("id") String id) {
+    public ResponseData<Void> deleteDict(@RequestParam("id") Long id) {
         sysDictService.deleteDict(id);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }
@@ -77,7 +77,7 @@ public class SysDictController {
     @Operation(summary = "删除字典项")
     @HasPermission("sys:dict:delete")
     @DeleteMapping("/dict-item/delete")
-    public ResponseData<Void> deleteDictItem(@RequestParam("id") String id) {
+    public ResponseData<Void> deleteDictItem(@RequestParam("id") Long id) {
         sysDictItemService.deleteDictItem(id);
         return ResponseCode.SUCCESS.getResponse("删除成功");
     }
@@ -92,7 +92,7 @@ public class SysDictController {
 
     @Operation(summary = "字典项列表")
     @GetMapping("/dict-item/list")
-    public ResponseData<List<SysDictItemVO>> getDictItemList(@RequestParam(required = false) String dictId) {
+    public ResponseData<List<SysDictItemVO>> getDictItemList(@RequestParam(required = false) Long dictId) {
         List<SysDictItemVO> dictItemList = sysDictItemService.queryDictItemList(dictId);
         return ResponseCode.SUCCESS.getResponse(dictItemList);
     }
@@ -112,7 +112,7 @@ public class SysDictController {
 
     @Operation(summary = "获取字典项集合", description = "根据模块id获取，不传则获取所有的")
     @GetMapping("/dict-items")
-    public ResponseData<DictCollectionVO> queryDictItemsByModuleId(@RequestParam(required = false) String moduleId) {
+    public ResponseData<DictCollectionVO> queryDictItemsByModuleId(@RequestParam(required = false) Long moduleId) {
         DictCollectionVO dictCollectionVO = sysDictItemService.queryDictItemsByModuleId(moduleId);
         return ResponseCode.SUCCESS.getResponse(dictCollectionVO);
     }

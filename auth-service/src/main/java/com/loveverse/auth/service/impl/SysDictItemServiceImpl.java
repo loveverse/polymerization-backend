@@ -38,14 +38,13 @@ public class SysDictItemServiceImpl implements SysDictItemService {
     }
 
     @Override
-    public void deleteDictItem(String id) {
+    public void deleteDictItem(Long id) {
         sysDictItemMapper.deleteById(id);
     }
 
     @Override
     public void updateDictItem(SysDictItemDTO sysDictItemDTO) {
         SysDictItem data = sysDictItemMapper.selectById(sysDictItemDTO.getId());
-
         if (data == null) {
             throw new BadRequestException("不存在该字典项");
         }
@@ -55,9 +54,9 @@ public class SysDictItemServiceImpl implements SysDictItemService {
 
 
     @Override
-    public List<SysDictItemVO> queryDictItemList(String dictId) {
+    public List<SysDictItemVO> queryDictItemList(Long dictId) {
         List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(
-                Wrappers.<SysDictItem>lambdaQuery().eq(StringUtils.hasText(dictId), SysDictItem::getDictId, dictId));
+                Wrappers.<SysDictItem>lambdaQuery().eq(dictId != null, SysDictItem::getDictId, dictId));
         return Optional.ofNullable(sysDictItemList).orElse(Collections.emptyList()).stream().map(item -> {
             SysDictItemVO sysDictItemVO = new SysDictItemVO();
             BeanUtils.copyProperties(item, sysDictItemVO);
@@ -66,9 +65,9 @@ public class SysDictItemServiceImpl implements SysDictItemService {
     }
 
     @Override
-    public DictCollectionVO queryDictItemsByModuleId(String moduleId) {
+    public DictCollectionVO queryDictItemsByModuleId(Long moduleId) {
         List<SysDict> sysDictList = sysDictMapper.selectList(
-                Wrappers.<SysDict>lambdaQuery().eq(StringUtils.hasText(moduleId), SysDict::getModuleId, moduleId));
+                Wrappers.<SysDict>lambdaQuery().eq(moduleId != null, SysDict::getModuleId, moduleId));
         if (CollectionUtils.isEmpty(sysDictList)) {
             return new DictCollectionVO();
         }

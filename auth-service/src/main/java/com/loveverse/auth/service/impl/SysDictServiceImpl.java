@@ -34,7 +34,7 @@ public class SysDictServiceImpl implements SysDictService {
     }
 
     @Override
-    public void deleteDict(String id) {
+    public void deleteDict(Long id) {
         sysDictMapper.deleteById(id);
     }
 

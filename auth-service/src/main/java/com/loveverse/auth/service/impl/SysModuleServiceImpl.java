@@ -46,7 +46,7 @@ public class SysModuleServiceImpl implements SysModuleService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteModule(String id) {
+    public void deleteModule(Long id) {
         sysModuleMapper.deleteById(id);
         List<SysDict> sysDictList = sysDictMapper.selectList(Wrappers.<SysDict>lambdaUpdate().eq(SysDict::getModuleId, id));
         if (!CollectionUtils.isEmpty(sysDictList)) {

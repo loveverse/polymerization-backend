@@ -23,6 +23,9 @@ public class SysModuleVO extends BaseVO {
     @Schema(description = "模块key")
     private String moduleValue;
 
+    @Schema(description = "模块图标")
+    private String moduleIcon;
+
     @Schema(description = "模块配置")
     private String moduleConfig;
 

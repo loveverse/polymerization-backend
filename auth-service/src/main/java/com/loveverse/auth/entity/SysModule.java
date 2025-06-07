@@ -32,6 +32,9 @@ public class SysModule extends BaseEntity {
     @Unique(value = "module_value", columns = {"module_value", "valid"})
     private String moduleValue;
 
+    @Column(comment = "模块图标")
+    private String moduleIcon;
+
     @Column(comment = "模块配置")
     private String moduleConfig;
 

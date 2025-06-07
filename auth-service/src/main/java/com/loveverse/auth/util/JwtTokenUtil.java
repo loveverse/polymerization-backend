@@ -91,7 +91,7 @@ public class JwtTokenUtil {
                     .getBody();
         } catch (ExpiredJwtException e) {
             throw new JwtTokenExpiredException("Token已过期", e);
-        } catch (UnsupportedJwtException | MalformedJwtException | SingularMatrixException e) {
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException e) {
             throw new JwtTokenInvalidException("无效的Token签名", e);
         } catch (IllegalArgumentException e) {
             throw new JwtAuthenticationException("Token不能为空", e);
