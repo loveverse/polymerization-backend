@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Unique;
 import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class SysRole extends BaseEntity {
     @Column(comment = "角色名称", length = 128, isNull = false)
     private String roleName;
 
+    @Unique(value = "role_key")
     @Column(comment = "角色权限字符串", length = 100)
     private String roleKey;
 

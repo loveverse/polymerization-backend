@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * @author love
  * @since 2025/5/19 15:00
@@ -27,4 +29,8 @@ public class SysRoleVO extends BaseVO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "角色状态：0-停用，1-正常,默认1")
     private Integer status;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "菜单 id 列表")
+    private List<Long> menuIds;
 }

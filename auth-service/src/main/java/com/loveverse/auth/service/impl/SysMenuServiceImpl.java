@@ -31,6 +31,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     private final SysMenuMapper sysMenuMapper;
     private final SysRoleMenuMapper sysRoleMenuMapper;
 
+
     @Override
     public void createMenu(SysMenuDTO sysMenuDTO) {
         Long parentId = sysMenuDTO.getParentId();
@@ -88,6 +89,15 @@ public class SysMenuServiceImpl implements SysMenuService {
         }).collect(Collectors.toList());
         // 创建菜单没带 parentId 默认为 0
         return TreeUtils.buildTree(menuVOS, SysMenuVO::getId, SysMenuVO::getParentId, SysMenuVO::setChildren, 0L);
+    }
 
+    @Override
+    public List<SysMenuVO> flatMenuListByModuleId(Long moduleId) {
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getModuleId, moduleId));
+        return sysMenus.stream().map(item -> {
+            SysMenuVO sysMenuVO = new SysMenuVO();
+            BeanUtils.copyProperties(item, sysMenuVO);
+            return sysMenuVO;
+        }).collect(Collectors.toList());
     }
 }

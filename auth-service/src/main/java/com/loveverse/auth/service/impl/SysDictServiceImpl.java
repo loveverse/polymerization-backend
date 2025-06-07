@@ -50,6 +50,6 @@ public class SysDictServiceImpl implements SysDictService {
     @Override
     public List<SysDictVO> getDictList() {
         List<SysDict> sysDictList = sysDictMapper.selectList(Wrappers.lambdaQuery());
-        return Optional.ofNullable(sysDictList).orElse(Collections.emptyList()).stream().map(systemConverter::convertDictToVO).collect(Collectors.toList());
+        return sysDictList.stream().map(systemConverter::convertDictToVO).collect(Collectors.toList());
     }
 }

@@ -61,10 +61,9 @@ public class SysMenuController {
 
     @Operation(summary = "根据模块id获取菜单列表")
     @Parameters(@Parameter(name = "moduleId", description = "模块id", example = "zt"))
-    @GetMapping("/menu_tree_by_module/{moduleId}")
+    @GetMapping("/menu-tree-by-module/{moduleId}")
     public ResponseData<List<SysMenuVO>> getMenuTreeByModuleId(@PathVariable("moduleId") Long moduleId) {
         List<SysMenuVO> sysMenuVOS = sysMenuService.getMenuTreeByModuleId(moduleId);
-
         return ResponseCode.SUCCESS.getResponse(sysMenuVOS);
     }
 }

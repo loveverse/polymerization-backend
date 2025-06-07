@@ -19,4 +19,6 @@ public interface SysMenuService {
     List<SysMenuVO> getMenuList();
 
     List<SysMenuVO> getMenuTreeByModuleId(Long moduleId);
+
+    List<SysMenuVO> flatMenuListByModuleId(Long moduleId);
 }

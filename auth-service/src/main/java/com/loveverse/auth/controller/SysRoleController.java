@@ -1,7 +1,9 @@
 package com.loveverse.auth.controller;
 
+import com.loveverse.auth.request.SetRoleMenuDTO;
 import com.loveverse.auth.request.SysRoleDTO;
 import com.loveverse.auth.request.SysRolePageDTO;
+import com.loveverse.auth.response.SysMenuVO;
 import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.auth.service.SysRoleService;
 import com.loveverse.core.dto.PageResult;
@@ -73,6 +75,20 @@ public class SysRoleController {
     public ResponseData<List<SysRoleVO>> findRoleListByUserId(@PathVariable("userId") Long userId) {
         List<SysRoleVO> roleList = sysRoleService.findRoleListByUserId(userId);
         return ResponseCode.SUCCESS.getResponse(roleList);
+    }
+
+    @Operation(summary = "根据角色id查询角色的菜单权限信息")
+    @GetMapping("/menu-tree-by-role/{roleId}")
+    public ResponseData<SysRoleVO> getMenuTreeByRoleId(@PathVariable("roleId") Long roleId) {
+        SysRoleVO menuVOS = sysRoleService.getMenuTreeByRoleId(roleId);
+        return ResponseCode.SUCCESS.getResponse(menuVOS);
+    }
+
+    @Operation(summary = "设置角色的菜单权限")
+    @PostMapping("/update-role-permissions")
+    public ResponseData<Void> updateRolePermissions(@Validated @RequestBody SetRoleMenuDTO RoleMenuDTO) {
+        sysRoleService.updateRolePermissions(RoleMenuDTO);
+        return ResponseCode.SUCCESS.getResponse("操作成功");
     }
 
 }

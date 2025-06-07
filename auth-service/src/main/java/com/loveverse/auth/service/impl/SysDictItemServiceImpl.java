@@ -1,6 +1,5 @@
 package com.loveverse.auth.service.impl;
 
-import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.loveverse.auth.entity.SysDict;
 import com.loveverse.auth.entity.SysDictItem;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,7 +55,7 @@ public class SysDictItemServiceImpl implements SysDictItemService {
     public List<SysDictItemVO> queryDictItemList(Long dictId) {
         List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(
                 Wrappers.<SysDictItem>lambdaQuery().eq(dictId != null, SysDictItem::getDictId, dictId));
-        return Optional.ofNullable(sysDictItemList).orElse(Collections.emptyList()).stream().map(item -> {
+        return sysDictItemList.stream().map(item -> {
             SysDictItemVO sysDictItemVO = new SysDictItemVO();
             BeanUtils.copyProperties(item, sysDictItemVO);
             return sysDictItemVO;

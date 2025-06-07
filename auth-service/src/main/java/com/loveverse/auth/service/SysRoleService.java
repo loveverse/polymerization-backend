@@ -1,7 +1,9 @@
 package com.loveverse.auth.service;
 
+import com.loveverse.auth.request.SetRoleMenuDTO;
 import com.loveverse.auth.request.SysRoleDTO;
 import com.loveverse.auth.request.SysRolePageDTO;
+import com.loveverse.auth.response.SysMenuVO;
 import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.core.dto.PageResult;
 
@@ -27,4 +29,8 @@ public interface SysRoleService {
 
 
     List<SysRoleVO> roleListByRoleIds(List<Long> roleIds);
+
+    SysRoleVO getMenuTreeByRoleId(Long roleId);
+
+    void updateRolePermissions(SetRoleMenuDTO roleMenuDTO);
 }

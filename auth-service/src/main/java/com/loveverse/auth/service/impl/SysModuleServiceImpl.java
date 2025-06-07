@@ -1,6 +1,5 @@
 package com.loveverse.auth.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.loveverse.auth.converter.SystemConverter;
 import com.loveverse.auth.entity.SysDict;
@@ -13,13 +12,10 @@ import com.loveverse.auth.request.SysModuleDTO;
 import com.loveverse.auth.response.SysModuleVO;
 import com.loveverse.auth.service.SysModuleService;
 import com.loveverse.core.exception.BadRequestException;
-import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,7 +50,6 @@ public class SysModuleServiceImpl implements SysModuleService {
             sysDictMapper.delete(Wrappers.<SysDict>lambdaUpdate().in(SysDict::getId, dictIds));
             sysDictItemMapper.delete(Wrappers.<SysDictItem>lambdaUpdate().in(SysDictItem::getDictId, dictIds));
         }
-
     }
 
     @Override
@@ -69,8 +64,7 @@ public class SysModuleServiceImpl implements SysModuleService {
     @Override
     public List<SysModuleVO> getModuleList() {
         List<SysModule> sysModules = sysModuleMapper.selectList(Wrappers.lambdaQuery());
-        return Optional.ofNullable(sysModules).orElse(Collections.emptyList()).stream()
-                .map(systemConverter::convertModuleToVO)
+        return sysModules.stream().map(systemConverter::convertModuleToVO)
                 .sorted(Comparator.comparing(SysModuleVO::getSortOrder)).collect(Collectors.toList());
     }
 }

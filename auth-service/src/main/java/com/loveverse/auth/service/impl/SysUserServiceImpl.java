@@ -88,8 +88,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public List<SysUserVO> queryUserList() {
         List<SysUser> sysUsers = sysUserMapper.selectList(Wrappers.lambdaQuery());
-        return Optional.ofNullable(sysUsers).orElse(Collections.emptyList())
-                .stream().map(item -> {
+        return sysUsers.stream().map(item -> {
                     SysUserVO sysUserVO = new SysUserVO();
                     BeanUtils.copyProperties(item, sysUserVO);
                     return sysUserVO;

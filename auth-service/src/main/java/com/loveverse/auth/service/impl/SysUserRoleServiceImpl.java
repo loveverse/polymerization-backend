@@ -2,13 +2,11 @@ package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.entity.SysUserRole;
 import com.loveverse.auth.mapper.SysUserRoleMapper;
 import com.loveverse.auth.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
