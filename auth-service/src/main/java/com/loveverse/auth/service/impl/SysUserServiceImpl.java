@@ -89,10 +89,10 @@ public class SysUserServiceImpl implements SysUserService {
     public List<SysUserVO> queryUserList() {
         List<SysUser> sysUsers = sysUserMapper.selectList(Wrappers.lambdaQuery());
         return sysUsers.stream().map(item -> {
-                    SysUserVO sysUserVO = new SysUserVO();
-                    BeanUtils.copyProperties(item, sysUserVO);
-                    return sysUserVO;
-                }).collect(Collectors.toList());
+            SysUserVO sysUserVO = new SysUserVO();
+            BeanUtils.copyProperties(item, sysUserVO);
+            return sysUserVO;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -106,6 +106,27 @@ public class SysUserServiceImpl implements SysUserService {
         });
         sysUserVOPageResult.setData(fillRoleList(sysUserVOPageResult.getData()));
         return sysUserVOPageResult;
+    }
+
+    @Override
+    public SysUserVO getUserInfo(Long id) {
+        SysUser user = sysUserMapper.selectById(id);
+        if (user == null) {
+            throw new BadRequestException("不存在该记录");
+        }
+        SysUserVO sysUserVO = new SysUserVO();
+        BeanUtils.copyProperties(user, sysUserVO);
+        // 通过用户ids获取用户和角色关联信息
+        List<SysUserRole> userRoles = sysUserRoleService.getUserRoles(Collections.singletonList(id));
+        if (CollectionUtils.isEmpty(userRoles)) {
+            sysUserVO.setRoleList(Collections.emptyList());
+        } else {
+            List<Long> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
+            // 通过角色关联信息的 roleIds 获取这个用户的角色详情列表
+            List<SysRoleVO> roleVOList = sysRoleService.roleListByRoleIds(roleIds);
+            sysUserVO.setRoleList(roleVOList);
+        }
+        return sysUserVO;
     }
 
     public List<SysUserVO> fillRoleList(List<SysUserVO> sysUserVOS) {

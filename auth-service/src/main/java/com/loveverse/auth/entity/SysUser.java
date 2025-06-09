@@ -25,15 +25,18 @@ public class SysUser extends BaseEntity {
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
 
-    @Unique(value = "username", columns = {"user_name", "valid"})
+    @Unique(value = "username", columns = {"username", "valid"})
     @Column(comment = "用户名", length = 64, isNull = false)
-    private String userName;
+    private String username;
 
     @Column(comment = "昵称", length = 64)
-    private String nickName;
+    private String nickname;
 
     @Column(comment = "密码", length = 64, isNull = false)
     private String password;
+
+    @Column(comment = "头像地址")
+    private String avatar;
 
     @Column(comment = "性别：U-未知，M-男，W-女", length = 1, isNull = false, defaultValue = "U")
     private String sex;

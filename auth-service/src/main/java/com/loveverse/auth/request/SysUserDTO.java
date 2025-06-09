@@ -23,10 +23,10 @@ public class SysUserDTO {
 
     @NotBlank(message = "用户名不能为空", groups = {ValidGroup.Create.class})
     @Schema(description = "用户名", maxLength = 64, example = "admin")
-    private String userName;
+    private String username;
 
     @Schema(description = "昵称", maxLength = 64)
-    private String nickName;
+    private String nickname;
 
     @NotBlank(message = "密码不能为空", groups = {ValidGroup.Create.class})
     @Schema(description = "密码", maxLength = 64)
@@ -34,6 +34,9 @@ public class SysUserDTO {
 
     @Schema(description = "性别：U-未知，M-男，W-女", maxLength = 1, example = "U")
     private String sex;
+
+    @Schema(description = "头像地址")
+    private String avatar;
 
     @Schema(description = "状态：0-停用，1-正常", maxLength = 1, example = "1")
     private Integer status;

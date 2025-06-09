@@ -6,11 +6,9 @@ import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.exception.JwtAuthenticationException;
 import com.loveverse.auth.exception.JwtTokenExpiredException;
 import com.loveverse.auth.exception.JwtTokenInvalidException;
-import com.sun.javafx.geom.transform.SingularMatrixException;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -43,7 +41,7 @@ public class JwtTokenUtil {
         SysUser user = loginUser.getUser();
         // 只存放一些基本信息
         claims.put("userId", user.getId().toString());
-        claims.put("username", user.getUserName());
+        claims.put("username", user.getUsername());
         claims.put("authorities", loginUser.getAuthorities());
         return Jwts.builder()
                 .setClaims(claims) // 先设置claims,防止覆盖subject

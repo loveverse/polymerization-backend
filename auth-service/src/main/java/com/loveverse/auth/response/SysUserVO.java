@@ -1,5 +1,6 @@
 package com.loveverse.auth.response;
 
+import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.loveverse.mybatis.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -22,13 +23,16 @@ public class SysUserVO extends BaseVO {
     private Long id;
 
     @Schema(description = "用户名")
-    private String userName;
+    private String username;
 
     @Schema(description = "昵称")
-    private String nickName;
+    private String nickname;
 
     @Schema(description = "性别：U-未知，M-男，W-女")
     private String sex;
+
+    @Schema(description = "头像地址")
+    private String avatar;
 
     @Schema(description = "状态：0-停用，1-正常")
     private Integer status;

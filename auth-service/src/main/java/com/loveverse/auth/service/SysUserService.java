@@ -22,4 +22,6 @@ public interface SysUserService {
     List<SysUserVO> queryUserList();
 
     PageResult<SysUserVO> getUserPage(SysUserPageDTO sysUserPageDTO);
+
+    SysUserVO getUserInfo(Long id);
 }

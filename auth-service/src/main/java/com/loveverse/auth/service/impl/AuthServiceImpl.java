@@ -59,8 +59,13 @@ public class AuthServiceImpl implements AuthService {
         // 返回用户信息、token、角色列表、权限菜单列表
         UserLoginVO loginInfoRes = new UserLoginVO();
         loginInfoRes.setToken(token);
-        loginInfoRes.setUserId(userId);
         loginInfoRes.setTokenPrefix(jwtProperties.getPrefix());
+
+        UserLoginVO.User userInfo = new UserLoginVO.User();
+        userInfo.setId(userId);
+        userInfo.setUserId(userId);
+        userInfo.setUsername(loginUser.getUsername());
+        loginInfoRes.setUser(userInfo);
 
         Date date = jwtTokenUtil.extractExpiration(token);
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();

@@ -27,7 +27,7 @@ public class TestTokenExpired {
     public Map<String, String> login() {
         LoginUserBO userBO = new LoginUserBO();
         SysUser sysUser = new SysUser();
-        sysUser.setUserName("123");
+        sysUser.setUsername("123");
         userBO.setUser(sysUser);
         String token = jwtTokenUtil.generateToken(userBO);
         HashMap<String, String> objectObjectHashMap = new HashMap<>();

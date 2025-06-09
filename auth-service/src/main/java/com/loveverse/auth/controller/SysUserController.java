@@ -61,10 +61,18 @@ public class SysUserController {
         return ResponseCode.SUCCESS.getResponse(userList);
     }
 
-    @Operation(summary = "用户列表")
+    @Operation(summary = "用户分页列表")
     @GetMapping("/page")
     public ResponseData<PageResult<SysUserVO>> getUserPage(@Valid @ParameterObject SysUserPageDTO sysUserPageDTO) {
         PageResult<SysUserVO> userPage = sysUserService.getUserPage(sysUserPageDTO);
         return ResponseCode.SUCCESS.getResponse(userPage);
     }
+
+    @Operation(summary = "获取用户详情")
+    @GetMapping("/detail/{id}")
+    public ResponseData<SysUserVO> getUserInfo(@PathVariable("id") Long id){
+        SysUserVO sysUserVO =  sysUserService.getUserInfo(id);
+        return ResponseCode.SUCCESS.getResponse(sysUserVO);
+    }
+
 }
