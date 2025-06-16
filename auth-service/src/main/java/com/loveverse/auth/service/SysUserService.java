@@ -3,6 +3,7 @@ package com.loveverse.auth.service;
 import com.loveverse.auth.request.SysUserDTO;
 import com.loveverse.auth.request.SysUserPageDTO;
 import com.loveverse.auth.response.SysUserVO;
+import com.loveverse.auth.response.UserAuthorityInfoVO;
 import com.loveverse.core.dto.PageResult;
 
 
@@ -24,4 +25,6 @@ public interface SysUserService {
     PageResult<SysUserVO> getUserPage(SysUserPageDTO sysUserPageDTO);
 
     SysUserVO getUserInfo(Long id);
+
+    UserAuthorityInfoVO getUserAuthorityInfo(Long id);
 }

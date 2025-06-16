@@ -3,6 +3,7 @@ package com.loveverse.auth.controller;
 import com.loveverse.auth.request.SysUserDTO;
 import com.loveverse.auth.request.SysUserPageDTO;
 import com.loveverse.auth.response.SysUserVO;
+import com.loveverse.auth.response.UserAuthorityInfoVO;
 import com.loveverse.auth.service.SysUserService;
 import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.http.ResponseCode;
@@ -70,8 +71,8 @@ public class SysUserController {
 
     @Operation(summary = "获取用户详情")
     @GetMapping("/detail/{id}")
-    public ResponseData<SysUserVO> getUserInfo(@PathVariable("id") Long id){
-        SysUserVO sysUserVO =  sysUserService.getUserInfo(id);
+    public ResponseData<SysUserVO> getUserInfo(@PathVariable("id") Long id) {
+        SysUserVO sysUserVO = sysUserService.getUserInfo(id);
         return ResponseCode.SUCCESS.getResponse(sysUserVO);
     }
 

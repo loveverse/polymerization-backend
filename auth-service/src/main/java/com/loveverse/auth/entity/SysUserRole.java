@@ -6,10 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Unique;
 import com.loveverse.auth.response.SysRoleVO;
-import com.loveverse.mybatis.entity.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,14 +17,11 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_user_role")
 @Table(name = "sys_user_role", comment = "用户角色表")
-public class SysUserRole extends BaseEntity {
-    @TableId(type = IdType.AUTO)
-    @Column(comment = "id", isAutoIncrement = true, isKey = true)
-    private Long id;
+public class SysUserRole {
 
+    @Unique(value = "user_role", columns = {"user_id", "role_id"})
     @Column(comment = "用户id", isNull = false)
     private Long userId;
 

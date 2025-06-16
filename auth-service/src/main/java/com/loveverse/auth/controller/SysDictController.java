@@ -44,7 +44,7 @@ public class SysDictController {
     }
 
     @Operation(summary = "删除字典")
-    @HasPermission("sys:dict:delete")
+    //@HasPermission("sys:dict:delete")
     @DeleteMapping("/delete")
     public ResponseData<Void> deleteDict(@RequestParam("id") Long id) {
         sysDictService.deleteDict(id);
@@ -75,7 +75,7 @@ public class SysDictController {
     }
 
     @Operation(summary = "删除字典项")
-    @HasPermission("sys:dict:delete")
+    //@HasPermission("sys:dict:delete")
     @DeleteMapping("/dict-item/delete")
     public ResponseData<Void> deleteDictItem(@RequestParam("id") Long id) {
         sysDictItemService.deleteDictItem(id);

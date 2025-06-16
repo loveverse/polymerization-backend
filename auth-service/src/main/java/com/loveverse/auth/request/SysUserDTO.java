@@ -33,7 +33,7 @@ public class SysUserDTO {
     private String password;
 
     @Schema(description = "性别：U-未知，M-男，W-女", maxLength = 1, example = "U")
-    private String sex;
+    private String gender;
 
     @Schema(description = "头像地址")
     private String avatar;

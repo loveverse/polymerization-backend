@@ -1,13 +1,18 @@
 package com.loveverse.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.loveverse.auth.entity.SysMenu;
+import com.loveverse.auth.entity.SysRole;
 import com.loveverse.auth.entity.SysRoleMenu;
 import com.loveverse.auth.mapper.SysMenuMapper;
+import com.loveverse.auth.mapper.SysRoleMapper;
 import com.loveverse.auth.mapper.SysRoleMenuMapper;
 import com.loveverse.auth.request.SysMenuDTO;
 import com.loveverse.auth.response.SysMenuVO;
+import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.auth.service.SysMenuService;
+import com.loveverse.auth.service.SysRoleService;
 import com.loveverse.auth.util.TreeUtils;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +23,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +36,8 @@ import java.util.stream.Collectors;
 public class SysMenuServiceImpl implements SysMenuService {
     private final SysMenuMapper sysMenuMapper;
     private final SysRoleMenuMapper sysRoleMenuMapper;
+
+    private final SysRoleMapper sysRoleMapper;
 
 
     @Override
@@ -94,6 +102,31 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public List<SysMenuVO> flatMenuListByModuleId(Long moduleId) {
         List<SysMenu> sysMenus = sysMenuMapper.selectList(Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getModuleId, moduleId));
+        return sysMenus.stream().map(item -> {
+            SysMenuVO sysMenuVO = new SysMenuVO();
+            BeanUtils.copyProperties(item, sysMenuVO);
+            return sysMenuVO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysMenuVO> getMenuTreeByRoleIds(List<Long> roleIds) {
+        // 这里不报错，因为是直接给 AuthController 调用
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
+        List<SysRole> roleList = sysRoleMapper.selectList(Wrappers.<SysRole>lambdaQuery().in(SysRole::getId, roleIds));
+        Set<String> keys = roleList.stream().map(SysRole::getRoleKey).collect(Collectors.toSet());
+        // 默认为后台管理模块，其他模块后续可以考虑扩展实现
+        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()
+                .eq(SysMenu::getModuleId, 1);
+        // 不是管理员查自己的
+        if (!keys.contains("ROLE_ADMIN")) {
+            List<SysRoleMenu> sysRoleMenus = sysRoleMenuMapper.selectList(Wrappers.<SysRoleMenu>lambdaQuery().in(SysRoleMenu::getRoleId, roleIds));
+            List<Long> menuIds = sysRoleMenus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
+            queryWrapper.in(SysMenu::getId, menuIds);
+        }
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(queryWrapper);
         return sysMenus.stream().map(item -> {
             SysMenuVO sysMenuVO = new SysMenuVO();
             BeanUtils.copyProperties(item, sysMenuVO);

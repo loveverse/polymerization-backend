@@ -21,4 +21,6 @@ public interface SysMenuService {
     List<SysMenuVO> getMenuTreeByModuleId(Long moduleId);
 
     List<SysMenuVO> flatMenuListByModuleId(Long moduleId);
+
+    List<SysMenuVO> getMenuTreeByRoleIds(List<Long> roleIds);
 }

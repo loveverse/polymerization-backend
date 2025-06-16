@@ -66,4 +66,11 @@ public class SysMenuController {
         List<SysMenuVO> sysMenuVOS = sysMenuService.getMenuTreeByModuleId(moduleId);
         return ResponseCode.SUCCESS.getResponse(sysMenuVOS);
     }
+
+    @Operation(summary = "根据角色 ids 获取菜单")
+    @PostMapping("/menu-tree-by-roleIds")
+    public ResponseData<List<SysMenuVO>> getMenuTreeByRoleIds(@RequestParam("roleIds") List<Long> roleIds){
+        List<SysMenuVO> sysMenuVOS = sysMenuService.getMenuTreeByRoleIds(roleIds);
+        return ResponseCode.SUCCESS.getResponse(sysMenuVOS);
+    }
 }

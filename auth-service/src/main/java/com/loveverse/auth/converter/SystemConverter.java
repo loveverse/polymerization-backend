@@ -10,6 +10,7 @@ import com.loveverse.auth.response.SysDictVO;
 import com.loveverse.auth.response.SysModuleVO;
 import com.loveverse.auth.response.SysRoleVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -29,14 +30,29 @@ public interface SystemConverter {
     //@Mapping(target = "valid", ignore = true)
     //@Mapping(target = "version", ignore = true)
     // SysRole 存在 valid version 等，需要手动忽略或者全局配置，不然生成的代码不会赋值
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "valid", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
     SysRole convertRoleToEntity(SysRoleDTO sysRoleDTO);
 
     SysRoleVO convertRoleToVO(SysRole sysRole);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "valid", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
     SysModule convertModuleToEntity(SysModuleDTO sysModuleDTO);
 
     SysModuleVO convertModuleToVO(SysModule sysModule);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "valid", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
     SysDict convertDictToEntity(SysDictDTO sysDictDTO);
 
     SysDictVO convertDictToVO(SysDict sysDict);

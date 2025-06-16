@@ -2,16 +2,21 @@ package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.loveverse.auth.entity.SysRole;
 import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.entity.SysUserRole;
 import com.loveverse.auth.mapper.SysUserMapper;
 import com.loveverse.auth.request.SysUserDTO;
 import com.loveverse.auth.request.SysUserPageDTO;
+import com.loveverse.auth.response.SysMenuVO;
 import com.loveverse.auth.response.SysRoleVO;
 import com.loveverse.auth.response.SysUserVO;
+import com.loveverse.auth.response.UserAuthorityInfoVO;
+import com.loveverse.auth.service.SysMenuService;
 import com.loveverse.auth.service.SysRoleService;
 import com.loveverse.auth.service.SysUserService;
 import com.loveverse.auth.util.PageUtils;
+import com.loveverse.auth.util.TreeUtils;
 import com.loveverse.core.dto.PageResult;
 import com.loveverse.core.exception.BadRequestException;
 import com.loveverse.mybatis.vo.BaseVO;
@@ -41,6 +46,7 @@ public class SysUserServiceImpl implements SysUserService {
     private final SysUserMapper sysUserMapper;
     private final SysRoleService sysRoleService;
     private final SysUserRoleServiceImpl sysUserRoleService;
+    private final SysMenuService sysMenuService;
 
     @Transactional
     @Override
@@ -127,6 +133,38 @@ public class SysUserServiceImpl implements SysUserService {
             sysUserVO.setRoleList(roleVOList);
         }
         return sysUserVO;
+    }
+
+    @Override
+    public UserAuthorityInfoVO getUserAuthorityInfo(Long id) {
+        SysUserVO userInfo = getUserInfo(id);
+        UserAuthorityInfoVO userAuthorityInfoVO = new UserAuthorityInfoVO();
+        // 获取角色列表
+        Set<String> roleKeys = new HashSet<>();
+        List<Long> roleIds = new ArrayList<>();
+
+        userInfo.getRoleList().stream()
+                .filter(k -> k.getStatus() == 1)
+                .forEach(role -> {
+                    roleKeys.add(role.getRoleKey());
+                    roleIds.add(role.getId());
+                });
+        userAuthorityInfoVO.setRoles(roleKeys);
+        // 获取菜单列表
+        List<SysMenuVO> menuVOS = sysMenuService.getMenuTreeByRoleIds(roleIds);
+        ArrayList<SysMenuVO> menuList = new ArrayList<>();
+        HashSet<String> permissions = new HashSet<>();
+        menuVOS.forEach(item -> {
+            if ("1".equals(item.getMenuType())) {
+                menuList.add(item);
+            } else if ("2".equals(item.getMenuType())) {
+                permissions.add(item.getPermission());
+            }
+        });
+        List<SysMenuVO> menuTree = TreeUtils.buildTree(menuList, SysMenuVO::getId, SysMenuVO::getParentId, SysMenuVO::setChildren, 0L);
+        userAuthorityInfoVO.setMenus(menuTree);
+        userAuthorityInfoVO.setPermissions(permissions);
+        return userAuthorityInfoVO;
     }
 
     public List<SysUserVO> fillRoleList(List<SysUserVO> sysUserVOS) {

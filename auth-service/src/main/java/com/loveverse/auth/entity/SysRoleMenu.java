@@ -22,7 +22,7 @@ import java.io.Serializable;
 @Table(name = "sys_role_menu", comment = "角色菜单")
 public class SysRoleMenu implements Serializable {
     private static final long serialVersionUID = 1L;
-    // 使用联合唯一主键替换联合主键
+    // 使用联合唯一主键替换联合主键,但会影响性能
     @Unique(value = "role_menu", columns = {"role_id", "menu_id"})
     @Column(comment = "角色id", isNull = false)
     private Long roleId;

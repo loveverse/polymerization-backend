@@ -1,9 +1,7 @@
 package com.loveverse.auth.response;
 
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.loveverse.mybatis.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,7 +27,7 @@ public class SysUserVO extends BaseVO {
     private String nickname;
 
     @Schema(description = "性别：U-未知，M-男，W-女")
-    private String sex;
+    private String gender;
 
     @Schema(description = "头像地址")
     private String avatar;

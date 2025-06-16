@@ -94,7 +94,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<SysRole> roleList = sysRoleMapper.selectList(Wrappers.<SysRole>lambdaQuery().in(SysRole::getId, roleIds));
         return roleList.stream().map(item -> {
             SysRoleVO sysRoleVO = new SysRoleVO();
-            BeanUtils.copyProperties(item, sysRoleVO, "createTime", "updateTime", "status");
+            BeanUtils.copyProperties(item, sysRoleVO, "createTime", "updateTime");
             return sysRoleVO;
         }).collect(Collectors.toList());
     }
@@ -108,7 +108,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         SysRoleVO sysRoleVO = new SysRoleVO();
         BeanUtils.copyProperties(sysRole, sysRoleVO);
         if (sysRole.getRoleKey().equals("ROLE_ADMIN")) {
-            List<SysMenuVO> menuVOS = sysMenuService.flatMenuListByModuleId(7L);
+            List<SysMenuVO> menuVOS = sysMenuService.flatMenuListByModuleId(1L);
             List<Long> menuIds = menuVOS.stream().map(SysMenuVO::getId).distinct().collect(Collectors.toList());
             sysRoleVO.setMenuIds(menuIds);
         } else {

@@ -5,8 +5,10 @@ import cn.hutool.captcha.LineCaptcha;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.loveverse.auth.constant.RedisKeyConstant;
 import com.loveverse.auth.request.UserLoginDTO;
+import com.loveverse.auth.response.UserAuthorityInfoVO;
 import com.loveverse.auth.response.UserLoginVO;
 import com.loveverse.auth.service.AuthService;
+import com.loveverse.auth.service.SysUserService;
 import com.loveverse.core.http.ResponseCode;
 import com.loveverse.core.http.ResponseData;
 import com.loveverse.redis.util.RedisUtils;
@@ -17,7 +19,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ import java.io.IOException;
 public class AuthController {
     private final AuthService authService;
     private final RedisUtils redisUtils;
+    private final SysUserService sysUserService;
 
     @PostMapping("/register")
     public ResponseData<Void> register() {
@@ -89,5 +91,12 @@ public class AuthController {
     public ResponseData<String> hello() {
         //throw new BadCredentialsException("手动触发认证异常");
         return ResponseCode.SUCCESS.getResponse("测试指定返回类型", "hello");
+    }
+
+    @Operation(summary = "获取登录用户的权限信息")
+    @GetMapping("/authority-info/{id}")
+    public ResponseData<UserAuthorityInfoVO> getUserAuthorityInfo(@PathVariable("id") Long id) {
+        UserAuthorityInfoVO userAuthorityInfoVO =  sysUserService.getUserAuthorityInfo(id);
+        return ResponseCode.SUCCESS.getResponse(userAuthorityInfoVO);
     }
 }

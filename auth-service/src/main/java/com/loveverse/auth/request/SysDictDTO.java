@@ -22,7 +22,7 @@ public class SysDictDTO {
     private Long id;
 
     @NotBlank(message = "字典名（英文）不能为空", groups = {ValidGroup.Create.class})
-    @Schema(description = "字典名（英文）", maxLength = 100, example = "sex_type")
+    @Schema(description = "字典名（英文）", maxLength = 100, example = "gender_type")
     private String dictValue;
 
     @NotBlank(message = "字典名（中文）不能为空", groups = {ValidGroup.Create.class})

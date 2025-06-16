@@ -1,14 +1,9 @@
 package com.loveverse.auth.response;
 
-import com.loveverse.core.valid.ValidGroup;
 import com.loveverse.mybatis.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 /**
  * @author love

@@ -29,7 +29,7 @@ public class SysModule extends BaseEntity {
     private String moduleName;
 
     @Column(comment = "模块key", isNull = false, length = 100)
-    @Unique(value = "module_value", columns = {"module_value", "valid"})
+    @Unique(value = "module_value", columns = {"valid", "module_value"})
     private String moduleValue;
 
     @Column(comment = "模块图标")

@@ -25,7 +25,8 @@ public class SysUser extends BaseEntity {
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
 
-    @Unique(value = "username", columns = {"username", "valid"})
+    // valid 放左边表示有效记录唯一，已删除记录可重复；valid 放右边表示所有记录强制唯一（包括已删除的）
+    @Unique(value = "username", columns = {"valid", "username"})
     @Column(comment = "用户名", length = 64, isNull = false)
     private String username;
 
@@ -39,7 +40,7 @@ public class SysUser extends BaseEntity {
     private String avatar;
 
     @Column(comment = "性别：U-未知，M-男，W-女", length = 1, isNull = false, defaultValue = "U")
-    private String sex;
+    private String gender;
 
     @Column(comment = "状态：0-停用，1-正常", length = 1, isNull = false, defaultValue = "1")
     private Integer status;

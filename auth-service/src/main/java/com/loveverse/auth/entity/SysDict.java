@@ -26,7 +26,7 @@ public class SysDict extends BaseEntity {
     @Column(comment = "id", isAutoIncrement = true, isKey = true)
     private Long id;
 
-    @Unique(value = "dict_value", columns = {"dict_value", "valid"})
+    @Unique(value = "dict_value", columns = {"valid", "dict_value"})
     @Column(comment = "字典名（英文）", length = 100, isNull = false)
     private String dictValue;
 

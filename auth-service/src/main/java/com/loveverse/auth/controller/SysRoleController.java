@@ -1,5 +1,6 @@
 package com.loveverse.auth.controller;
 
+import com.loveverse.auth.entity.SysRoleMenu;
 import com.loveverse.auth.request.SetRoleMenuDTO;
 import com.loveverse.auth.request.SysRoleDTO;
 import com.loveverse.auth.request.SysRolePageDTO;
@@ -83,6 +84,7 @@ public class SysRoleController {
         SysRoleVO menuVOS = sysRoleService.getMenuTreeByRoleId(roleId);
         return ResponseCode.SUCCESS.getResponse(menuVOS);
     }
+
 
     @Operation(summary = "设置角色的菜单权限")
     @PostMapping("/update-role-permissions")
