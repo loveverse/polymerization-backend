@@ -43,6 +43,7 @@
         <knife4j.version>4.4.0</knife4j.version>
         <hutool.version>5.8.25</hutool.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <fastexcel.version>1.0.0</fastexcel.version>
         <lombok.version>1.18.36</lombok.version>
 
     </properties>
@@ -259,6 +260,18 @@
                 <version>${mapstruct.version}</version>
                 <!-- 子项目使用时会继承 provided 作用域 -->
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.idev.excel</groupId>
+                <artifactId>fastexcel</artifactId>
+                <version>${fastexcel.version}</version>
+                <!-- 排除 Logback -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!--tool-->
             <dependency>

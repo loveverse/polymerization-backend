@@ -14,7 +14,7 @@ spring:
   datasource:
     druid:
       # createDatabaseIfNotExist=true 不存在则创建，目前只有 mysql 支持
-      url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+      url: jdbc:mysql://${DATABASE_IP:192.168.37.20}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
       db-type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: ${spring.datasource.username:root}
@@ -65,10 +65,10 @@ spring:
             multi-statement-allow: true
 #    username: ${DATABASE_USERNAME:root}
 #    password: ${DATABASE_PASSWORD:123456}
-#    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+#    url: jdbc:mysql://${DATABASE_IP:192.168.37.20}:${DATABASE_PORT:3306}/${DATABASE_NAME:wallpaper_web_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
 #    driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: ${spring.redis.host:192.168.37.10}
+    host: ${spring.redis.host:192.168.37.20}
     port: ${spring.redis.port:6379}
     database: ${spring.redis.database:10}
     password: ${spring.redis.password:}
@@ -76,13 +76,13 @@ spring:
   cloud:
     nacos:
       config:
-#        server-addr: ${spring.cloud.nacos.server-addr:192.168.37.10:8848}
+#        server-addr: ${spring.cloud.nacos.server-addr:192.168.37.20:8848}
 #        file-extension: yaml
 #        namespace: 26b9f38c-4729-4d9a-9689-ce9c2692d764
         enabled: false
       # 禁用配置中心
       discovery:
-        server-addr: ${spring.cloud.nacos.discovery.server-addr:192.168.37.10:8848}
+        server-addr: ${spring.cloud.nacos.discovery.server-addr:192.168.37.20:8848}
 #  config:
 #    import: optional:nacos
 

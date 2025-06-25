@@ -2,6 +2,7 @@ package com.loveverse.auth.service;
 
 import com.loveverse.auth.request.SysUserDTO;
 import com.loveverse.auth.request.SysUserPageDTO;
+import com.loveverse.auth.response.ImportExcelVO;
 import com.loveverse.auth.response.SysUserVO;
 import com.loveverse.auth.response.UserAuthorityInfoVO;
 import com.loveverse.core.dto.PageResult;
@@ -27,4 +28,6 @@ public interface SysUserService {
     SysUserVO getUserInfo(Long id);
 
     UserAuthorityInfoVO getUserAuthorityInfo(Long id);
+
+    ImportExcelVO importUser(List<SysUserVO> sysUserVOS, Boolean updateSupport);
 }

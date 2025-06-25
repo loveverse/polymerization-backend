@@ -4,6 +4,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.loveverse.auth.entity.ComExcelTemplate;
 import com.loveverse.auth.mapper.ComExcelTemplateMapper;
 import com.loveverse.auth.service.ComExcelTemplateService;
@@ -23,14 +24,12 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @Service
-public class ComExcelTemplateServiceImpl implements ComExcelTemplateService {
-
-    private final ComExcelTemplateMapper comExcelTemplateMapper;
+public class ComExcelTemplateServiceImpl extends ServiceImpl<ComExcelTemplateMapper, ComExcelTemplate> implements ComExcelTemplateService {
 
 
     @Override
     public ComExcelTemplate getExcel(String key) {
-        ComExcelTemplate comExcelTemplate = comExcelTemplateMapper.selectOne(Wrappers.<ComExcelTemplate>lambdaQuery().eq(ComExcelTemplate::getId, key));
+        ComExcelTemplate comExcelTemplate = getOne(Wrappers.<ComExcelTemplate>lambdaQuery().eq(ComExcelTemplate::getId, key));
         if (comExcelTemplate == null) {
             throw new BadRequestException("获取模板失败");
         }
@@ -41,7 +40,7 @@ public class ComExcelTemplateServiceImpl implements ComExcelTemplateService {
     public void saveExcel(MultipartFile file, String key, String remark) throws IOException {
         byte[] bytes = IoUtil.readBytes(file.getInputStream(), true);
         String base64Encoded = Base64.encode(bytes);
-        ComExcelTemplate comExcelTemplate = comExcelTemplateMapper.selectOne(Wrappers.<ComExcelTemplate>lambdaQuery()
+        ComExcelTemplate comExcelTemplate = getOne(Wrappers.<ComExcelTemplate>lambdaQuery()
                 .eq(ComExcelTemplate::getId, key)
                 .select(ComExcelTemplate::getId));
         ComExcelTemplate entity = new ComExcelTemplate();
@@ -49,15 +48,15 @@ public class ComExcelTemplateServiceImpl implements ComExcelTemplateService {
         entity.setRemark(remark);
         entity.setBase64(base64Encoded);
         if (comExcelTemplate == null) {
-            comExcelTemplateMapper.insert(entity);
+            save(entity);
         } else {
-            comExcelTemplateMapper.updateById(entity);
+            updateById(entity);
         }
     }
 
     @Override
     public List<ComExcelTemplate> getExcelList() {
-        return comExcelTemplateMapper.selectList(Wrappers.<ComExcelTemplate>lambdaQuery()
+        return list(Wrappers.<ComExcelTemplate>lambdaQuery()
                 .select(ComExcelTemplate::getId, ComExcelTemplate::getRemark, ComExcelTemplate::getCreateTime, ComExcelTemplate::getUpdateTime)
         );
     }

@@ -1,0 +1,237 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+	# The most common configuration options are documented and commented below.
+	# For a complete reference, please see the online documentation at
+	# https://docs.vagrantup.com.
+
+	# https://portal.cloud.hashicorp.com/vagrant/discover/generic/ubuntu2204
+	config.vm.define 'ubuntu22' do |ubuntu|
+		ubuntu.vm.box = 'ubuntu22'
+		# ubuntu.ssh.insert_key = false
+		# ubuntu.ssh.username = 'vagrant'
+		# ubuntu.ssh.password = 'vagrant'
+		# 桥接使用默认分配ip，防止网络改变访问不到；默认的nat用于自己连接一个不需要改变的ip
+		# vagrant 会使用默认的nat模式，也就是使用vmware中对应的 vmnet8 适配器，只需要分配不同的ip段即可
+		# 会存在3个网络适配器，默认的nat不会消失,且每次重启会重新分配ip，所以添加一个自定义的静态nat ip连接ssh
+		ubuntu.vm.network "private_network", ip: "192.168.37.20"
+		# 同时开启桥接模式
+		ubuntu.vm.network "public_network", type: "bridge"
+
+		ubuntu.vm.provider "vmware_desktop" do |vmware|
+			# vmware.vmx["ethernet0.present"] = "TRUE"  # 开启默认网卡（VMware）
+			# vmware.vmx["ethernet0.connectionType"] = "nat"  # 将默认的eth0修改为桥接模式会多出一个桥接
+
+			# vmware.vmx["ethernet1.present"] = "TRUE"   # 开启桥接网卡启用
+			# vmware.vmx["ethernet1.connectionType"] = "bridged"  # 第二个网卡设置桥接模式
+			# vmware.vmx["ethernet0.pcislotnumber"] = "32"  # 显式保留原 box 的设置
+			vmware.gui = false
+			vmware.memory = "4096" # 分配4GB内存
+			vmware.cpus = 2 # 分配2个CPU核心
+		end
+		ubuntu.vm.provision "shell", run: "always", inline: <<-SHELL
+		# 启用密码认证
+		sudo sed -i 's/^#\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+		# 允许root登录（如果需要）
+		sudo sed -i 's/^#\?PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+		# 设置vagrant用户密码
+		# echo "vagrant:vagrant" | sudo chpasswd
+
+		# 重启SSH服务使更改生效
+		sudo systemctl restart sshd
+		echo 'SSH配置已完成！'
+	SHELL
+	end
+
+	# https://portal.cloud.hashicorp.com/vagrant/discover/generic/centos7
+	config.vm.define 'centos7' do |centos|
+		centos.vm.box = 'centos7'
+		# centos.ssh.insert_key = false
+		# centos.ssh.username = 'vagrant'
+		# centos.ssh.password = 'vagrant'
+		# 桥接使用默认分配ip，防止网络改变访问不到；默认的nat用于自己连接一个不需要改变的ip
+		# vagrant 会使用默认的nat模式，也就是使用vmware中对应的 vmnet8 适配器，只需要分配不同的ip段即可
+		# 会存在3个网络适配器，默认的nat不会消失,且每次重启会重新分配ip，所以添加一个自定义的静态nat ip连接ssh
+		centos.vm.network "private_network", ip: "192.168.37.10"
+		# 同时开启桥接模式
+		centos.vm.network "public_network", type: "bridge"
+
+		centos.vm.provider "vmware_desktop" do |vmware|
+			# vmware.vmx["ethernet0.present"] = "TRUE"  # 开启默认网卡（VMware）
+			# vmware.vmx["ethernet0.connectionType"] = "nat"  # 将默认的eth0修改为桥接模式会多出一个桥接
+
+			# vmware.vmx["ethernet1.present"] = "TRUE"   # 开启桥接网卡启用
+			# vmware.vmx["ethernet1.connectionType"] = "bridged"  # 第二个网卡设置桥接模式
+			# vmware.vmx["ethernet0.pcislotnumber"] = "32"  # 显式保留原 box 的设置
+			vmware.gui = false
+			vmware.memory = "4096" # 分配4GB内存
+			vmware.cpus = 2 # 分配2个CPU核心
+		end
+		centos.vm.provision "shell", run: "always", inline: <<-SHELL
+		# SSH 配置检测
+		if ! grep -q "^PasswordAuthentication yes" /etc/ssh/sshd_config; then
+		  echo "配置SSH密码认证..."
+		  # 启用密码认证
+		  sudo sed -i 's/^#\\?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+		  # 允许root登录（如果需要）
+		  sudo sed -i 's/^#\\?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+		  # 设置vagrant用户密码
+		  # echo "vagrant:vagrant" | sudo chpasswd
+		  sudo systemctl restart sshd
+		else
+		  echo "SSH配置已存在，跳过修改。"
+		fi
+
+		# YUM 源检测（判断阿里云的标识）
+		if ! grep -q "mirrors.aliyun.com" /etc/yum.repos.d/CentOS-Base.repo; then
+		  echo "替换为阿里云YUM源..."
+		  sudo cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+		  sudo curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+		  sudo yum clean all
+		  sudo yum makecache
+		else
+		  echo "YUM源已为阿里云，跳过替换。"
+		fi
+
+		# 检查并安装 DNF
+		if ! command -v dnf &>/dev/null; then
+		  echo "安装DNF..."
+		  sudo yum install -y dnf
+		  sudo dnf -y install dnf-plugins-core
+		else
+		  echo "DNF 已安装，跳过。"
+		fi
+
+		# Docker 仓库配置检测
+		if [ ! -f /etc/yum.repos.d/docker-ce.repo ]; then
+		  echo "配置Docker阿里云源..."
+		  sudo dnf config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+		else
+		  echo "Docker 仓库已配置，跳过。"
+		fi
+
+		# Docker 安装检测
+		if ! command -v docker &>/dev/null; then
+		  echo "安装Docker..."
+		  sudo dnf install -y docker-ce docker-ce-cli containerd.io
+		  sudo systemctl enable --now docker
+		else
+		  echo "Docker 已安装，跳过。"
+		fi
+
+		# Docker 配置文件检测
+		if [ ! -f /etc/docker/daemon.json ]; then
+		  echo "配置Docker镜像加速..."
+		  sudo mkdir -p /etc/docker
+		  sudo tee /etc/docker/daemon.json > /dev/null <<'EOF'
+{
+  "registry-mirrors": [
+	"https://docker.m.daocloud.io",
+	"https://noohub.ru",
+	"https://huecker.io",
+	"https://dockerhub.timeweb.cloud",
+	"https://0c105db5188026850f80c001def654a0.mirror.swr.myhuaweicloud.com",
+	"https://5tqw56kt.mirror.aliyuncs.com",
+	"https://docker.1panel.live",
+	"http://mirrors.ustc.edu.cn/",
+	"http://mirror.azure.cn/",
+	"https://hub.rat.dev/",
+	"https://docker.ckyl.me/",
+	"https://docker.chenby.cn",
+	"https://docker.hpcloud.cloud",
+	"https://docker.m.daocloud.io"
+  ]
+}
+EOF
+		  sudo systemctl daemon-reload
+		  sudo systemctl restart docker
+		else
+		  echo "/etc/docker/daemon.json 已存在，跳过配置。"
+		fi
+
+		# nginx 镜像是否已拉取
+		# if ! docker image ls | grep -q "docker.1ms.run/nginx"; then
+		  # echo "拉取 nginx 镜像..."
+		  # docker pull docker.1ms.run/nginx:latest
+		# else
+		  # echo "nginx 镜像已存在，跳过拉取。"
+		# fi
+
+		echo "初始化完成！"
+	
+	SHELL
+
+	end
+	# Every Vagrant development environment requires a box. You can search for
+	# boxes at https://vagrantcloud.com/search.
+
+	# Disable automatic box update checking. If you disable this, then
+	# boxes will only be checked for updates when the user runs
+	# `vagrant box outdated`. This is not recommended.
+	# config.vm.box_check_update = false
+
+	# Create a forwarded port mapping which allows access to a specific port
+	# within the machine from a port on the host machine. In the example below,
+	# accessing "localhost:8080" will access port 80 on the guest machine.
+	# NOTE: This will enable public access to the opened port
+	# config.vm.network "forwarded_port", guest: 80, host: 8080
+
+	# Create a forwarded port mapping which allows access to a specific port
+	# within the machine from a port on the host machine and only allow access
+	# via 127.0.0.1 to disable public access
+	# config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+	# Create a private network, which allows host-only access to the machine
+	# using a specific IP.
+	# config.vm.network "private_network", ip: "192.168.33.10"
+
+	# Create a public network, which generally matched to bridged network.
+	# Bridged networks make the machine appear as another physical device on
+	# your network.
+	# config.vm.network "public_network"
+
+	# Share an additional folder to the guest VM. The first argument is
+	# the path on the host to the actual folder. The second argument is
+	# the path on the guest to mount the folder. And the optional third
+	# argument is a set of non-required options.
+	# config.vm.synced_folder "../data", "/vagrant_data"
+
+
+	# Disable the default share of the current code directory. Doing this
+	# provides improved isolation between the vagrant box and your host
+	# by making sure your Vagrantfile isn't accessible to the vagrant box.
+	# If you use this you may want to enable additional shared subfolders as
+	# shown above.
+	config.vm.synced_folder ".", "/vagrant", disabled: true
+
+	# Provider-specific configuration so you can fine-tune various
+	# backing providers for Vagrant. These expose provider-specific options.
+	# Example for VirtualBox:
+	#
+	# config.vm.provider "vmware_desktop" do |vm|
+	#   # Display the VirtualBox GUI when booting the machine
+	#     vm.gui = true
+	#
+	#   # Customize the amount of memory on the VM:
+	#     vm.memory = "4096" # 分配4GB内存
+	# 	vm.cpus = 2 # 分配2个CPU核心
+	# end
+	#
+	# View the documentation for the provider you are using for more
+	# information on available options.
+
+	# Enable provisioning with a shell script. Additional provisioners such as
+	# Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+	# documentation for more information about their specific syntax and use.
+	# config.vm.provision "shell", inline: <<-SHELL
+	#   apt-get update
+	#   apt-get install -y apache2
+	# SHELL
+end

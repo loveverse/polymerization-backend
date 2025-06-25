@@ -9,12 +9,9 @@ import com.loveverse.auth.response.SysDictVO;
 import com.loveverse.auth.service.SysDictService;
 import com.loveverse.core.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

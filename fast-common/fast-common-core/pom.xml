@@ -66,6 +66,10 @@
         <!--&lt;!&ndash;            <scope>provided</scope>&ndash;&gt;-->
         <!--        </dependency>-->
         <dependency>
+            <groupId>cn.idev.excel</groupId>
+            <artifactId>fastexcel</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>

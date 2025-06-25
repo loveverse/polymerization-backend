@@ -1,5 +1,5 @@
 # mysql 自定义字段
-DATABASE_IP: 192.168.37.10
+DATABASE_IP: 192.168.37.20
 DATABASE_PORT: 3306
 DATABASE_NAME: oss_file_dev
 
@@ -17,6 +17,6 @@ spring:
 
 minio:
   bucket: loveverse
-  endpoint: http://192.168.37.10:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
+  endpoint: http://192.168.37.20:9000  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
   access-key: r40Z2gQWc2XutrjzBbx6 #账户
   secret-key: Nhuqw6QiQFJYAafVwK8dluHn6p6gYC5UsYfRMb0Y #密码

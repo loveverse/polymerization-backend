@@ -46,7 +46,7 @@ public class TestRedisConfiguration {
         public RedissonClient redissonClient() {
             Config config = new Config();
             SingleServerConfig singleServerConfig = config.useSingleServer()
-                    .setAddress("redis://192.168.37.10:6379")
+                    .setAddress("redis://192.168.37.20:6379")
                     .setDatabase(0);
             return Redisson.create(config);
         }

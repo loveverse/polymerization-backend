@@ -2,16 +2,12 @@ package com.loveverse.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.loveverse.auth.entity.SysRole;
 import com.loveverse.auth.entity.SysUser;
 import com.loveverse.auth.entity.SysUserRole;
 import com.loveverse.auth.mapper.SysUserMapper;
 import com.loveverse.auth.request.SysUserDTO;
 import com.loveverse.auth.request.SysUserPageDTO;
-import com.loveverse.auth.response.SysMenuVO;
-import com.loveverse.auth.response.SysRoleVO;
-import com.loveverse.auth.response.SysUserVO;
-import com.loveverse.auth.response.UserAuthorityInfoVO;
+import com.loveverse.auth.response.*;
 import com.loveverse.auth.service.SysMenuService;
 import com.loveverse.auth.service.SysRoleService;
 import com.loveverse.auth.service.SysUserService;
@@ -165,6 +161,11 @@ public class SysUserServiceImpl implements SysUserService {
         userAuthorityInfoVO.setMenus(menuTree);
         userAuthorityInfoVO.setPermissions(permissions);
         return userAuthorityInfoVO;
+    }
+
+    @Override
+    public ImportExcelVO importUser(List<SysUserVO> sysUserVOS, Boolean updateSupport) {
+        return null;
     }
 
     public List<SysUserVO> fillRoleList(List<SysUserVO> sysUserVOS) {

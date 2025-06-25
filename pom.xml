@@ -10,7 +10,7 @@
 
     <modules>
         <module>fast-common</module>
-        <module>fast-gateway</module>
+        <module>gateway-service</module>
         <module>file-upload-service</module>
         <module>java-study</module>
         <module>auth-service</module>

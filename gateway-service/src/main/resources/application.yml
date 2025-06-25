@@ -1,0 +1,40 @@
+server:
+  port: 30000
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        # 认证中心
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-api/**
+
+        # 文件上传服务
+        - id: file-upload-service
+          uri: lb://file-upload-service
+          predicates:
+            - Path=/file-upload-api/**
+
+        # 壁纸服务
+        - id: wallpaper-web-service
+          uri: lb://wallpaper-web-service
+          predicates:
+            - Path=/wallpaper-web-api/**
+      #          filters:
+      #            # 去除路径的第一部分
+      #            - StripPrefix=1
+      # 去重响应头中的Vary、Access-Control-Allow-Origin 和 Access-Control-Allow-Credentials 字段，保留第一个出现的值
+      default-filters:
+        - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
+    # v2.2.0版本需要开放9848和9849端口
+    nacos:
+      discovery:
+        server-addr: 192.168.37.20:8848
+      config:
+        import-check:
+          enabled: false
+        enabled: false
+

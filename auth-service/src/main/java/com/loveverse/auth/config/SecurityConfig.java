@@ -72,7 +72,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
                 // 必须先禁用csrf才能使用antMatchers
                 .csrf().disable()
                 // 禁用默认 session，使用 token 设置无状态会话

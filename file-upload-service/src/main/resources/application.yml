@@ -21,7 +21,7 @@ spring:
   datasource:
     druid:
       # createDatabaseIfNotExist=true 不存在则创建，目前只有 mysql 支持
-      url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+      url: jdbc:mysql://${DATABASE_IP:192.168.37.20}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file_dev}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
       db-type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: ${spring.datasource.username:root}
@@ -72,9 +72,9 @@ spring:
             multi-statement-allow: true
   #    username: ${DATABASE_USERNAME:root}
   #    password: ${DATABASE_PASSWORD:123456}
-  #    url: jdbc:mysql://${DATABASE_IP:192.168.37.10}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
+  #    url: jdbc:mysql://${DATABASE_IP:192.168.37.20}:${DATABASE_PORT:3306}/${DATABASE_NAME:oss_file}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&allowMultiQueries=true&createDatabaseIfNotExist=true
   redis:
-    host: ${spring.redis.host:192.168.37.10}
+    host: ${spring.redis.host:192.168.37.20}
     port: ${spring.redis.port:6379}
     database: ${spring.redis.database:10}
 #    password: ${spring.redis.password:123456}
@@ -88,7 +88,7 @@ spring:
 minio:
   # 默认存储桶，适用普通文件上传
   bucket: ${minio.bucket:loveverse}
-  endpoint: ${minio.endpoint:http://192.168.37.10:9000}  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
+  endpoint: ${minio.endpoint:http://192.168.37.20:9000}  #部署在docker上时，需填写对象存储上传的地址，9090是客户端地址
   access-key: ${minio.access-key:44h4ub0vvTDxF7cAuGBD}
   secret-key: ${minio.secret-key:leG2OwjuC7PgBvFMJHuAnexl3J7e5sAcXIjqfENq}
 

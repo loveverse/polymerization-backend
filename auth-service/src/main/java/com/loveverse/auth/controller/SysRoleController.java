@@ -92,5 +92,4 @@ public class SysRoleController {
         sysRoleService.updateRolePermissions(RoleMenuDTO);
         return ResponseCode.SUCCESS.getResponse("操作成功");
     }
-
 }
