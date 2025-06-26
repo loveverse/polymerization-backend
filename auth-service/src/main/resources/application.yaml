@@ -3,6 +3,7 @@ server:
   servlet:
     # 设置应用的上下文路径， 所有请求会以/auth-api开头
     context-path: /auth-api
+
 spring:
   application:
     name: auth-service
@@ -10,13 +11,18 @@ spring:
     restart:
       enabled: true
       additional-paths: src/main/java
+  profiles:
+    # dev 配置会打印错误信息到前端
+    active: @profileActive@
+  config:
+    import:
+      - optional:classpath:application-@profileActive@.yaml # 加载【本地】配置
+      - optional:nacos:${spring.application.name}-@profileActive@.yaml # 加载【Nacos】的配置
   redis:
     host: ${spring.redis.host:192.168.37.20}
     port: ${spring.redis.port:6379}
     database: ${spring.redis.database:2}
-  profiles:
-    # dev 配置会打印错误信息到前端
-    active: @profileActive@
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -72,16 +78,6 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-  cloud:
-    nacos:
-      config:
-        #        server-addr: ${spring.cloud.nacos.server-addr:192.168.37.20:8848}
-        #        file-extension: yaml
-        #        namespace: 26b9f38c-4729-4d9a-9689-ce9c2692d764
-        # 禁用配置中心
-        enabled: false
-      discovery:
-        server-addr: ${spring.cloud.nacos.discovery.server-addr:192.168.37.20:8848}
 
 mybatis-plus:
   configuration:
@@ -94,7 +90,6 @@ mybatis-plus:
       logic-delete-value: 'NULL' # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
   mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml,classpath*:com/loveverse/auth/mapper/*/*.xml
-
 
 
 # 自动建表的工具配置

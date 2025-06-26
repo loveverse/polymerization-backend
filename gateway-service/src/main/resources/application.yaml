@@ -3,6 +3,14 @@ server:
 spring:
   application:
     name: gateway-service
+  profiles:
+    # dev 配置会打印错误信息到前端
+    active: @profileActive@
+  config:
+    import:
+      # v2.2.0版本需要开放9848和9849端口
+      - optional:classpath:application-@profileActive@.yaml # 加载【本地】配置
+      - optional:nacos:${spring.application.name}-@profileActive@.yaml # 加载【Nacos】的配置
   cloud:
     gateway:
       routes:
@@ -29,12 +37,3 @@ spring:
       # 去重响应头中的Vary、Access-Control-Allow-Origin 和 Access-Control-Allow-Credentials 字段，保留第一个出现的值
       default-filters:
         - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
-    # v2.2.0版本需要开放9848和9849端口
-    nacos:
-      discovery:
-        server-addr: 192.168.37.20:8848
-      config:
-        import-check:
-          enabled: false
-        enabled: false
-

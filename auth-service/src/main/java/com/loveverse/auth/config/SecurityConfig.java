@@ -78,7 +78,6 @@ public class SecurityConfig {
                 .csrf().disable()
                 // 禁用默认 session，使用 token 设置无状态会话
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .authorizeHttpRequests(auth -> auth
                         // 放行预检请求
                         .requestMatchers(request -> HttpMethod.OPTIONS.matches(request.getMethod())).permitAll()
@@ -99,6 +98,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/v1/auth/captcha/*")).permitAll()
 
                         //.antMatchers("/**").permitAll()
+
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable) // 禁用默认表单登录
                 .httpBasic(AbstractHttpConfigurer::disable) // 禁用 Basic Auth

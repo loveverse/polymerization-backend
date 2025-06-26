@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.37.20:8848
+        file-extension: yaml
+        namespace: 33c33683-3683-44f3-a83c-32b46ca985dd
+        # 禁用配置中心
+      #        enabled: false
+      discovery:
+        server-addr: 192.168.37.20:8848
+        namespace: 33c33683-3683-44f3-a83c-32b46ca985dd
